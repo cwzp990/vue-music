@@ -46,6 +46,8 @@
 <script type="text/ecmascript-6">
 import { XHeader, XButton } from 'vux'
 export default {
+  methods: {
+  },
   components: {
     XHeader,
     XButton
@@ -58,9 +60,6 @@ export default {
   .account {
     @include allcover();
     @include wh(100%, 100%);
-    .vux-header {
-      background: $juzi;
-    }
     .userinfo {
       display: flex;
       justify-content: space-between;
@@ -114,7 +113,7 @@ export default {
         line-height: 1rem;
         @include sc(.7rem, #777);
       }
-      .msg-item:before {
+      &:before {
         content: '';
         width: 1px;
         height: 60%;
@@ -137,7 +136,7 @@ export default {
         padding: 0 .5rem;
         @include sc(.8rem, #000);
       }
-      .list-item:before {
+      &:before {
         content: '';
         height: 1px;
         width: 85%;
@@ -151,8 +150,6 @@ export default {
           @include svg(.8rem, #000);
           margin-right: .5rem;
         }
-      }
-      .right {
       }
     }
   }

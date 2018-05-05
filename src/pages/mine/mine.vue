@@ -1,12 +1,125 @@
 <template>
   <div class="mine">
+    <x-header>
+      <svg-icon icon-class="cloud" slot="overwrite-left"></svg-icon>
+      <span>我的音乐</span>
+    </x-header>
+    <div class="mine-list">
+      <div class="list-item vux-1px-b">
+        <svg-icon icon-class="music"></svg-icon>
+        <span class="title">本地音乐</span>
+        <span class="count">0</span>
+        <svg-icon icon-class="right"></svg-icon>
+      </div>
+      <div class="list-item vux-1px-b">
+        <svg-icon icon-class="music"></svg-icon>
+        <span class="title">最近播放</span>
+        <span class="count">0</span>
+        <svg-icon icon-class="right"></svg-icon>
+      </div>
+      <div class="list-item vux-1px-b">
+        <svg-icon icon-class="music"></svg-icon>
+        <span class="title">我的电台</span>
+        <span class="count">0</span>
+        <svg-icon icon-class="right"></svg-icon>
+      </div>
+      <div class="list-item vux-1px-b">
+        <svg-icon icon-class="music"></svg-icon>
+        <span class="title">我的收藏</span>
+        <span class="count">0</span>
+        <svg-icon icon-class="right"></svg-icon>
+      </div>
+    </div>
+    <div class="setList">
+      <h3 class="title"><svg-icon icon-class="right"></svg-icon>我创建的歌单<span class="count">(10)</span><svg-icon icon-class="more"></svg-icon></h3>
+      <ul>
+        <li class="list-item">
+          <div class="img-wrapper">
+            <img src="../../assets/recommand.png" width="100%" height="100%">
+          </div>
+          <div class="content vux-1px-b">
+            <h4 class="name">我喜欢的音乐</h4>
+            <span class="number">首</span>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import { XHeader } from 'vux'
 export default {
+  components: {
+    XHeader
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../../style/mixin';
+.mine {
+  @include allcover();
+  @include wh(100%, 100%);
+  .vux-header {
+    background: $juzi;
+    .svg-icon {
+      @include svg(1rem, #fff);
+    }
+  }
+  .mine-list {
+    .list-item {
+      padding: 0 0.3rem;
+      height: 1.7rem;
+      line-height: 1.7rem;
+      @include sc(0.8rem, #b2b2b2);
+      .svg-icon:first-child {
+        @include svg(1rem, $juzi);
+        margin-right: 1rem;
+      }
+      .title {
+        display: inline-block;
+        width: 74%;
+        color: #333;
+      }
+      .svg-icon:last-child {
+        @include svg(0.8rem, #b2b2b2);
+      }
+    }
+  }
+  .setList {
+    position: relative;
+    .title {
+      padding: 0 .3rem;
+      background: #e2e2e2;
+      height: 1rem;
+      line-height: 1rem;
+      @include sc(.5rem, #777);
+      .svg-icon {
+        @include svg(.5rem, #777);
+      }
+    }
+    .list-item {
+      display: flex;
+      .img-wrapper {
+        flex: 0 0 2.7rem;
+        @include wh(2.7rem, 2.7rem);
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        margin-left: .5rem;
+        .name {
+          @include sc(.7rem, #333);
+        }
+        .number {
+          margin-top: .3rem;
+          @include sc(.6rem, #b2b2b2);
+        }
+      }
+    }
+  }
+}
 </style>

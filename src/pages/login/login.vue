@@ -7,13 +7,13 @@
       </h1>
       <div class="userinfo" title="set keyboard=number and is-type=china-mobile">
         <svg-icon icon-class="user"></svg-icon>
-        <x-input name="mobile" placeholder="请输入手机号码" keyboard="number" is-type="china-mobile"></x-input>
+        <x-input name="mobile" placeholder="请输入手机号码" wkeyboard="number" is-type="china-mobile"></x-input>
       </div>
       <div class="userinfo" title="enter事件">
         <svg-icon icon-class="lock"></svg-icon>
         <x-input type="password" placeholder="请输入密码" v-model="enterText" @on-enter="onEnter"></x-input>
       </div>
-      <x-button plain type="primary">登 录</x-button>
+      <x-button plain type="primary" link="/home">登 录</x-button>
     </div>
   </div>
 </template>
@@ -21,6 +21,8 @@
 <script type="text/ecmascript-6">
 import { XHeader, XInput, XButton } from 'vux'
 export default {
+  methods: {
+  },
   components: {
     XHeader,
     XInput,
@@ -36,9 +38,6 @@ export default {
     @include wh(100%, 100%);
     background: url('../../assets/recommand.png') no-repeat;
     background-size: 100% 100%;
-    .vux-header {
-      background: $juzi;
-    }
     .login-container {
       @include ct();
       width: 100%;

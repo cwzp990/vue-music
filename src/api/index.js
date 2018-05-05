@@ -282,7 +282,7 @@ export const api = {
     return getRequest(NewSongResource)
   },
 
-  // 获取推荐MV
+  // 获取推荐DJ
   getDjProgram () {
     return getRequest(DjProgramResource)
   },

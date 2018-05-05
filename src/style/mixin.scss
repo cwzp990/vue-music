@@ -8,11 +8,11 @@ $juzi: #ff7700;
 }
 
 @mixin borderRadius($radius) {
-    -webkit-border-radius: $radius;
-    -moz-border-radius: $radius;
-    -ms-border-radius: $radius;
-    -o-border-radius: $radius;
-    border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
 }
 //定位全屏
 @mixin allcover{
@@ -25,22 +25,22 @@ $juzi: #ff7700;
 @mixin center {
 	position: absolute;
 	top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 //定位上下居中
 @mixin ct {
 	position: absolute;
 	top: 50%;
-    transform: translateY(-50%);
+  transform: translateY(-50%);
 }
 
 //定位上下居中
 @mixin cl {
 	position: absolute;
 	left: 50%;
-    transform: translateX(-50%);
+  transform: translateX(-50%);
 }
 
 //宽高
@@ -75,5 +75,4 @@ $juzi: #ff7700;
 @mixin fj($type: space-between){
 	display: flex;
 	justify-content: $type;
-
 }

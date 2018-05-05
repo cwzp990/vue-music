@@ -9,3 +9,7 @@ export default {
   name: 'App'
 }
 </script>
+
+<style lang="less">
+@import '~vux/src/styles/1px.less';
+</style>
