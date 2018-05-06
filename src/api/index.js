@@ -1,4 +1,4 @@
-import { getRequest } from '../utils/fetch'
+import axios from 'axios'
 
 import {
   LoginCellphoneResource,
@@ -7,6 +7,7 @@ import {
   PlaylistDetailResource,
   MusicUrlResource,
   SearchResource,
+  HotKeys,
   LyricResource,
   CommentResource,
   AlbumResource,
@@ -39,7 +40,7 @@ import {
 export const api = {
   // 获取个人信息，注入cookies
   getLoginCellphoneResource (mobile, password) {
-    return getRequest(LoginCellphoneResource, {
+    return axios.get(LoginCellphoneResource, {
       params: {
         phone: mobile || '',
         password: password || ''
@@ -48,12 +49,12 @@ export const api = {
   },
 
   getBanner () {
-    return getRequest(Banner)
+    return axios.get(Banner)
   },
 
   // 获取用户歌单, uid为用户id，登陆接口处获取
   getUserPlaylistResource (id) {
-    return getRequest(UserPlaylistResource, {
+    return axios.get(UserPlaylistResource, {
       params: {
         uid: id
       }
@@ -62,7 +63,7 @@ export const api = {
 
   // 获取歌单详情, id 为歌单id
   getPlaylistDetailResource (id) {
-    return getRequest(PlaylistDetailResource, {
+    return axios.get(PlaylistDetailResource, {
       params: {
         id: id
       }
@@ -71,7 +72,7 @@ export const api = {
 
   // 获取音乐url， id为单曲id
   getMusicUrlResource (id) {
-    return getRequest(MusicUrlResource, {
+    return axios.get(MusicUrlResource, {
       params: {
         id: id
       }
@@ -87,19 +88,23 @@ export const api = {
    * @returns response  数据返回值
    */
   getSearchResource (keywords, type, limit, offset) {
-    return getRequest(SearchResource, {
+    return axios.get(SearchResource, {
       params: {
         keywords: keywords,
-        type: type,
+        type: type || 1,
         offset: offset || 0,
-        limit: limit
+        limit: limit || 10
       }
     })
   },
 
+  getHotKeys () {
+    return axios.get(HotKeys)
+  },
+
   // 获取歌词， id为单曲id
   getLyricResource (id) {
-    return getRequest(LyricResource, {
+    return axios.get(LyricResource, {
       params: {
         id: id
       }
@@ -108,7 +113,7 @@ export const api = {
 
   // 获取评论， id为单曲id
   getCommentResource (id) {
-    return getRequest(CommentResource, {
+    return axios.get(CommentResource, {
       params: {
         id: id
       }
@@ -117,7 +122,7 @@ export const api = {
 
   // 获取专辑内容， id为专辑id
   getAlbumResource (id) {
-    return getRequest(AlbumResource, {
+    return axios.get(AlbumResource, {
       params: {
         id: id
       }
@@ -126,7 +131,7 @@ export const api = {
 
   // 获取歌手单曲列表， id为歌手id
   getArtistsResource (id) {
-    return getRequest(ArtistsResource, {
+    return axios.get(ArtistsResource, {
       params: {
         id: id
       }
@@ -135,7 +140,7 @@ export const api = {
 
   // 获取歌手专辑列表， id为歌手id
   getArtistAlbumResource (id, size) {
-    return getRequest(ArtistAlbumResource, {
+    return axios.get(ArtistAlbumResource, {
       params: {
         id: id,
         limit: 30 || size
@@ -145,7 +150,7 @@ export const api = {
 
   // 获取歌手信息， id为歌手id
   getArtistDescResource (id) {
-    return getRequest(ArtistDescResource, {
+    return axios.get(ArtistDescResource, {
       params: {
         id: id
       }
@@ -154,17 +159,17 @@ export const api = {
 
   // 获取每日推荐歌曲
   getRecommendResource () {
-    return getRequest(RecommendResource)
+    return axios.get(RecommendResource)
   },
 
   // 获取每日推荐歌单
   getRecommendSongsResource () {
-    return getRequest(RecommendSongsResource)
+    return axios.get(RecommendSongsResource)
   },
 
   // 获取私人FM， id为歌曲id
   getPersonalFmResource () {
-    return getRequest(PersonalFmResource)
+    return axios.get(PersonalFmResource)
   },
 
   /**
@@ -172,7 +177,7 @@ export const api = {
    * @param type 0为安卓签到，1为web/pc签到， 默认为安卓
    */
   getDailySigninResource (type) {
-    return getRequest(DailySigninResource, {
+    return axios.get(DailySigninResource, {
       params: {
         type: type
       }
@@ -181,7 +186,7 @@ export const api = {
 
   // 添加喜欢歌曲， id为单曲id
   getLikeMusicResource (id) {
-    return getRequest(LikeMusicResource, {
+    return axios.get(LikeMusicResource, {
       params: {
         id: id
       }
@@ -190,7 +195,7 @@ export const api = {
 
   // 将单曲从私人FM中移除至垃圾桶， id为单曲id
   getFmTrashResource (id) {
-    return getRequest(FmTrashResource, {
+    return axios.get(FmTrashResource, {
       params: {
         id: id
       }
@@ -205,7 +210,7 @@ export const api = {
    * @returns 返回歌单列表
    */
   getTopPlaylistResource (order, limit, offset) {
-    return getRequest(TopPlaylistResource, {
+    return axios.get(TopPlaylistResource, {
       params: {
         order: order || 'hot',
         limit: limit || 50,
@@ -221,7 +226,7 @@ export const api = {
    * @returns 返回新碟列表
    */
   getNewAlbumResource (limit, offset) {
-    return getRequest(NewAlbumResource, {
+    return axios.get(NewAlbumResource, {
       params: {
         limit: limit || 50,
         offset: offset || 0
@@ -236,9 +241,9 @@ export const api = {
    * @returns 返回热门歌手列表
    */
   getTopArtistsResource (limit, offset) {
-    return getRequest(TopArtistsResource, {
+    return axios.get(TopArtistsResource, {
       params: {
-        limit: limit || 50,
+        limit: limit || 100,
         offset: offset || 0
       }
     })
@@ -255,7 +260,7 @@ export const api = {
    * 21.Beatport全球电子舞曲榜
    */
   getTopListResource (idx) {
-    return getRequest(TopListResource, {
+    return axios.get(TopListResource, {
       params: {
         idx: idx
       }
@@ -264,31 +269,31 @@ export const api = {
 
   // 获取推荐歌单
   getPersonalized () {
-    return getRequest(PersonalizedResource)
+    return axios.get(PersonalizedResource)
   },
 
   // 获取独家放送
   getPrivatecontent () {
-    return getRequest(PrivatecontentResource)
+    return axios.get(PrivatecontentResource)
   },
 
   // 获取推荐MV
   getPersonalizedMv () {
-    return getRequest(PersonalizedMvResource)
+    return axios.get(PersonalizedMvResource)
   },
 
   // 获取最新音乐
   getNewSong () {
-    return getRequest(NewSongResource)
+    return axios.get(NewSongResource)
   },
 
   // 获取推荐DJ
   getDjProgram () {
-    return getRequest(DjProgramResource)
+    return axios.get(DjProgramResource)
   },
   // 获取mv数据
   getMvResource (id) {
-    return getRequest(MvResource, {
+    return axios.get(MvResource, {
       params: {
         mvid: id
       }
@@ -296,7 +301,7 @@ export const api = {
   },
   // 获取mv数据
   getSimiMvResource (id) {
-    return getRequest(SimiMvResource, {
+    return axios.get(SimiMvResource, {
       params: {
         mvid: id
       }
@@ -304,7 +309,7 @@ export const api = {
   },
   // 获取mv数据
   getMvCommentResource (id) {
-    return getRequest(MvCommentResource, {
+    return axios.get(MvCommentResource, {
       params: {
         id: id
       }
@@ -312,7 +317,7 @@ export const api = {
   },
   // 获取歌单评论
   getPlaylistCommentResource (id) {
-    return getRequest(PlaylistCommentResource, {
+    return axios.get(PlaylistCommentResource, {
       params: {
         id: id
       }
@@ -320,7 +325,7 @@ export const api = {
   },
   // 获取专辑评论
   getAlbumCommentResource (id) {
-    return getRequest(AlbumCommentResource, {
+    return axios.get(AlbumCommentResource, {
       params: {
         id: id
       }
@@ -328,7 +333,7 @@ export const api = {
   },
   // 获取歌手MV
   getArtistMvResource (id) {
-    return getRequest(ArtistMvResource, {
+    return axios.get(ArtistMvResource, {
       params: {
         id: id
       }

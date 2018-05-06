@@ -113,18 +113,6 @@ export default {
         line-height: 1rem;
         @include sc(.7rem, #777);
       }
-      &:before {
-        content: '';
-        width: 1px;
-        height: 60%;
-        background-color: #ccc;
-        position: absolute;
-        right: 0;
-        top: 20%;
-      }
-      .msg-item:last-child:before {
-        height: 0;
-      }
     }
     .list {
       .list-item {
@@ -135,15 +123,6 @@ export default {
         height: 2rem;
         padding: 0 .5rem;
         @include sc(.8rem, #000);
-      }
-      &:before {
-        content: '';
-        height: 1px;
-        width: 85%;
-        background-color: #ccc;
-        position: absolute;
-        bottom: 0;
-        left: 10%;
       }
       .left {
         .svg-icon {

@@ -7,6 +7,7 @@ const apiMusic = {
   playlistDetail: '/playlist/detail', // 获取歌单详情
   musicUrl: '/music/url', // 获取音乐url
   search: '/search', // 搜素音乐
+  hotKeys: '/search/hot', // 热搜
   lyric: '/lyric', // 获取歌词
   comment: '/comment', // 获取评论
   album: '/album', //  获取专辑内容
@@ -42,6 +43,7 @@ export const UserPlaylistResource = API_ROOT.concat(apiMusic.userPlaylist)
 export const PlaylistDetailResource = API_ROOT.concat(apiMusic.playlistDetail)
 export const MusicUrlResource = API_ROOT.concat(apiMusic.musicUrl)
 export const SearchResource = API_ROOT.concat(apiMusic.search)
+export const HotKeys = API_ROOT.concat(apiMusic.hotKeys)
 export const LyricResource = API_ROOT.concat(apiMusic.lyric)
 export const CommentResource = API_ROOT.concat(apiMusic.comment)
 export const AlbumResource = API_ROOT.concat(apiMusic.album)

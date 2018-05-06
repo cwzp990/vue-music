@@ -10,7 +10,15 @@ const homeRadio = () => import('pages/home/children/radio')
 const account = () => import('pages/account/account')
 const mine = () => import('pages/mine/mine')
 const social = () => import('pages/social/social')
+const search = () => import('components/search/search')
+const singer = () => import('components/singer/singer')
+const singerDetails = () => import('components/singer/children/singer-details')
+const singerHot = () => import('components/singer/children/children/singer-hot')
+const singerAlbum = () => import('components/singer/children/children/singer-album')
+const singerVideo = () => import('components/singer/children/children/singer-video')
+const singerInfo = () => import('components/singer/children/children/singer-info')
 const songList = () => import('components/song-list/song-list')
+const songListDetails = () => import('components/song-list/children/songlist-details')
 
 Vue.use(Router)
 
@@ -35,9 +43,32 @@ export default new Router({
         },
         {path: '/account', component: account},
         {path: '/mine', component: mine},
-        {path: '/social', component: social}
+        {path: '/social', component: social},
+        {
+          path: '/singer',
+          component: singer,
+          children: [
+            {
+              path: '/singer/:id/details',
+              component: singerDetails,
+              children: [
+                {path: '/singer/:id/details/hot', component: singerHot},
+                {path: '/singer/:id/details/album', component: singerAlbum},
+                {path: '/singer/:id/details/video', component: singerVideo},
+                {path: '/singer/:id/details/info', component: singerInfo}
+              ]
+            }
+          ]
+        }
       ]
     },
-    {path: '/songList/:id', component: songList}
+    {path: '/search', component: search},
+    {
+      path: '/songList/:id',
+      component: songList,
+      children: [
+        {path: '/songList/:id/details', components: songListDetails}
+      ]
+    }
   ]
 })

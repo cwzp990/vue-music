@@ -2,8 +2,11 @@
   <div class="home">
     <div class="header">
       <!-- 头部搜索框 -->
-      <search @result-click="resultClick" @on-change="getResult" :results="results" v-model="value" position="absolute" auto-scroll-to-top @on-focus="onFocus" @on-cancel="onCancel" @on-submit="onSubmit" ref="search">
-      </search>
+      <div class="searchbox-wrapper">
+        <input placeholder="搜一搜" @focus="gotoAddress('/search')">
+        <svg-icon icon-class="search"></svg-icon>
+      </div>
+      <svg-icon icon-class="playing"></svg-icon>
     </div>
     <!-- 头部tab导航 -->
     <div class="tab">
@@ -20,7 +23,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { Search, Group, Cell, Tab, TabItem } from 'vux'
+import { Tab, TabItem } from 'vux'
 export default {
   data () {
     return {
@@ -34,9 +37,6 @@ export default {
     }
   },
   components: {
-    Search,
-    Group,
-    Cell,
     Tab,
     TabItem
   }
@@ -50,10 +50,31 @@ export default {
   bottom: 1.95rem;
   @include wh(100%, 100rem);
   .header {
+    position: relative;
     @include wh(100%, 1.95rem);
-    .weui-cells,
-    .vux-search_show {
-      height: 100% !important;
+    background: $juzi;
+    .searchbox-wrapper {
+      position: relative;
+      @include wh(75%, 70%);
+      @include center();
+      input {
+        @include wh(100%, 100%);
+        border-radius: 20px;
+        padding: 0 2rem;
+        box-sizing: border-box;
+        @include sc(.7rem, #b2b2b2);
+      }
+      .svg-icon {
+        position: absolute;
+        top: .8rem;
+        left: .8rem;
+        @include svg(1rem, #b2b2b2);
+      }
+    }
+    .svg-icon {
+      @include ct();
+      right: .5rem;
+      @include svg(1rem, #fff);
     }
   }
 }

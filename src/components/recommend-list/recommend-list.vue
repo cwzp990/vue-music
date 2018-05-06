@@ -23,6 +23,7 @@
 
 <script>
 import { Flexbox, FlexboxItem } from 'vux'
+import { mapMutations } from 'vuex'
 export default {
   props: {
     /*  传参说明：
@@ -40,8 +41,8 @@ export default {
       default: () => []
     },
     number: {
-      type: Number,
-      default: 0
+      type: String,
+      default: ''
     },
     music: {
       type: Boolean,
@@ -56,7 +57,11 @@ export default {
       this.$router.push({
         path: `/songList/${item.id}`
       })
-    }
+      this.setDisc(item)
+    },
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
   },
   components: {
     Flexbox,
