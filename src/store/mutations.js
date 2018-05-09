@@ -1,6 +1,12 @@
 import * as types from './mutation-types'
 
 const matutaions = {
+  [types.SET_USER_INFO] (state, user) {
+    state.userinfo = user
+  },
+  [types.SET_TAG] (state, tag) {
+    state.tag = tag
+  },
   [types.SET_SINGER] (state, singer) {
     state.singer = singer
   },

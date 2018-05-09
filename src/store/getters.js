@@ -1,3 +1,7 @@
+export const userinfo = state => state.userinfo
+
+export const tag = state => state.tag
+
 export const singer = state => state.singer
 
 export const playing = state => state.playing

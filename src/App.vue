@@ -1,12 +1,19 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    <player></player>
   </div>
 </template>
 
 <script>
+import player from 'components/player/player'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    player
+  }
 }
 </script>
 

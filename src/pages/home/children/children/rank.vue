@@ -1,0 +1,122 @@
+<!-- 排行榜 -->
+<template>
+  <div class="rank">
+    <x-header :left-options="{backText: ''}">
+      排行榜
+      <svg-icon icon-class="playing" slot="right"></svg-icon>
+    </x-header>
+    <h3 class="title vux-1px-l">
+      云音乐官方榜
+    </h3>
+    <ul>
+      <li v-for="(item, index) in officialList" :key="index" class="list-item">
+        <div class="img-wrapper">
+          <img :src="item.data.playlist.coverImgUrl" width="100%" height="100%">
+          <span class="update">每周四更新</span>
+        </div>
+        <ul class="song-lists">
+          <li v-for="(song, index) in item.data.playlist.tracks" :key="song.id" v-if="index < 3" class="song-item">
+            {{index + 1}}. {{song.name}} - <p class="singer"><span v-for="singer in song.ar" :key="singer.id">{{singer.name}}</span></p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <h3 class="title">全球榜</h3>
+  </div>
+</template>
+
+<script>
+import { api } from 'api/index'
+import axios from 'axios'
+import { XHeader } from 'vux'
+export default {
+  data () {
+    return {
+      officialList: {}
+    }
+  },
+  created () {
+    this.getData()
+    console.log(this.officialList)
+  },
+  computed: {
+  },
+  methods: {
+    // axios同时发送多个请求
+    getData () {
+      axios
+        .all([
+          api.getTopListResource(3),
+          api.getTopListResource(0),
+          api.getTopListResource(2),
+          api.getTopListResource(1)
+        ])
+        .then(
+          axios.spread((res1, res2, res3, res4) => {
+            this.officialList.surge = res1
+            this.officialList.new = res2
+            this.officialList.original = res3
+            this.officialList.hot = res4
+          })
+        )
+    }
+  },
+  components: {
+    XHeader
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+@import '../../../../style/mixin';
+.rank {
+  position: fixed;
+  top: 0;
+  bottom: 1.95rem;
+  @include wh(100%, 100%);
+  background: #fff;
+  z-index: 100;
+  .vux-header {
+    .vux-header-right {
+      .svg-icon {
+        @include svg(0.9rem, #fff);
+      }
+    }
+  }
+  .title {
+    padding-left: .5rem;
+    @include sc(.7rem, #000);
+    line-height: 2rem;
+    border-color: $juzi;
+  }
+  .list-item {
+    display: flex;
+    margin-bottom: .3rem;
+    .img-wrapper {
+      flex: 0 0 5rem;
+      position: relative;
+      @include wh(5rem, 5rem);
+      margin-right: .3rem;
+      .update {
+        position: absolute;
+        left: .3rem;
+        bottom: .3rem;
+        @include sc(.5rem, #fff);
+      }
+    }
+    .song-lists {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      .song-item {
+        @include sc(.7rem, #777);
+        margin-bottom: .5rem;
+        .singer {
+          display: inline;
+        }
+      }
+    }
+  }
+}
+</style>

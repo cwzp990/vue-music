@@ -2,6 +2,7 @@
   <div class="home">
     <div class="header">
       <!-- 头部搜索框 -->
+      <svg-icon icon-class="micro" style="left: .5rem;"></svg-icon>
       <div class="searchbox-wrapper">
         <input placeholder="搜一搜" @focus="gotoAddress('/search')">
         <svg-icon icon-class="search"></svg-icon>
@@ -46,9 +47,10 @@ export default {
 <style lang="scss">
 @import '../../style/mixin';
 .home {
-  @include allcover();
+  position: fixed;
+  top: 0;
   bottom: 1.95rem;
-  @include wh(100%, 100rem);
+  @include wh(100%, 100%);
   .header {
     position: relative;
     @include wh(100%, 1.95rem);

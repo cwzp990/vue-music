@@ -1,7 +1,7 @@
 <!-- 主页推荐列表抽离 -->
 <template>
   <div class="recommendList">
-    <h3>{{title}}<svg-icon icon-class="right"></svg-icon></h3>
+    <h3 v-show="title">{{title}}<svg-icon icon-class="right" v-show="title"></svg-icon></h3>
     <flexbox :gutter="0" wrap="wrap">
       <flexbox-item
       class="list-item"
@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     selectItem (item) {
-      console.log(item)
       this.$router.push({
         path: `/songList/${item.id}`
       })

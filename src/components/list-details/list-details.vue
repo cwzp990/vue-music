@@ -5,7 +5,7 @@
       <div class="left">
         <svg-icon icon-class="play"></svg-icon>
         播放全部
-        <span class="number">(共{{data.trackCount}}首)</span>
+        <span class="number">(共{{count}}首)</span>
       </div>
       <div class="right">
         <svg-icon icon-class="list"></svg-icon>
@@ -13,7 +13,7 @@
       </div>
     </h3>
     <ul>
-      <li v-for="(item, index) in data.tracks" :key="item.id" class="list-item">
+      <li v-for="(item, index) in data" :key="item.id" class="list-item" @click="selectItem(item, index)">
         <div class="left">
           <span class="index">{{index + 1}}</span>
           <div class="title">
@@ -34,8 +34,19 @@
 export default {
   props: {
     data: {
-      type: Object,
-      default: () => {}
+      type: Array,
+      default: () => []
+    },
+    count: {
+      type: Number,
+      default: null
+    }
+  },
+  created () {
+  },
+  methods: {
+    selectItem (item, index) {
+      this.$emit('select', item, index)
     }
   }
 }

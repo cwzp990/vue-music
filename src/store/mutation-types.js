@@ -1,3 +1,7 @@
+export const SET_USER_INFO = 'SET_USER_INFO'
+
+export const SET_TAG = 'SET_TAG'
+
 export const SET_SINGER = 'SET_SINGER'
 
 export const SET_PLAYING_STATE = 'SET_PLAYING_STATE'

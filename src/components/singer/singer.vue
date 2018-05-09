@@ -6,13 +6,14 @@
       <svg-icon icon-class="playing" slot="right"></svg-icon>
     </x-header>
     <ul>
-      <li v-for="item in singerList" :key="item.id" class="list-item vux-1px-b" @click.native="selectItem(item)">
+      <li v-for="item in singerList" :key="item.id" class="list-item vux-1px-b" @click="selectItem(item)">
         <div class="img-wrapper">
           <img :src="item.picUrl" width="100%" height="100%">
         </div>
         {{item.name}}
       </li>
     </ul>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -34,12 +35,11 @@ export default {
       api.getTopArtistsResource().then(res => {
         if (res.status === 200) {
           this.singerList = res.data.artists
-          console.log(this.singerList)
         }
       })
     },
     selectItem (item) {
-      this.$reouter.push({
+      this.$router.push({
         path: `/singer/${item.id}/details`
       })
       this.setSinger(item)

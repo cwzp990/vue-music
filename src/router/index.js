@@ -5,6 +5,9 @@ const login = () => import('pages/login/login')
 const layout = () => import('pages/layout/layout')
 const home = () => import('pages/home/home')
 const homeMusic = () => import('pages/home/children/music')
+const list = () => import('pages/home/children/children/list')
+const category = () => import('pages/home/children/children/children/category')
+const rank = () => import('pages/home/children/children/rank')
 const homeVideo = () => import('pages/home/children/video')
 const homeRadio = () => import('pages/home/children/radio')
 const account = () => import('pages/account/account')
@@ -24,7 +27,7 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {path: '/', redirect: '/layout'},
+    {path: '/', redirect: '/login'},
     {path: '/login', component: login},
     {
       path: '/layout',
@@ -38,7 +41,15 @@ export default new Router({
             {path: '/home', redirect: '/home/music'},
             {path: '/home/music', component: homeMusic},
             {path: '/home/video', component: homeVideo},
-            {path: '/home/radio', component: homeRadio}
+            {path: '/home/radio', component: homeRadio},
+            {
+              path: '/home/list',
+              component: list,
+              children: [
+                {path: '/home/list/category', component: category}
+              ]
+            },
+            {path: '/home/rank', component: rank}
           ]
         },
         {path: '/account', component: account},
@@ -52,6 +63,7 @@ export default new Router({
               path: '/singer/:id/details',
               component: singerDetails,
               children: [
+                {path: '/', redirect: '/singer/:id/details/hot'},
                 {path: '/singer/:id/details/hot', component: singerHot},
                 {path: '/singer/:id/details/album', component: singerAlbum},
                 {path: '/singer/:id/details/video', component: singerVideo},

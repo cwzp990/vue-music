@@ -2,6 +2,7 @@
   <div class="mine">
     <x-header>
       <svg-icon icon-class="cloud" slot="overwrite-left"></svg-icon>
+      <svg-icon icon-class="playing" slot="right"></svg-icon>
       <span>我的音乐</span>
     </x-header>
     <div class="mine-list">

@@ -7,9 +7,9 @@
         <input placeholder="搜一搜" v-model="value">
         <svg-icon icon-class="search"></svg-icon>
       </div>
-      <div class="cancel">取消</div>
+      <div class="cancel" @click="gotoAddress('/home/music')">取消</div>
     </div>
-    <p class="singer vux-1px-b" v-show="!value.length" @click.native="gotoAddress('/singer')">
+    <p class="singer vux-1px-b" v-show="!value.length" @click="gotoAddress('/singer')">
       <svg-icon icon-class="user"></svg-icon>
       歌手分类
       <svg-icon icon-class="right"></svg-icon>
@@ -23,7 +23,7 @@
     <div class="result" v-show="value.length">
       <p class="box-value vux-1px-b">搜索 "{{value}}"</p>
       <ul>
-        <li v-for="(item, index) in results" :key="index" class="result-item vux-1px-b" @click.native="selectResult(item)">
+        <li v-for="(item, index) in results" :key="index" class="result-item vux-1px-b" @click="selectResult(item)">
           <svg-icon icon-class="search"></svg-icon>
           {{item.name}}
         </li>
@@ -61,14 +61,14 @@ export default {
     }
   },
   created () {
-    this.getData()
+    // this.getData()
   },
   methods: {
-    getData () {
-      api.getHotKeys().then(res => {
-        console.log(res)
-      })
-    },
+    // getData () {
+    //   api.getHotKeys().then(res => {
+    //     console.log(res)
+    //   })
+    // },
     getSearchResults (key) {
       api.getSearchResource(key).then(res => {
         if (res.status === 200) {

@@ -1,60 +1,63 @@
 <!-- 首页tab music栏 -->
 <template>
-  <div class="home-music">
-    <!-- 轮播图 -->
-    <div class="swiper">
-      <swiper loop auto>
-        <swiper-item class="swiper-demo-img" v-for="item in slider" :key="item.targetId">
-          <img :src="item.pic" width="100%" height="100%">
-        </swiper-item>
-      </swiper>
-    </div>
-    <!-- 中间功能按钮区域 -->
-    <div class="list-btn">
-      <div class="btn-item">
-        <span class="svg-wrapper">
-          <svg-icon icon-class="radio"></svg-icon>
-        </span>
-        私人FM
+  <scroll :probeType="3">
+    <div class="home-music">
+      <!-- 轮播图 -->
+      <div class="swiper">
+        <swiper loop auto>
+          <swiper-item class="swiper-demo-img" v-for="item in slider" :key="item.targetId">
+            <img :src="item.pic" width="100%" height="100%">
+          </swiper-item>
+        </swiper>
       </div>
-      <div class="btn-item">
-        <span class="svg-wrapper">
-          <svg-icon icon-class="date"></svg-icon>
-        </span>
-        每日推荐
+      <!-- 中间功能按钮区域 -->
+      <div class="list-btn">
+        <div class="btn-item">
+          <span class="svg-wrapper">
+            <svg-icon icon-class="radio"></svg-icon>
+          </span>
+          私人FM
+        </div>
+        <div class="btn-item">
+          <span class="svg-wrapper">
+            <svg-icon icon-class="date"></svg-icon>
+          </span>
+          每日推荐
+        </div>
+        <div class="btn-item" @click="gotoAddress('/home/list')">
+          <span class="svg-wrapper">
+            <svg-icon icon-class="list"></svg-icon>
+          </span>
+          歌单
+        </div>
+        <div class="btn-item" @click="gotoAddress('/home/rank')">
+          <span class="svg-wrapper">
+            <svg-icon icon-class="rank"></svg-icon>
+          </span>
+          排行榜
+        </div>
       </div>
-      <div class="btn-item">
-        <span class="svg-wrapper">
-          <svg-icon icon-class="list"></svg-icon>
-        </span>
-        歌单
+      <!-- 歌单列表 -->
+      <div class="recommend-list">
+        <recommendList title="独家放送" :data="recommend" number="6" :music="true"></recommendList>
       </div>
-      <div class="btn-item">
-        <span class="svg-wrapper">
-          <svg-icon icon-class="rank"></svg-icon>
-        </span>
-        排行榜
+      <div class="exclusive-list">
+        <recommendList title="独家放送" :data="exclusive" number="2"></recommendList>
+      </div>
+      <div class="MV-list">
+        <recommendList title="推荐MV" :data="MV" number="4"></recommendList>
+      </div>
+      <div class="DJ-list">
+        <recommendList title="主播电台" :data="DJ" number="6" :music="true"></recommendList>
       </div>
     </div>
-    <!-- 歌单列表 -->
-    <div class="recommend-list">
-      <recommendList title="独家放送" :data="recommend" number="6" :music="true"></recommendList>
-    </div>
-    <div class="exclusive-list">
-      <recommendList title="独家放送" :data="exclusive" number="2"></recommendList>
-    </div>
-    <div class="MV-list">
-      <recommendList title="推荐MV" :data="MV" number="4"></recommendList>
-    </div>
-    <div class="DJ-list">
-      <recommendList title="主播电台" :data="DJ" number="6" :music="true"></recommendList>
-    </div>
-  </div>
+  </scroll>
 </template>
 
 <script>
 import { Swiper, SwiperItem } from 'vux'
-import recommendList from 'components/recommend-list/recommend-list'
+import RecommendList from 'components/recommend-list/recommend-list'
+import Scroll from 'components/scroll/scroll'
 import { api } from 'api/index'
 export default {
   data () {
@@ -102,12 +105,16 @@ export default {
           this.DJ = res.data.result
         }
       })
+    },
+    gotoAddress (path) {
+      this.$router.push(path)
     }
   },
   components: {
     Swiper,
     SwiperItem,
-    recommendList
+    RecommendList,
+    Scroll
   }
 }
 </script>
@@ -115,6 +122,8 @@ export default {
 <style lang='scss' scoped>
 @import '../../../style/mixin';
 .home-music {
+  @include wh(100%, 100%);
+  overflow: hidden;
   .list-btn {
     display: flex;
     @include wh(100%, 4.4rem);

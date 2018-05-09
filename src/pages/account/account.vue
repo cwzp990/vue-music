@@ -1,13 +1,16 @@
 <template>
   <div class="account">
-    <x-header :left-options="{backText: ''}">账 号</x-header>
+    <x-header :left-options="{backText: ''}">
+      账 号
+      <svg-icon icon-class="playing" slot="right"></svg-icon>
+    </x-header>
     <div class="userinfo">
       <div class="user">
         <div class="avatar-wrapper">
-          <img src="../../assets/recommand.png" width="100%" height="100%">
+          <img :src="userinfo.avatarUrl" width="100%" height="100%">
         </div>
         <div class="text">
-          <p class="name">桔子</p>
+          <p class="name">{{userinfo.nickname}}</p>
           <p class="grade">Lv.7</p>
         </div>
       </div>
@@ -45,7 +48,16 @@
 
 <script type="text/ecmascript-6">
 import { XHeader, XButton } from 'vux'
+import { mapGetters } from 'vuex'
 export default {
+  created () {
+    console.log(this.userinfo)
+  },
+  computed: {
+    ...mapGetters([
+      'userinfo'
+    ])
+  },
   methods: {
   },
   components: {
@@ -60,6 +72,9 @@ export default {
   .account {
     @include allcover();
     @include wh(100%, 100%);
+    .svg-icon {
+      @include svg(1rem, #fff);
+    }
     .userinfo {
       display: flex;
       justify-content: space-between;

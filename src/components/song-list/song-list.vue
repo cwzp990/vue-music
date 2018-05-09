@@ -1,16 +1,10 @@
 <!-- 歌单详情页 -->
 <template>
   <div class="songList">
-    <x-header :left-options="{backText: ''}">
-      歌 单
-      <span slot="right">
-        <svg-icon icon-class="more"></svg-icon>
-        <svg-icon icon-class="playing" style="margin-left: .3rem;"></svg-icon>
-      </span>
-    </x-header>
     <div class="list-up">
       <!-- 歌单信息 -->
-      <div class="info" @click.native="gotoAddress(songList.id)">
+      <v-header title="歌单详情" @back="back"></v-header>
+      <div class="info" @click="gotoAddress(songList.id)">
         <div class="img-wrapper">
           <img :src="songList.coverImgUrl" width="100%" height="100%">
           <div class="playCount">
@@ -22,11 +16,11 @@
         <div class="author">
           <h3 class="title">{{songList.name}}</h3>
           <div class="authorInfo">
-            <div class="avatar-wrapper">
+            <div class="avatar-wrapper" v-if="songList.creator">
               <img :src="songList.creator.avatarUrl" width="100%" height="100%">
               <svg-icon icon-class="star"></svg-icon>
             </div>
-            <div class="name">{{songList.creator.nickname}}</div>
+            <div class="name" v-if="songList.creator">{{songList.creator.nickname}}</div>
             <svg-icon icon-class="right"></svg-icon>
           </div>
         </div>
@@ -53,20 +47,21 @@
         </ul>
       </div>
       <!-- 背景图片 -->
-      <div class="bg-img">
+      <div class="bg-img" v-if="songList.creator">
         <img :src="songList.creator.backgroundUrl" width="100%" height="100%">
       </div>
     </div>
     <div class="list-down">
-      <list-details :data="songList"></list-details>
+      <list-details @select="selectItem" :data="songList.tracks" :count="songList.trackCount"></list-details>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import { XHeader } from 'vux'
+import VHeader from 'components/header/header'
 import ListDetails from 'components/list-details/list-details'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { api } from 'api/index'
 export default {
   data () {
@@ -92,19 +87,30 @@ export default {
   methods: {
     getData () {
       api.getPlaylistDetailResource(this.disc.id).then(res => {
-        console.log(res)
         if (res.status === 200) {
           this.songList = res.data.result
+          console.log('list is', this.songList)
         }
       })
     },
+    selectItem (item, index) {
+      this.selectPlay({
+        list: this.songList.tracks,
+        index: index
+      })
+    },
     gotoAddress (path) {
-      alert(1)
       this.$router.push(`/songList/${path}/details`)
-    }
+    },
+    back () {
+      this.$router.go(-1)
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   },
   components: {
-    XHeader,
+    VHeader,
     ListDetails
   }
 }
@@ -113,15 +119,10 @@ export default {
 <style lang='scss' scoped>
 @import '../../style/mixin';
 .songList {
-  @include allcover();
+  position: fixed;
+  top: 0;
+  bottom: 1.95rem;
   @include wh(100%, 100%);
-  .vux-header {
-    .vux-header-right {
-      .svg-icon {
-        @include svg(0.9rem, #fff);
-      }
-    }
-  }
   .list-up {
     position: relative;
     padding: 0 0.5rem;

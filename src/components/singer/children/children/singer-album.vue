@@ -4,8 +4,26 @@
 </template>
 
 <script>
+import { api } from 'api/index'
 export default {
-
+  data () {
+    return {
+      singerId: this.$route.params.id,
+      albumList: []
+    }
+  },
+  created () {
+    this.getData()
+  },
+  methods: {
+    getData () {
+      api.getArtistAlbumResource(this.singerId).then(res => {
+        if (res.status === 200) {
+          this.albumList = res.data.hotAlbums
+        }
+      })
+    }
+  }
 }
 </script>
 

@@ -5,23 +5,46 @@
       <h1 class="logo">
         <svg-icon icon-class="logo"></svg-icon>
       </h1>
-      <div class="userinfo" title="set keyboard=number and is-type=china-mobile">
+      <div class="userinfo">
         <svg-icon icon-class="user"></svg-icon>
-        <x-input name="mobile" placeholder="请输入手机号码" wkeyboard="number" is-type="china-mobile"></x-input>
+        <x-input name="mobile" placeholder="请输入手机号码" v-model="loginForm.username" wkeyboard="number" is-type="china-mobile"></x-input>
       </div>
-      <div class="userinfo" title="enter事件">
+      <div class="userinfo">
         <svg-icon icon-class="lock"></svg-icon>
-        <x-input type="password" placeholder="请输入密码" v-model="enterText" @on-enter="onEnter"></x-input>
+        <x-input type="password" placeholder="请输入密码" v-model="loginForm.password" @on-enter="login"></x-input>
       </div>
-      <x-button plain type="primary" link="/home">登 录</x-button>
+      <x-button plain type="primary" @click.native="login">登 录</x-button>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { XHeader, XInput, XButton } from 'vux'
+import { api } from 'api/index'
+import { mapMutations } from 'vuex'
 export default {
+  data () {
+    return {
+      loginForm: {
+        username: '18655323262',
+        password: 'cwz100812'
+      }
+    }
+  },
   methods: {
+    login () {
+      api.getLoginCellphoneResource(this.loginForm.username, this.loginForm.password).then(res => {
+        if (res.data.code === 200) {
+          console.log(res)
+          this.$vux.toast.text('登陆成功', 'top')
+          this.setUserInfo(res.data.profile)
+          this.$router.push('/home')
+        }
+      })
+    },
+    ...mapMutations({
+      setUserInfo: 'SET_USER_INFO'
+    })
   },
   components: {
     XHeader,

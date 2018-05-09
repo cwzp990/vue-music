@@ -21,6 +21,7 @@ export default {
     bottom: 0;
     @include wh(100%, 1.95rem);
     background: #000;
+    z-index: 300;
     .guide-item {
       display: flex;
       flex-direction: column;

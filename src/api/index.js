@@ -20,6 +20,7 @@ import {
   DailySigninResource,
   LikeMusicResource,
   FmTrashResource,
+  CategoryPlaylist,
   TopPlaylistResource,
   NewAlbumResource,
   TopArtistsResource,
@@ -143,7 +144,7 @@ export const api = {
     return axios.get(ArtistAlbumResource, {
       params: {
         id: id,
-        limit: 30 || size
+        limit: 50 || size
       }
     })
   },
@@ -202,6 +203,11 @@ export const api = {
     })
   },
 
+  // 歌单分类
+  getCategoryPlayList () {
+    return axios.get(CategoryPlaylist)
+  },
+
   /**
    * @method 获取网友精选歌单
    * @param order new:  最新, hot:  最热
@@ -209,10 +215,11 @@ export const api = {
    * @param offset  偏移量 默认为0
    * @returns 返回歌单列表
    */
-  getTopPlaylistResource (order, limit, offset) {
+  getTopPlaylistResource (tag, order, limit, offset) {
     return axios.get(TopPlaylistResource, {
       params: {
         order: order || 'hot',
+        cat: tag,
         limit: limit || 50,
         offset: offset || 0
       }

@@ -1,8 +1,10 @@
 <!-- 歌手详情也 -->
 <template>
   <div class="singerDetails">
-    <x-header :left-options="{backText: ''}">{{this.singer.name}}<svg-icon icon-class="playing" slot="right"></svg-icon></x-header>
-    <div class="img-wrapper"></div>
+    <v-header :title="singer.name" @back="back"></v-header>
+    <div class="bg-img">
+      <img :src="singer.picUrl" width="100%" height="100%">
+    </div>
     <div class="tab">
       <tab>
         <tab-item selected @on-item-click="gotoAddress(`/singer/${singer.id}/details/hot`)">音乐</tab-item>
@@ -18,19 +20,31 @@
 </template>
 
 <script>
-import { XHeader } from 'vux'
+import VHeader from 'components/header/header'
+import { Tab, TabItem } from 'vux'
 import { mapGetters } from 'vuex'
 export default {
+  created () {
+    console.log('singer is', this.singer)
+  },
   computed: {
     ...mapGetters(['singer'])
   },
   methods: {
+    back () {
+      this.$router.go(-1)
+    },
     gotoAddress (path) {
-      this.$router.push(path)
+      this.$router.push({
+        path: path,
+        query: {id: this.singer.id}
+      })
     }
   },
   components: {
-    XHeader
+    VHeader,
+    Tab,
+    TabItem
   }
 }
 </script>
@@ -38,13 +52,24 @@ export default {
 <style lang='scss' scoped>
 @import '../../../style/mixin';
 .singerDetails {
-  @include allcover();
+  position: fixed;
+  top: 0;
   bottom: 1.95rem;
   @include wh(100%, 100%);
+  background: #fff;
+  z-index: 100;
   .vux-header {
     .svg-icon {
       @include svg(1rem, #fff);
     }
+  }
+  .bg-img {
+    @include allcover;
+    z-index: -1;
+    @include wh(100%, 40%);
+  }
+  .tab {
+    margin-top: 60%;
   }
 }
 </style>
