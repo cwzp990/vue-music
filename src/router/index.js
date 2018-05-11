@@ -5,6 +5,7 @@ const login = () => import('pages/login/login')
 const layout = () => import('pages/layout/layout')
 const home = () => import('pages/home/home')
 const homeMusic = () => import('pages/home/children/music')
+const daily = () => import('pages/home/children/children/daily')
 const list = () => import('pages/home/children/children/list')
 const category = () => import('pages/home/children/children/children/category')
 const rank = () => import('pages/home/children/children/rank')
@@ -42,6 +43,7 @@ export default new Router({
             {path: '/home/music', component: homeMusic},
             {path: '/home/video', component: homeVideo},
             {path: '/home/radio', component: homeRadio},
+            {path: '/home/daily', component: daily},
             {
               path: '/home/list',
               component: list,
@@ -79,7 +81,7 @@ export default new Router({
       path: '/songList/:id',
       component: songList,
       children: [
-        {path: '/songList/:id/details', components: songListDetails}
+        {path: '/songList/:id/details', component: songListDetails}
       ]
     }
   ]

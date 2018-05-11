@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import {
   LoginCellphoneResource,
+  UserDetails,
   Banner,
   UserPlaylistResource,
   PlaylistDetailResource,
@@ -45,6 +46,14 @@ export const api = {
       params: {
         phone: mobile || '',
         password: password || ''
+      }
+    })
+  },
+
+  getUserDetails (id) {
+    return axios.get(UserDetails, {
+      params: {
+        uid: id
       }
     })
   },

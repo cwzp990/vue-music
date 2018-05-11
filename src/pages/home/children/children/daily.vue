@@ -1,9 +1,10 @@
-<!-- 筛选歌单 -->
+<!-- 每日推荐 -->
 <template>
   <transition name="fade">
-    <div class="category">
+    <div class="list">
       <x-header :left-options="{backText: ''}">
-        筛选歌单
+        每日推荐
+        <svg-icon icon-class="playing" slot="right"></svg-icon>
       </x-header>
     </div>
   </transition>
@@ -11,23 +12,22 @@
 
 <script>
 import { XHeader } from 'vux'
-import { mapMutations } from 'vuex'
 import { api } from 'api/index'
 export default {
+  data () {
+    return {
+      songList: []
+    }
+  },
   created () {
     this.getData()
   },
   methods: {
     getData () {
-      api.getCategoryPlayList().then(res => {
-        if (res.status === 200) {
-          console.log(res)
-        }
+      api.getRecommendSongsResource().then(res => {
+        console.log(res)
       })
-    },
-    ...mapMutations({
-      setTag: 'SET_TAG'
-    })
+    }
   },
   components: {
     XHeader
@@ -36,14 +36,14 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-@import '../../../../../style/mixin';
-.category {
+@import '../../../../style/mixin';
+.list {
   position: fixed;
   top: 0;
   bottom: 1.95rem;
   @include wh(100%, 100%);
   background: #fff;
-  z-index: 300;
+  z-index: 100;
   .vux-header {
     .vux-header-right {
       .svg-icon {
@@ -52,10 +52,11 @@ export default {
     }
   }
 }
+
 .fade-enter-active, .fade-leave-active {
   transition: all 0.3s ease
 }
 .fade-enter, .fade-leave-to {
-  transform: translate3d(0, 100%, 0)
+  transform: translate3d(100%, 0, 0)
 }
 </style>

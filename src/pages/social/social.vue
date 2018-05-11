@@ -8,6 +8,9 @@
         <button-tab-item>附近</button-tab-item>
       </button-tab>
     </x-header>
+    <div class="content">
+      正在开发中
+    </div>
   </div>
 </template>
 
@@ -42,6 +45,10 @@ export default {
         background: $juzi;
       }
     }
+  }
+  .content {
+    margin-top: 1rem;
+    @include sc(.7rem, #000);
   }
 }
 </style>

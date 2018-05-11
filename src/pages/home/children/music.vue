@@ -18,7 +18,7 @@
           </span>
           私人FM
         </div>
-        <div class="btn-item">
+        <div class="btn-item" @click="gotoAddress('/home/daily')">
           <span class="svg-wrapper">
             <svg-icon icon-class="date"></svg-icon>
           </span>

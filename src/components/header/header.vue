@@ -8,11 +8,14 @@
         <span v-for="singer in subhead" :key="singer.id">{{singer.name}} </span>
       </p>
     </h3>
-    <svg-icon icon-class="playing" v-show="!isPlayer" style="right: 0;"></svg-icon>
+    <div class="svg-wrapper" @click="showPlayer">
+      <svg-icon icon-class="playing" v-show="!isPlayer" style="right: 0;"></svg-icon>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   props: {
     title: {
@@ -28,10 +31,22 @@ export default {
       defaualt: false
     }
   },
+  computed: {
+    ...mapGetters(['fullScreen', 'playlist', 'playing'])
+  },
   methods: {
     back () {
       this.$emit('back')
-    }
+    },
+    showPlayer () {
+      if (!this.playlist.length) {
+        return
+      }
+      this.setFullScreen(true)
+    },
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN'
+    })
   }
 }
 </script>

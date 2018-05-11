@@ -6,12 +6,12 @@
     </x-header>
     <div class="userinfo">
       <div class="user">
-        <div class="avatar-wrapper">
-          <img :src="userinfo.avatarUrl" width="100%" height="100%">
+        <div class="avatar-wrapper" v-if="userinfo.profile">
+          <img :src="userinfo.profile.avatarUrl" width="100%" height="100%">
         </div>
         <div class="text">
-          <p class="name">{{userinfo.nickname}}</p>
-          <p class="grade">Lv.7</p>
+          <p class="name" v-if="userinfo.profile">{{userinfo.profile.nickname}}</p>
+          <p class="grade">Lv.{{userinfo.level}}</p>
         </div>
       </div>
       <div class="sign-in">
@@ -19,9 +19,9 @@
       </div>
     </div>
     <div class="message">
-      <div class="msg-item">动态 <span class="num">1</span></div>
-      <div class="msg-item">关注 <span class="num">1</span></div>
-      <div class="msg-item">粉丝 <span class="num">1</span></div>
+      <div class="msg-item">动态 <span class="num" v-if="userinfo.profile">{{userinfo.profile.eventCount}}</span></div>
+      <div class="msg-item">关注 <span class="num" v-if="userinfo.profile">{{userinfo.profile.follows}}</span></div>
+      <div class="msg-item">粉丝 <span class="num" v-if="userinfo.profile">{{userinfo.profile.followeds}}</span></div>
       <div class="msg-item"><span><svg-icon icon-class="pencil"></svg-icon></span>我的资料</div>
     </div>
     <div class="list">
@@ -49,16 +49,29 @@
 <script type="text/ecmascript-6">
 import { XHeader, XButton } from 'vux'
 import { mapGetters } from 'vuex'
+import { api } from 'api/index'
 export default {
+  data () {
+    return {
+      userinfo: {}
+    }
+  },
   created () {
-    console.log(this.userinfo)
+    this.getData()
   },
   computed: {
     ...mapGetters([
-      'userinfo'
+      'userid'
     ])
   },
   methods: {
+    getData () {
+      api.getUserDetails(this.userid).then(res => {
+        if (res.status === 200) {
+          this.userinfo = res.data
+        }
+      })
+    }
   },
   components: {
     XHeader,
@@ -102,6 +115,7 @@ export default {
           }
           .grade {
             @include sc(.45rem, #777);
+            text-align: center;
             padding: .2rem;
             border-radius: .2rem;
             border: .025rem solid #777;
@@ -127,6 +141,9 @@ export default {
         padding: .3rem 0;
         line-height: 1rem;
         @include sc(.7rem, #777);
+        .svg-icon {
+          @include svg(.7rem, #777);
+        }
       }
     }
     .list {

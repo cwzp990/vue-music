@@ -64,11 +64,11 @@ export default {
     // this.getData()
   },
   methods: {
-    // getData () {
-    //   api.getHotKeys().then(res => {
-    //     console.log(res)
-    //   })
-    // },
+    getData () {
+      api.getHotKeys().then(res => {
+        console.log(res)
+      })
+    },
     getSearchResults (key) {
       api.getSearchResource(key).then(res => {
         if (res.status === 200) {

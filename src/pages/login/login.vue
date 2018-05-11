@@ -20,8 +20,6 @@
 
 <script type="text/ecmascript-6">
 import { XHeader, XInput, XButton } from 'vux'
-import { api } from 'api/index'
-import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -33,18 +31,14 @@ export default {
   },
   methods: {
     login () {
-      api.getLoginCellphoneResource(this.loginForm.username, this.loginForm.password).then(res => {
-        if (res.data.code === 200) {
-          console.log(res)
-          this.$vux.toast.text('登陆成功', 'top')
-          this.setUserInfo(res.data.profile)
-          this.$router.push('/home')
-        }
+      if (this.loginForm.username === '' || this.loginForm.password === '') {
+        this.this.$vux.toast.text('请输入用户名和密码', 'top')
+        return
+      }
+      this.$store.dispatch('login', this.loginForm).then(res => {
+        this.$router.push('/home')
       })
-    },
-    ...mapMutations({
-      setUserInfo: 'SET_USER_INFO'
-    })
+    }
   },
   components: {
     XHeader,

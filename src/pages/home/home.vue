@@ -7,7 +7,9 @@
         <input placeholder="搜一搜" @focus="gotoAddress('/search')">
         <svg-icon icon-class="search"></svg-icon>
       </div>
-      <svg-icon icon-class="playing"></svg-icon>
+      <div class="svg-wrapper" @click="showPlayer">
+        <svg-icon icon-class="playing"></svg-icon>
+      </div>
     </div>
     <!-- 头部tab导航 -->
     <div class="tab">
@@ -24,6 +26,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { mapGetters, mapMutations } from 'vuex'
 import { Tab, TabItem } from 'vux'
 export default {
   data () {
@@ -32,10 +35,22 @@ export default {
       value: ''
     }
   },
+  computed: {
+    ...mapGetters(['fullScreen', 'playlist', 'playing'])
+  },
   methods: {
     gotoAddress (route) {
       this.$router.push(route)
-    }
+    },
+    showPlayer () {
+      if (!this.playlist.length) {
+        return
+      }
+      this.setFullScreen(true)
+    },
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN'
+    })
   },
   components: {
     Tab,

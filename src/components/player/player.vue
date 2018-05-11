@@ -26,7 +26,7 @@
           <ul class="btn">
             <li class="btn-item"><svg-icon icon-class="list_loop"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="pre"></svg-icon></li>
-            <li class="btn-item"><svg-icon icon-class="play"></svg-icon></li>
+            <li class="btn-item" @click="togglePlaying"><svg-icon :icon-class="playIcon"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="next"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="song_list"></svg-icon></li>
           </ul>
@@ -36,30 +36,53 @@
     <div class="bg-img" v-if="currentSong.album">
       <img :src="currentSong.album.blurPicUrl" width="100%" height="100%">
     </div>
+    <audio ref="audio" :src="songUrl"></audio>
   </div>
 </template>
 
 <script>
 import VHeader from 'components/header/header'
 import ProgressBar from 'components/progress-bar/progress-bar'
+import { api } from 'api/index'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
+      songUrl: ''
     }
   },
   created () {
+    this.getSongUrl()
   },
   methods: {
+    getSongUrl () {
+      api.getMusicUrlResource(this.currentSong.id).then(res => {
+        this.songUrl = res.data.data[0].url
+      })
+    },
     back () {
       this.setFullScreen(false)
     },
+    togglePlaying () {
+      this.setPlayingState(!this.playing)
+    },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN'
+      setFullScreen: 'SET_FULL_SCREEN',
+      setPlayingState: 'SET_PLAYING_STATE'
     })
   },
   computed: {
-    ...mapGetters(['fullScreen', 'playlist', 'currentSong'])
+    playIcon () {
+      return this.playing ? 'pause' : 'play'
+    },
+    ...mapGetters(['fullScreen', 'playlist', 'currentSong', 'playing'])
+  },
+  watch: {
+    currentSong () {
+      this.$nextTick(() => {
+        this.$refs.audio.play()
+      })
+    }
   },
   components: {
     VHeader,

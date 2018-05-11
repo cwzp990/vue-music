@@ -13,34 +13,34 @@
         <svg-icon icon-class="right"></svg-icon>
       </div>
       <div class="list-item vux-1px-b">
-        <svg-icon icon-class="music"></svg-icon>
+        <svg-icon icon-class="list"></svg-icon>
         <span class="title">最近播放</span>
         <span class="count">0</span>
         <svg-icon icon-class="right"></svg-icon>
       </div>
       <div class="list-item vux-1px-b">
-        <svg-icon icon-class="music"></svg-icon>
+        <svg-icon icon-class="radio"></svg-icon>
         <span class="title">我的电台</span>
         <span class="count">0</span>
         <svg-icon icon-class="right"></svg-icon>
       </div>
       <div class="list-item vux-1px-b">
-        <svg-icon icon-class="music"></svg-icon>
+        <svg-icon icon-class="fav"></svg-icon>
         <span class="title">我的收藏</span>
         <span class="count">0</span>
         <svg-icon icon-class="right"></svg-icon>
       </div>
     </div>
     <div class="setList">
-      <h3 class="title"><svg-icon icon-class="right"></svg-icon>我创建的歌单<span class="count">(10)</span><svg-icon icon-class="more"></svg-icon></h3>
+      <h3 class="title"><svg-icon icon-class="right"></svg-icon>我的歌单<span class="count">({{userList.length}})</span></h3>
       <ul>
-        <li class="list-item">
+        <li class="list-item" v-for="item in userList" :key="item.id" @click="selectItem(item)">
           <div class="img-wrapper">
-            <img src="../../assets/recommand.png" width="100%" height="100%">
+            <img :src="item.coverImgUrl" width="100%" height="100%">
           </div>
           <div class="content vux-1px-b">
-            <h4 class="name">我喜欢的音乐</h4>
-            <span class="number">首</span>
+            <h4 class="name">{{item.name}}</h4>
+            <span class="brief">{{item.trackCount}}首, by {{item.creator.nickname}}</span>
           </div>
         </li>
       </ul>
@@ -50,7 +50,38 @@
 
 <script type="text/ecmascript-6">
 import { XHeader } from 'vux'
+import { api } from 'api/index'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
+  data () {
+    return {
+      userList: []
+    }
+  },
+  created () {
+    this.getData()
+  },
+  computed: {
+    ...mapGetters(['userid'])
+  },
+  methods: {
+    getData () {
+      api.getUserPlaylistResource(this.userid).then(res => {
+        if (res.status === 200) {
+          this.userList = res.data.playlist
+        }
+      })
+    },
+    selectItem (item) {
+      this.$router.push({
+        path: `/songList/${item.id}`
+      })
+      this.setDisc(item)
+    },
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
+  },
   components: {
     XHeader
   }
@@ -115,7 +146,7 @@ export default {
         .name {
           @include sc(.7rem, #333);
         }
-        .number {
+        .brief {
           margin-top: .3rem;
           @include sc(.6rem, #b2b2b2);
         }

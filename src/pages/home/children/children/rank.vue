@@ -1,34 +1,37 @@
 <!-- 排行榜 -->
 <template>
-  <div class="rank">
-    <x-header :left-options="{backText: ''}">
-      排行榜
-      <svg-icon icon-class="playing" slot="right"></svg-icon>
-    </x-header>
-    <h3 class="title vux-1px-l">
-      云音乐官方榜
-    </h3>
-    <ul>
-      <li v-for="(item, index) in officialList" :key="index" class="list-item">
-        <div class="img-wrapper">
-          <img :src="item.data.playlist.coverImgUrl" width="100%" height="100%">
-          <span class="update">每周四更新</span>
-        </div>
-        <ul class="song-lists">
-          <li v-for="(song, index) in item.data.playlist.tracks" :key="song.id" v-if="index < 3" class="song-item">
-            {{index + 1}}. {{song.name}} - <p class="singer"><span v-for="singer in song.ar" :key="singer.id">{{singer.name}}</span></p>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <h3 class="title">全球榜</h3>
-  </div>
+  <transition name="fade">
+    <div class="rank">
+      <x-header :left-options="{backText: ''}">
+        排行榜
+        <svg-icon icon-class="playing" slot="right"></svg-icon>
+      </x-header>
+      <h3 class="title vux-1px-l">
+        云音乐官方榜
+      </h3>
+      <ul style="overflow: hidden;">
+        <li v-for="(item, index) in officialList" :key="index" class="list-item" @click="selectItem(item)">
+          <div class="img-wrapper">
+            <img :src="item.data.playlist.coverImgUrl" width="100%" height="100%">
+            <span class="update">每周四更新</span>
+          </div>
+          <ul class="song-lists">
+            <li v-for="(song, index) in item.data.playlist.tracks" :key="song.id" v-if="index < 3" class="song-item">
+              {{index + 1}}. {{song.name}} - <p class="singer"><span v-for="singer in song.ar" :key="singer.id">{{singer.name}}</span></p>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <!-- <h3 class="title">全球榜</h3> -->
+    </div>
+  </transition>
 </template>
 
 <script>
 import { api } from 'api/index'
 import axios from 'axios'
 import { XHeader } from 'vux'
+import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
@@ -38,8 +41,6 @@ export default {
   created () {
     this.getData()
     console.log(this.officialList)
-  },
-  computed: {
   },
   methods: {
     // axios同时发送多个请求
@@ -59,7 +60,16 @@ export default {
             this.officialList.hot = res4
           })
         )
-    }
+    },
+    selectItem (item) {
+      this.$router.push({
+        path: `/songList/${item.data.playlist.id}`
+      })
+      this.setDisc(item.data.playlist)
+    },
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
   },
   components: {
     XHeader
@@ -112,11 +122,18 @@ export default {
       .song-item {
         @include sc(.7rem, #777);
         margin-bottom: .5rem;
+        @include nowrap();
         .singer {
           display: inline;
         }
       }
     }
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.3s ease
+}
+.fade-enter, .fade-leave-to {
+  transform: translate3d(100%, 0, 0)
 }
 </style>

@@ -12,7 +12,7 @@
         <div class="svg-wrapper">
           <svg-icon v-show="music" icon-class="earphone"></svg-icon>
           <svg-icon v-show="!music" icon-class="player"></svg-icon>
-          <span v-show="item.playCount">{{item.playCount}}</span>
+          <span v-show="item.playCount">{{item.playCount > 99999 ? (item.playCount / 10000).toFixed(0) + '万': item.playCount}}</span>
         </div>
         <img :src="item.picUrl" width="100%" height="100%">
         <p class="title">{{item.name}}</p>
@@ -48,8 +48,6 @@ export default {
       type: Boolean,
       default: false
     }
-  },
-  mounted () {
   },
   methods: {
     selectItem (item) {

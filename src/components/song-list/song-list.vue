@@ -1,61 +1,63 @@
 <!-- 歌单详情页 -->
 <template>
-  <div class="songList">
-    <div class="list-up">
-      <!-- 歌单信息 -->
-      <v-header title="歌单详情" @back="back"></v-header>
-      <div class="info" @click="gotoAddress(songList.id)">
-        <div class="img-wrapper">
-          <img :src="songList.coverImgUrl" width="100%" height="100%">
-          <div class="playCount">
-            <svg-icon icon-class="earphone"></svg-icon>
-            <span class="number">{{songList.playCount}}</span>
-          </div>
-          <svg-icon icon-class="about"></svg-icon>
-        </div>
-        <div class="author">
-          <h3 class="title">{{songList.name}}</h3>
-          <div class="authorInfo">
-            <div class="avatar-wrapper" v-if="songList.creator">
-              <img :src="songList.creator.avatarUrl" width="100%" height="100%">
-              <svg-icon icon-class="star"></svg-icon>
+  <transition name="fade">
+    <div class="songList">
+      <div class="list-up">
+        <!-- 歌单信息 -->
+        <v-header title="歌单详情" @back="back"></v-header>
+        <div class="info" @click="gotoAddress(songList.id)">
+          <div class="img-wrapper">
+            <img :src="songList.coverImgUrl" width="100%" height="100%">
+            <div class="playCount">
+              <svg-icon icon-class="earphone"></svg-icon>
+              <span class="number">{{songList.playCount > 99999 ? (songList.playCount / 10000).toFixed(0) + '万': songList.playCount}}</span>
             </div>
-            <div class="name" v-if="songList.creator">{{songList.creator.nickname}}</div>
-            <svg-icon icon-class="right"></svg-icon>
+            <svg-icon icon-class="about"></svg-icon>
+          </div>
+          <div class="author">
+            <h3 class="title">{{songList.name}}</h3>
+            <div class="authorInfo">
+              <div class="avatar-wrapper" v-if="songList.creator">
+                <img :src="songList.creator.avatarUrl" width="100%" height="100%">
+                <svg-icon icon-class="star"></svg-icon>
+              </div>
+              <div class="name" v-if="songList.creator">{{songList.creator.nickname}}</div>
+              <svg-icon icon-class="right"></svg-icon>
+            </div>
           </div>
         </div>
+        <!-- 功能按钮 -->
+        <div class="btn">
+          <ul>
+            <li class="item">
+              <svg-icon icon-class="collect"></svg-icon>
+              <span class="text">{{songList.subscribedCount}}</span>
+            </li>
+            <li class="item">
+              <svg-icon icon-class="comment"></svg-icon>
+              <span class="text">{{songList.commentCount}}</span>
+            </li>
+            <li class="item">
+              <svg-icon icon-class="share"></svg-icon>
+              <span class="text">{{songList.shareCount}}</span>
+            </li>
+            <li class="item">
+              <svg-icon icon-class="download"></svg-icon>
+              <span class="text">下载</span>
+            </li>
+          </ul>
+        </div>
+        <!-- 背景图片 -->
+        <div class="bg-img" v-if="songList.creator">
+          <img :src="songList.creator.backgroundUrl" width="100%" height="100%">
+        </div>
       </div>
-      <!-- 功能按钮 -->
-      <div class="btn">
-        <ul>
-          <li class="item">
-            <svg-icon icon-class="collect"></svg-icon>
-            <span class="text">{{songList.subscribedCount}}</span>
-          </li>
-          <li class="item">
-            <svg-icon icon-class="comment"></svg-icon>
-            <span class="text">{{songList.commentCount}}</span>
-          </li>
-          <li class="item">
-            <svg-icon icon-class="share"></svg-icon>
-            <span class="text">{{songList.shareCount}}</span>
-          </li>
-          <li class="item">
-            <svg-icon icon-class="download"></svg-icon>
-            <span class="text">下载</span>
-          </li>
-        </ul>
+      <div class="list-down">
+        <list-details @select="selectItem" :data="songList.tracks" :count="songList.trackCount"></list-details>
       </div>
-      <!-- 背景图片 -->
-      <div class="bg-img" v-if="songList.creator">
-        <img :src="songList.creator.backgroundUrl" width="100%" height="100%">
-      </div>
+      <router-view></router-view>
     </div>
-    <div class="list-down">
-      <list-details @select="selectItem" :data="songList.tracks" :count="songList.trackCount"></list-details>
-    </div>
-    <router-view></router-view>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -69,19 +71,10 @@ export default {
       songList: {}
     }
   },
-  props: {
-    songListId: {
-      type: Number,
-      default: 0
-    }
-  },
   created () {
     this.getData()
   },
   computed: {
-    copywriter () {
-      return this.disc.copywriter
-    },
     ...mapGetters(['disc'])
   },
   methods: {
@@ -89,7 +82,6 @@ export default {
       api.getPlaylistDetailResource(this.disc.id).then(res => {
         if (res.status === 200) {
           this.songList = res.data.result
-          console.log('list is', this.songList)
         }
       })
     },
@@ -100,7 +92,10 @@ export default {
       })
     },
     gotoAddress (path) {
-      this.$router.push(`/songList/${path}/details`)
+      this.$router.push({
+        path: `/songList/${path}/details`,
+        query: {details: this.songList}
+      })
     },
     back () {
       this.$router.go(-1)
@@ -126,6 +121,7 @@ export default {
   .list-up {
     position: relative;
     padding: 0 0.5rem;
+    background: rgba(0, 0, 0, .2);
     .info {
       display: flex;
       justify-content: space-between;
@@ -136,14 +132,15 @@ export default {
         @include wh(5rem, 5rem);
         .playCount {
           position: absolute;
-          top: 0.2rem;
-          right: 2.2rem;
+          top: 0;
+          right: 1.5rem;
           .number {
-            position: absolute;
+            position: relative;
+            top: -.1rem;
+            right: -1.3rem;
             @include sc(0.6rem, #fff);
           }
           .svg-icon {
-            top: 0;
             @include svg(0.6rem, #fff);
           }
         }
@@ -210,5 +207,11 @@ export default {
       @include wh(100%, 100%);
     }
   }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.3s ease
+}
+.fade-enter, .fade-leave-to {
+  transform: translate3d(100%, 0, 0)
 }
 </style>

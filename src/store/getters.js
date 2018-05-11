@@ -1,4 +1,4 @@
-export const userinfo = state => state.userinfo
+export const userid = state => state.userid
 
 export const tag = state => state.tag
 

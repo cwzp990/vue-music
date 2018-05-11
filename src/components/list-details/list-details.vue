@@ -13,12 +13,12 @@
       </div>
     </h3>
     <ul>
-      <li v-for="(item, index) in data" :key="item.id" class="list-item" @click="selectItem(item, index)">
+      <li v-for="(item, index) in data" :key="index" class="list-item" @click="selectItem(item, index)">
         <div class="left">
           <span class="index">{{index + 1}}</span>
           <div class="title">
             <p class="name">{{item.name}}</p>
-            <p class="singer"><span v-for="singer in item.artists" :key="singer.id">{{singer.name}} </span></p>
+            <p class="singer"><span v-for="(singer, index) in item.artists" :key="index">{{singer.name}} </span></p>
           </div>
         </div>
         <div class="right">
@@ -41,8 +41,6 @@ export default {
       type: Number,
       default: null
     }
-  },
-  created () {
   },
   methods: {
     selectItem (item, index) {
