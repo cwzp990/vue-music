@@ -1,7 +1,9 @@
 <template>
   <div class="progress-bar">
     <div class="bar-inner" ref="progressBar" @click="progressClick">
+      <span class="time-l">{{start}}</span>
       <div class="progress" ref="progress"></div>
+      <span class="time-r">{{end}}</span>
       <div class="progress-btn-wrapper"
            @touchstart.prevent="touchStart"
            @touchmove.prevent="touchMove"
@@ -22,6 +24,14 @@ export default {
     percent: {
       type: Number,
       default: 0
+    },
+    start: {
+      type: String,
+      default: ''
+    },
+    end: {
+      type: String,
+      default: ''
     }
   },
   created () {
@@ -84,13 +94,26 @@ export default {
   height: 30px;
   .bar-inner {
     position: relative;
-    height: 4px;
     top: 13px;
-    background: rgba(0,0,0,.3);
+    @include wh(80%, 4px);
+    margin: 0 auto;
+    background: #fff;
     .progress {
       position: absolute;
       height: 100%;
       background: $juzi;
+    }
+    .time-l {
+      position: absolute;
+      top: -.1rem;
+      left: -1.5rem;
+      @include sc(.5rem, #fff);
+    }
+    .time-r {
+      position: absolute;
+      top: -.1rem;
+      right: -1.5rem;
+      @include sc(.5rem, #fff);
     }
     .progress-btn-wrapper {
       position: absolute;

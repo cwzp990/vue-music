@@ -67,8 +67,10 @@ export default {
     text-align: center;
     line-height: 0.8rem;
     @include sc(.7rem, #fff);
+    @include nowrap;
     .subhead {
       @include sc(.5rem, #fff);
+      @include nowrap;
     }
   }
 }

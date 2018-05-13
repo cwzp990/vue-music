@@ -100,7 +100,7 @@ export default {
 .search {
   @include allcover;
   bottom: 1.95rem;
-  @include wh(100%, 100rem);
+  @include wh(100%, 100%);
   .header {
     position: relative;
     @include wh(100%, 1.95rem);

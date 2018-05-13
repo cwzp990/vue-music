@@ -5,7 +5,7 @@
       <v-header :title="currentSong.name" :subhead="currentSong.artists" :isPlayer="true" @back="back"></v-header>
       <div class="middle">
         <div class="cd-wrapper">
-          <div class="cd" v-if="currentSong.album">
+          <div class="cd" :class="CDCls" v-if="currentSong.album">
             <img :src="currentSong.album.blurPicUrl" width="100%" height="100%" class="cd-img">
           </div>
         </div>
@@ -19,15 +19,15 @@
         </div>
       </div>
       <div class="footer">
-        <div class="progress-wrapper">
-          <progress-bar></progress-bar>
+        <div class="progress-wrapper" v-if="currentSong.mMusic">
+          <progress-bar :start="formate(currentTime)" :end="formate(currentSong.mMusic.playTime / 1000)" :percent="percent" @percentChanging="onProgressChange"></progress-bar>
         </div>
         <div>
           <ul class="btn">
             <li class="btn-item"><svg-icon icon-class="list_loop"></svg-icon></li>
-            <li class="btn-item"><svg-icon icon-class="pre"></svg-icon></li>
+            <li class="btn-item" @click="pre"><svg-icon icon-class="pre"></svg-icon></li>
             <li class="btn-item" @click="togglePlaying"><svg-icon :icon-class="playIcon"></svg-icon></li>
-            <li class="btn-item"><svg-icon icon-class="next"></svg-icon></li>
+            <li class="btn-item" @click="next"><svg-icon icon-class="next"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="song_list"></svg-icon></li>
           </ul>
         </div>
@@ -36,7 +36,7 @@
     <div class="bg-img" v-if="currentSong.album">
       <img :src="currentSong.album.blurPicUrl" width="100%" height="100%">
     </div>
-    <audio ref="audio" :src="songUrl"></audio>
+    <audio ref="audio" :src="songUrl" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
   </div>
 </template>
 
@@ -48,7 +48,9 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      songUrl: ''
+      songUrl: '',
+      songReady: false,
+      currentTime: 0
     }
   },
   created () {
@@ -66,21 +68,91 @@ export default {
     togglePlaying () {
       this.setPlayingState(!this.playing)
     },
+    pre () {
+      let index = this.currentIndex - 1
+      if (index === -1) {
+        index = this.playlist.length - 1
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    next () {
+      console.log(this.currentSong.id)
+      let index = this.currentIndex + 1
+      if (index === this.playlist.length) {
+        index = 0
+      }
+      this.setCurrentIndex(index)
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+      this.songReady = false
+    },
+    ready () {
+      this.songReady = true
+    },
+    error () {
+      this.songReady = true
+    },
+    updateTime (e) {
+      this.currentTime = e.target.currentTime
+    },
+    formate (interval) {
+      interval = interval | 0
+      const minute = interval / 60 | 0
+      const second = this._padStart(interval % 60)
+      return `${minute}:${second}`
+    },
+    onProgressChange (percent) {
+      this.$refs.audio.currentTime = this.currentSong.mMusic.playTime / 1000 * percent
+      if (!this.playing) {
+        this.togglePlaying()
+      }
+    },
+    _padStart (num, n = 2) {
+      let len = num.toString().length
+      while (len < 2) {
+        num = '0' + num
+        len++
+      }
+      return num
+    },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',
-      setPlayingState: 'SET_PLAYING_STATE'
+      setPlayingState: 'SET_PLAYING_STATE',
+      setCurrentIndex: 'SET_CURRENT_INDEX'
     })
   },
   computed: {
     playIcon () {
       return this.playing ? 'pause' : 'play'
     },
-    ...mapGetters(['fullScreen', 'playlist', 'currentSong', 'playing'])
+    CDCls () {
+      return this.playing ? 'play' : 'play pause'
+    },
+    disableCls () {
+      return this.songReady ? '' : 'disable'
+    },
+    percent () {
+      return this.currentTime / (this.currentSong.mMusic.playTime / 1000)
+    },
+    ...mapGetters(['fullScreen', 'playlist', 'currentIndex', 'currentSong', 'playing'])
   },
   watch: {
     currentSong () {
-      this.$nextTick(() => {
-        this.$refs.audio.play()
+      let that = this
+      that.$nextTick(() => {
+        that.$refs.audio.play()
+      })
+    },
+    playing (newPlaying) {
+      const audio = this.$refs.audio
+      let that = this
+      that.$nextTick(() => {
+        newPlaying ? audio.play() : audio.pause()
       })
     }
   },
@@ -114,15 +186,18 @@ export default {
         .cd {
           @include wh(100%, 100%);
           border-radius: 50%;
+          &.play {
+            animation: rotate 20s linear infinite;
+          }
+          &.pause {
+            animation-play-state: paused;
+          }
           .cd-img {
             @include allcover;
             @include wh(100%, 100%);
             border-radius: 50%;
             box-sizing: border-box;
             border: 1.5rem solid rgba(0, 0, 0, 0.7);
-          }
-          .play {
-            animation: rotate 20s linear infinite;
           }
         }
       }
@@ -170,6 +245,15 @@ export default {
     @include wh(100%, 100%);
     filter: blur(20px);
     opacity: 0.6;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

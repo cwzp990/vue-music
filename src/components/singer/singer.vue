@@ -5,20 +5,23 @@
       热门歌手
       <svg-icon icon-class="playing" slot="right"></svg-icon>
     </x-header>
-    <ul>
-      <li v-for="item in singerList" :key="item.id" class="list-item vux-1px-b" @click="selectItem(item)">
-        <div class="img-wrapper">
-          <img :src="item.picUrl" width="100%" height="100%">
-        </div>
-        {{item.name}}
-      </li>
-    </ul>
+    <scroll :data="singerList">
+      <ul style="height: 100%;overflow: hidden;">
+        <li v-for="item in singerList" :key="item.id" class="list-item vux-1px-b" @click="selectItem(item)">
+          <div class="img-wrapper">
+            <img :src="item.picUrl" width="100%" height="100%">
+          </div>
+          {{item.name}}
+        </li>
+      </ul>
+    </scroll>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { XHeader } from 'vux'
+import Scroll from 'components/scroll/scroll'
 import { mapMutations } from 'vuex'
 import { api } from 'api/index'
 export default {
@@ -49,7 +52,8 @@ export default {
     })
   },
   components: {
-    XHeader
+    XHeader,
+    Scroll
   }
 }
 </script>
