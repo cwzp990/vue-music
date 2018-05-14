@@ -12,25 +12,32 @@
         多选
       </div>
     </h3>
-    <ul>
-      <li v-for="(item, index) in data" :key="index" class="list-item" @click="selectItem(item, index)">
-        <div class="left">
-          <span class="index">{{index + 1}}</span>
-          <div class="title">
-            <p class="name">{{item.name}}</p>
-            <p class="singer"><span v-for="(singer, index) in item.artists" :key="index">{{singer.name}} </span></p>
-          </div>
-        </div>
-        <div class="right">
-          <svg-icon icon-class="play_box"></svg-icon>
-          <svg-icon icon-class="more"></svg-icon>
-        </div>
-      </li>
-    </ul>
+    <div class="scroll-wrapper">
+      <scroll ref="scroll" class="scroll">
+        <ul>
+          <li v-for="(item, index) in data" :key="index" class="list-item" @click="selectItem(item, index)">
+            <div class="left">
+              <span class="index">{{index + 1}}</span>
+              <div class="title">
+                <p class="name">{{item.name}}</p>
+                <p class="singer">
+                  <span v-for="(singer, index) in item.artists" :key="index">{{singer.name}} </span>
+                </p>
+              </div>
+            </div>
+            <div class="right">
+              <svg-icon icon-class="play_box"></svg-icon>
+              <svg-icon icon-class="more"></svg-icon>
+            </div>
+          </li>
+        </ul>
+      </scroll>
+    </div>
   </div>
 </template>
 
 <script>
+import Scroll from 'components/scroll/scroll'
 export default {
   props: {
     data: {
@@ -46,6 +53,9 @@ export default {
     selectItem (item, index) {
       this.$emit('select', item, index)
     }
+  },
+  components: {
+    Scroll
   }
 }
 </script>
@@ -53,57 +63,68 @@ export default {
 <style lang='scss' scoped>
 @import '../../style/mixin';
 .list {
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
   .title {
     display: flex;
     justify-content: space-between;
     line-height: 1.5rem;
     .left {
-      @include sc(.7rem, #000);
+      @include sc(0.7rem, #000);
       .number {
-        @include sc(.5rem, #b2b2b2);
+        @include sc(0.5rem, #b2b2b2);
       }
     }
     .right {
-      @include sc(.7rem, #000);
+      @include sc(0.7rem, #000);
       .svg-icon {
-        @include svg(.7rem, #b2b2b2);
+        @include svg(0.7rem, #b2b2b2);
       }
     }
   }
-  .list-item {
-    display: flex;
-    justify-content: space-between;
-    height: 2rem;
-    .left {
-      display: flex;
-      align-items: center;
-      max-width: 80%;
-      .index {
-        @include sc(.7rem, #b2b2b2);
-        margin-right: .5rem;
-      }
-      .title {
+  .scroll-wrapper {
+    position: absolute;
+    top: 11rem;
+    bottom: 0;
+    @include wh(93%, 62%);
+    overflow: hidden;
+    .scroll {
+      height: 100%;
+      .list-item {
         display: flex;
-        flex-direction: column;
-        line-height: 1rem;
-        max-width: 11rem;
-        .name {
-          @include sc(.7rem, #000);
-          @include nowrap();
+        justify-content: space-between;
+        height: 2rem;
+        .left {
+          display: flex;
+          align-items: center;
+          max-width: 80%;
+          .index {
+            @include sc(0.7rem, #b2b2b2);
+            margin-right: 0.5rem;
+          }
+          .title {
+            display: flex;
+            flex-direction: column;
+            line-height: 1rem;
+            max-width: 11rem;
+            .name {
+              @include sc(0.7rem, #000);
+              @include nowrap();
+            }
+            .singer {
+              @include sc(0.5rem, #b2b2b2);
+              @include nowrap();
+            }
+          }
         }
-        .singer {
-          @include sc(.5rem, #b2b2b2);
-          @include nowrap();
+        .right {
+          display: flex;
+          align-items: center;
+          .svg-icon {
+            @include svg(0.8rem, #b2b2b2);
+            margin-left: 0.5rem;
+          }
         }
-      }
-    }
-    .right {
-      display: flex;
-      align-items: center;
-      .svg-icon {
-        @include svg(.8rem, #b2b2b2);
-        margin-left: .5rem;
       }
     }
   }

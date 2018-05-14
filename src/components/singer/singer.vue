@@ -5,16 +5,18 @@
       热门歌手
       <svg-icon icon-class="playing" slot="right"></svg-icon>
     </x-header>
-    <scroll :data="singerList">
-      <ul style="height: 100%;overflow: hidden;">
-        <li v-for="item in singerList" :key="item.id" class="list-item vux-1px-b" @click="selectItem(item)">
-          <div class="img-wrapper">
-            <img :src="item.picUrl" width="100%" height="100%">
-          </div>
-          {{item.name}}
-        </li>
-      </ul>
-    </scroll>
+    <div class="scroll-wrapper">
+      <scroll ref="scroll" class="scroll">
+        <ul>
+          <li v-for="item in singerList" :key="item.id" class="list-item vux-1px-b" @click="selectItem(item)">
+            <div class="img-wrapper">
+              <img :src="item.picUrl" width="100%" height="100%">
+            </div>
+            {{item.name}}
+          </li>
+        </ul>
+      </scroll>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -69,16 +71,23 @@ export default {
       @include svg(1rem, #fff);
     }
   }
-  .list-item {
-    display: flex;
-    height: 3rem;
-    margin: .5rem 0;
-    padding: 0 .5rem;
-    line-height: 3rem;
-    @include sc(.8rem, #000);
-    .img-wrapper {
-      @include wh(3rem, 3rem);
-      margin-right: 1rem;
+  .scroll-wrapper {
+    @include wh(100%, 86%);
+    overflow: hidden;
+    .scroll {
+      height: 100%;
+      .list-item {
+        display: flex;
+        height: 3rem;
+        margin: 0.5rem 0;
+        padding: 0 0.5rem;
+        line-height: 3rem;
+        @include sc(0.8rem, #000);
+        .img-wrapper {
+          @include wh(3rem, 3rem);
+          margin-right: 1rem;
+        }
+      }
     }
   }
 }

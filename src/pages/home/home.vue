@@ -94,5 +94,9 @@ export default {
       @include svg(1rem, #fff);
     }
   }
+  .home-container {
+    @include wh(100%, 80%);
+    overflow: hidden;
+  }
 }
 </style>

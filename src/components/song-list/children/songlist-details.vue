@@ -51,6 +51,7 @@ export default {
   bottom: 0;
   @include wh(100%, 100%);
   background: #fff;
+  z-index: 300;
   .wrapper {
     @include wh(100%, 100%);
     box-sizing: border-box;
@@ -91,8 +92,8 @@ export default {
     .save {
       display: inline-block;
       @include cl;
+      bottom: 1rem;
       @include sc(.6rem, #fff);
-      margin-top: 6rem;
       padding: .2rem .5rem;
       border: .025rem solid #fff;
       border-radius: 10px;

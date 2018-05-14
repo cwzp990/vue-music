@@ -36,32 +36,25 @@
     <div class="bg-img" v-if="currentSong.album">
       <img :src="currentSong.album.blurPicUrl" width="100%" height="100%">
     </div>
-    <audio ref="audio" :src="songUrl" @canplay="ready" @error="error" @timeupdate="updateTime"></audio>
+    <audio ref="audio" :src="songUrl" @canplay="ready" @error="error" @timeupdate="updateTime">
+    </audio>
   </div>
 </template>
 
 <script>
 import VHeader from 'components/header/header'
 import ProgressBar from 'components/progress-bar/progress-bar'
-import { api } from 'api/index'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      songUrl: '',
       songReady: false,
       currentTime: 0
     }
   },
-  created () {
-    this.getSongUrl()
+  mounted () {
   },
   methods: {
-    getSongUrl () {
-      api.getMusicUrlResource(this.currentSong.id).then(res => {
-        this.songUrl = res.data.data[0].url
-      })
-    },
     back () {
       this.setFullScreen(false)
     },
@@ -138,6 +131,9 @@ export default {
     },
     percent () {
       return this.currentTime / (this.currentSong.mMusic.playTime / 1000)
+    },
+    songUrl () {
+      return `http://music.163.com/song/media/outer/url?id=${this.currentSong.id}.mp3`
     },
     ...mapGetters(['fullScreen', 'playlist', 'currentIndex', 'currentSong', 'playing'])
   },

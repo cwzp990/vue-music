@@ -17,13 +17,13 @@
     <div class="hot" v-show="!value.length">
       <h4 class="title">热门搜索</h4>
       <ul>
-        <li v-for="(item, index) in hotKeys" :key="index" class="keys-item">{{item}}</li>
+        <li v-for="(item, index) in hotKeys" :key="index" class="keys-item">{{item.first}}</li>
       </ul>
     </div>
     <div class="result" v-show="value.length">
       <p class="box-value vux-1px-b">搜索 "{{value}}"</p>
       <ul>
-        <li v-for="(item, index) in results" :key="index" class="result-item vux-1px-b" @click="selectResult(item)">
+        <li v-for="(item, index) in results" :key="index" class="result-item vux-1px-b" @click="selectResult(item, index)">
           <svg-icon icon-class="search"></svg-icon>
           {{item.name}}
         </li>
@@ -34,23 +34,13 @@
 
 <script>
 import { XInput } from 'vux'
+import { mapActions } from 'vuex'
 import { api } from 'api/index'
 export default {
   data () {
     return {
       value: '',
-      hotKeys: [
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰',
-        '林俊杰'
-      ],
+      hotKeys: [],
       results: []
     }
   },
@@ -61,28 +51,33 @@ export default {
     }
   },
   created () {
-    // this.getData()
+    this.getData()
   },
   methods: {
     getData () {
       api.getHotKeys().then(res => {
-        console.log(res)
+        this.hotKeys = res.data.result.hots
       })
     },
     getSearchResults (key) {
       api.getSearchResource(key).then(res => {
         if (res.status === 200) {
           this.results = res.data.result.songs
-          console.log(this.results)
         }
       })
     },
-    selectResult (item) {
-      this.$emit('select', item)
+    selectResult (item, index) {
+      this.selectPlay({
+        list: this.results,
+        index: index
+      })
     },
     gotoAddress (path) {
       this.$router.push(path)
-    }
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   },
   watch: {
     value () {

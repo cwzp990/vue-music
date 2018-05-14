@@ -1,14 +1,12 @@
 <!-- 首页tab music栏 -->
 <template>
-  <scroll
-  ref="scroll"
-  :data="list.DJ">
+  <scroll ref="scroll" class="scroll">
     <div class="home-music">
       <!-- 轮播图 -->
       <div class="swiper">
         <swiper loop auto>
-          <swiper-item class="swiper-demo-img" v-for="item in slider" :key="item.targetId">
-            <img :src="item.pic" width="100%" height="100%">
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in list.slider" :key="index">
+            <img :src="item.picUrl" width="100%" height="100%">
           </swiper-item>
         </swiper>
       </div>
@@ -110,9 +108,6 @@ export default {
         }
       })
     },
-    refresh () {
-      this.$refs.scroll.refresh()
-    },
     gotoAddress (path) {
       this.$router.push(path)
     }
@@ -128,9 +123,8 @@ export default {
 
 <style lang='scss' scoped>
 @import '../../../style/mixin';
-.home-music {
+.scroll {
   height: 100%;
-  overflow: hidden;
   .list-btn {
     display: flex;
     @include wh(100%, 4.4rem);

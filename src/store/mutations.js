@@ -42,6 +42,9 @@ const matutaions = {
   },
   [types.SET_FAVORITE_LIST] (state, list) {
     state.favoriteList = list
+  },
+  [types.SET_SONG_URL] (state, url) {
+    state.songUrl = url
   }
 }
 
