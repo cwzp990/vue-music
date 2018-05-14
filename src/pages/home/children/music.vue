@@ -5,7 +5,7 @@
       <!-- 轮播图 -->
       <div class="swiper">
         <swiper loop auto>
-          <swiper-item class="swiper-demo-img" v-for="(item, index) in list.slider" :key="index">
+          <swiper-item class="swiper-demo-img" v-for="(item, index) in slider" :key="index">
             <img :src="item.picUrl" width="100%" height="100%">
           </swiper-item>
         </swiper>
@@ -79,7 +79,7 @@ export default {
     getData () {
       api.getBanner().then(res => {
         if (res.status === 200) {
-          this.list.slider = res.data.banners
+          this.slider = res.data.banners
         }
       })
       api.getPersonalized().then(res => {
