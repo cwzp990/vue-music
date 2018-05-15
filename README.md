@@ -12,10 +12,16 @@
 
 # 部分效果截图
 
+![image](https://github.com/cwzp990/vue-music/tree/master/src/assets/new1.gif )
+
+![image](https://github.com/cwzp990/vue-music/tree/master/src/assets/new2.gif )
+
 #工具&技术栈
+
 vue + vux + + vue-router + vuex + axios + scss
 
 #使用
+
 本项目借助[https://github.com/Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi "Binaryify")的node项目代理获取网易云接口，所以你可能需要先clone此项目才能使用本项目，步骤如下：
 
 $ git clone git@github.com:Binaryify/NeteaseCloudMusicApi.git
@@ -25,6 +31,7 @@ $ npm install
 $ node app.js
 
 然后是clone本项目，下载依赖后运行
+
 $ git clone https://github.com/cwzp990/vue-music.git
 
 $ npm install
@@ -34,6 +41,7 @@ $ npm run dev
 #实现功能
 
 ##发现音乐
+
 音乐 已实现
 
 私人fm 待开发
@@ -61,11 +69,15 @@ $ npm run dev
 电台 待开发
 
 ##我的音乐
+
 登录后可以获取到歌单列表
 
 ##朋友
+
 动态 api有问题，正在寻找解决办法
 
 附近 待开发
+
 ##账号
+
 登录
