@@ -1,6 +1,8 @@
 <!-- 首页tab radio栏 -->
 <template>
-  <div class="home-radio"></div>
+  <div class="home-radio">
+    待开发
+  </div>
 </template>
 
 <script>

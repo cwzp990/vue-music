@@ -2,13 +2,15 @@
   <div class="home">
     <div class="header">
       <!-- 头部搜索框 -->
-      <svg-icon icon-class="micro" style="left: .5rem;"></svg-icon>
+      <div class="svg-wrapper">
+        <svg-icon icon-class="micro" style="left: .5rem;"></svg-icon>
+      </div>
       <div class="searchbox-wrapper">
         <input placeholder="搜一搜" @focus="gotoAddress('/search')">
         <svg-icon icon-class="search"></svg-icon>
       </div>
       <div class="svg-wrapper" @click="showPlayer">
-        <svg-icon icon-class="playing"></svg-icon>
+        <svg-icon icon-class="playing" :class="{play: playing, pause: !playing}"></svg-icon>
       </div>
     </div>
     <!-- 头部tab导航 -->
@@ -79,24 +81,42 @@ export default {
         border-radius: 20px;
         padding: 0 2rem;
         box-sizing: border-box;
-        @include sc(.7rem, #b2b2b2);
+        @include sc(0.7rem, #b2b2b2);
       }
       .svg-icon {
         position: absolute;
-        top: .8rem;
-        left: .8rem;
+        top: 0.2rem;
+        left: 0.8rem;
         @include svg(1rem, #b2b2b2);
       }
     }
-    .svg-icon {
-      @include ct();
-      right: .5rem;
-      @include svg(1rem, #fff);
+    .svg-wrapper {
+      .svg-icon {
+        @include ct();
+        right: 0.5rem;
+        @include svg(1rem, #fff);
+      }
+      .play {
+        top: 25%;
+        animation: rotate 20s linear infinite;
+      }
+      .pause {
+        animation-play-state: paused;
+      }
     }
   }
   .home-container {
     @include wh(100%, 80%);
     overflow: hidden;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

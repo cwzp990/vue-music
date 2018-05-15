@@ -2,7 +2,7 @@
   <div class="mine">
     <x-header>
       <svg-icon icon-class="cloud" slot="overwrite-left"></svg-icon>
-      <svg-icon icon-class="playing" slot="right"></svg-icon>
+      <svg-icon icon-class="playing" slot="right" :class="{play: playing, pause: !playing}"></svg-icon>
       <span>我的音乐</span>
     </x-header>
     <div class="scroll-wrapper">
@@ -72,7 +72,7 @@ export default {
     this.getData()
   },
   computed: {
-    ...mapGetters(['userid'])
+    ...mapGetters(['userid', 'playing', 'playlist'])
   },
   methods: {
     getData () {
@@ -88,8 +88,15 @@ export default {
       })
       this.setDisc(item)
     },
+    showPlayer () {
+      if (!this.playlist.length) {
+        return
+      }
+      this.setFullScreen(true)
+    },
     ...mapMutations({
-      setDisc: 'SET_DISC'
+      setDisc: 'SET_DISC',
+      setFullScreen: 'SET_FULL_SCREEN'
     })
   },
   components: {
@@ -108,6 +115,13 @@ export default {
     background: $juzi;
     .svg-icon {
       @include svg(1rem, #fff);
+    }
+    .play {
+      top: 25%;
+      animation: rotate 20s linear infinite;
+    }
+    .pause {
+      animation-play-state: paused;
     }
   }
   .scroll-wrapper {
@@ -170,6 +184,15 @@ export default {
         }
       }
     }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>

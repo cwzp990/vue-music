@@ -1,6 +1,8 @@
 <!-- 首页tab video栏 -->
 <template>
-  <div class="home-video"></div>
+  <div class="home-video">
+    待开发
+  </div>
 </template>
 
 <script>

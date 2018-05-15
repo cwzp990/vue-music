@@ -2,7 +2,7 @@
   <div class="account">
     <x-header :left-options="{backText: ''}">
       账 号
-      <svg-icon icon-class="playing" slot="right"></svg-icon>
+      <svg-icon icon-class="playing" slot="right" :class="{play: playing, pause: !playing}"></svg-icon>
     </x-header>
     <div class="scroll-wrapper">
       <scroll ref="scroll" class="scroll">
@@ -146,7 +146,7 @@
 <script type="text/ecmascript-6">
 import { XHeader, XButton } from 'vux'
 import Scroll from 'components/scroll/scroll'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { api } from 'api/index'
 export default {
   data () {
@@ -158,7 +158,7 @@ export default {
     this.getData()
   },
   computed: {
-    ...mapGetters(['userid'])
+    ...mapGetters(['userid', 'playing', 'playlist'])
   },
   methods: {
     getData () {
@@ -167,7 +167,16 @@ export default {
           this.userinfo = res.data
         }
       })
-    }
+    },
+    showPlayer () {
+      if (!this.playlist.length) {
+        return
+      }
+      this.setFullScreen(true)
+    },
+    ...mapMutations({
+      setFullScreen: 'SET_FULL_SCREEN'
+    })
   },
   components: {
     XHeader,
@@ -184,6 +193,13 @@ export default {
   @include wh(100%, 100%);
   .svg-icon {
     @include svg(1rem, #fff);
+  }
+  .play {
+    top: 25%;
+    animation: rotate 20s linear infinite;
+  }
+  .pause {
+    animation-play-state: paused;
   }
   .scroll-wrapper {
     @include wh(100%, 86%);
@@ -266,6 +282,15 @@ export default {
         }
       }
     }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
