@@ -9,9 +9,9 @@ const daily = () => import('pages/home/children/children/daily')
 const list = () => import('pages/home/children/children/list')
 const category = () => import('pages/home/children/children/children/category')
 const rank = () => import('pages/home/children/children/rank')
-const homeVideo = () => import('pages/home/children/video')
 const homeRadio = () => import('pages/home/children/radio')
 const account = () => import('pages/account/account')
+const video = () => import('pages/video/video')
 const mine = () => import('pages/mine/mine')
 const social = () => import('pages/social/social')
 const search = () => import('components/search/search')
@@ -41,7 +41,6 @@ export default new Router({
           children: [
             {path: '/home', redirect: '/home/music'},
             {path: '/home/music', component: homeMusic},
-            {path: '/home/video', component: homeVideo},
             {path: '/home/radio', component: homeRadio},
             {path: '/home/daily', component: daily},
             {
@@ -54,6 +53,7 @@ export default new Router({
             {path: '/home/rank', component: rank}
           ]
         },
+        {path: '/video', component: video},
         {path: '/account', component: account},
         {path: '/mine', component: mine},
         {path: '/social', component: social},

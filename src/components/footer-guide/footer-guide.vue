@@ -1,7 +1,8 @@
 <template>
   <div class="footer-guide">
-    <router-link tag="div" to="/home" class="guide-item"><svg-icon icon-class="logo"></svg-icon>发现音乐</router-link>
-    <router-link tag="div" to="/mine" class="guide-item"><svg-icon icon-class="music"></svg-icon>我的音乐</router-link>
+    <router-link tag="div" to="/home" class="guide-item"><svg-icon icon-class="logo"></svg-icon>发现</router-link>
+    <router-link tag="div" to="/video" class="guide-item"><svg-icon icon-class="player"></svg-icon>视频</router-link>
+    <router-link tag="div" to="/mine" class="guide-item"><svg-icon icon-class="music"></svg-icon>我的</router-link>
     <router-link tag="div" to="/social" class="guide-item"><svg-icon icon-class="friends"></svg-icon>朋友</router-link>
     <router-link tag="div" to="/account" class="guide-item"><svg-icon icon-class="user"></svg-icon>账号</router-link>
   </div>

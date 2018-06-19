@@ -23,6 +23,7 @@
             <svg-icon icon-class="date"></svg-icon>
           </span>
           每日推荐
+          <span class="date">{{today}}</span>
         </div>
         <div class="btn-item" @click="gotoAddress('/home/list')">
           <span class="svg-wrapper">
@@ -39,16 +40,16 @@
       </div>
       <!-- 歌单列表 -->
       <div class="recommend-list">
-        <recommendList title="独家放送" :data="this.list.recommend" number="6" :music="true"></recommendList>
+        <recommendList title="推荐歌单" :data="this.list.recommend" number="6" :music="true"></recommendList>
       </div>
       <div class="exclusive-list">
         <recommendList title="独家放送" :data="this.list.exclusive" number="2"></recommendList>
       </div>
       <div class="MV-list">
-        <recommendList title="推荐MV" :data="this.list.MV" number="4"></recommendList>
+        <recommendList title="推荐MV" :data="this.list.MV" number="4" :video="true"></recommendList>
       </div>
       <div class="DJ-list">
-        <recommendList title="主播电台" :data="this.list.DJ" number="6" :music="true"></recommendList>
+        <recommendList title="主播电台" :data="this.list.DJ" number="6"></recommendList>
       </div>
     </div>
   </scroll>
@@ -74,6 +75,11 @@ export default {
   },
   created () {
     this.getData()
+  },
+  computed:{
+    today () {
+      return new Date().getDate()
+    }
   },
   methods: {
     getData () {
@@ -135,6 +141,7 @@ export default {
       flex-direction: column;
       justify-content: space-around;
       align-items: center;
+      position: relative;      
       @include sc(0.6rem, #333);
       .svg-wrapper {
         position: relative;
@@ -144,8 +151,13 @@ export default {
         .svg-icon {
           position: absolute;
           @include center();
-          @include svg(1rem, $juzi);
+          @include svg(1.3rem, $juzi);
         }
+      }
+      .date {
+        @include center();
+        top: 1.7rem;
+        color: $juzi;
       }
     }
   }

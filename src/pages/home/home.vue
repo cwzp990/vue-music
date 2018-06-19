@@ -16,9 +16,8 @@
     <!-- 头部tab导航 -->
     <div class="tab">
       <tab>
-        <tab-item selected @on-item-click="gotoAddress('/home/music')">音乐</tab-item>
-        <tab-item @on-item-click="gotoAddress('/home/video')">视频</tab-item>
-        <tab-item @on-item-click="gotoAddress('/home/radio')">电台</tab-item>
+        <tab-item selected @on-item-click="gotoAddress('/home/music')">个性推荐</tab-item>
+        <tab-item @on-item-click="gotoAddress('/home/radio')">主播电台</tab-item>
       </tab>
     </div>
     <div class="home-container">

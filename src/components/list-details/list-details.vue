@@ -8,8 +8,8 @@
         <span class="number">(共{{count}}首)</span>
       </div>
       <div class="right">
-        <svg-icon icon-class="list"></svg-icon>
-        多选
+        <svg-icon icon-class="add"></svg-icon>
+        收藏({{collect}}万)
       </div>
     </h3>
     <div class="scroll-wrapper">
@@ -47,6 +47,10 @@ export default {
     count: {
       type: Number,
       default: null
+    },
+    collect: {
+      type: Number,
+      default: null
     }
   },
   methods: {
@@ -63,8 +67,6 @@ export default {
 <style lang='scss' scoped>
 @import '../../style/mixin';
 .list {
-  padding: 0 0.5rem;
-  box-sizing: border-box;
   .title {
     display: flex;
     justify-content: space-between;
@@ -76,9 +78,10 @@ export default {
       }
     }
     .right {
-      @include sc(0.7rem, #000);
+      background: $juzi;
+      @include sc(0.5rem, #fff);
       .svg-icon {
-        @include svg(0.7rem, #b2b2b2);
+        @include svg(0.5rem, #fff);
       }
     }
   }

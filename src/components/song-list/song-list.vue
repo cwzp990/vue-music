@@ -10,7 +10,7 @@
             <img :src="songList.coverImgUrl" width="100%" height="100%">
             <div class="playCount">
               <svg-icon icon-class="earphone"></svg-icon>
-              <span class="number">{{songList.playCount > 99999 ? (songList.playCount / 10000).toFixed(0) + '万': songList.playCount}}</span>
+              <span class="number">{{songList.playCount > 99999999 ? (songList.playCount / 100000000).toFixed(1) + '亿': (songList.playCount / 10000).toFixed(0) + '万'}}</span>
             </div>
             <svg-icon icon-class="about"></svg-icon>
           </div>
@@ -29,10 +29,10 @@
         <!-- 功能按钮 -->
         <div class="btn">
           <ul>
-            <li class="item">
+            <!-- <li class="item">
               <svg-icon icon-class="collect"></svg-icon>
               <span class="text">{{songList.subscribedCount}}</span>
-            </li>
+            </li> -->
             <li class="item">
               <svg-icon icon-class="comment"></svg-icon>
               <span class="text">{{songList.commentCount}}</span>
@@ -45,6 +45,10 @@
               <svg-icon icon-class="download"></svg-icon>
               <span class="text">下载</span>
             </li>
+            <li class="item">
+              <svg-icon icon-class="select"></svg-icon>
+              <span class="text">多选</span>
+            </li>
           </ul>
         </div>
         <!-- 背景图片 -->
@@ -53,7 +57,7 @@
         </div>
       </div>
       <div class="list-down">
-        <list-details @select="selectItem" :data="songList.tracks" :count="songList.trackCount"></list-details>
+        <list-details @select="selectItem" :data="songList.tracks" :count="songList.trackCount" :collect="songList.subscribedCount"></list-details>
       </div>
       <router-view></router-view>
     </div>
