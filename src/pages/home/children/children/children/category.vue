@@ -5,6 +5,19 @@
       <x-header :left-options="{backText: ''}">
         筛选歌单
       </x-header>
+      <scroll>
+        <div class="category-box">
+          <div class="all" v-if="list.all">
+            {{list.all.name}}
+            <svg-icon icon-class="selected-triangle"></svg-icon>
+          </div>
+          <ul>
+            <li>
+              <category-box title="语种" :list="list.language"></category-box>
+            </li>
+          </ul>
+        </div>
+      </scroll>
     </div>
   </transition>
 </template>
@@ -12,11 +25,19 @@
 <script>
 import { XHeader } from 'vux'
 import { mapMutations } from 'vuex'
+import Scroll from 'components/scroll/scroll'
+import CategoryBox from 'pages/home/children/children/children/children/category-box'
 import { api } from 'api/index'
 export default {
   data () {
     return {
-      list: []
+      list: {}
+    }
+  },
+  props: {
+    selected: {
+      type: String,
+      default: '全部歌单'
     }
   },
   created () {
@@ -32,10 +53,13 @@ export default {
       })
     },
     _normalizeData (data) {
-      let arr1 = [], arr2 = [], arr3 = [], arr4 = [], arr5 = []
+      let arr1 = []
+      let arr2 = []
+      let arr3 = []
+      let arr4 = []
+      let arr5 = []
       data.sub.forEach(item => {
-        switch (item.category)
-        {
+        switch (item.category) {
           case 0:
             arr1.push(item)
             break
@@ -68,7 +92,9 @@ export default {
     })
   },
   components: {
-    XHeader
+    XHeader,
+    Scroll,
+    CategoryBox
   }
 }
 </script>
@@ -86,6 +112,27 @@ export default {
     .vux-header-right {
       .svg-icon {
         @include svg(0.9rem, #fff);
+      }
+    }
+  }
+  .list-wrapper {
+    @include wh(100%, 100%);
+    overflow: hidden;
+    .category-box {
+      padding: .3rem;
+      .all {
+        position: relative;
+        @include wh(100%, 1.7rem);
+        @include font(.6rem, 1.7rem);
+        color: #000;
+        text-align: center;
+        border: .025rem solid $juzi;
+        .svg-icon {
+          position: absolute;
+          bottom: -.4rem;
+          right: -.4rem;
+          @include svg(1.5rem, $juzi);
+        }
       }
     }
   }

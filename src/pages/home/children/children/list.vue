@@ -6,7 +6,7 @@
         歌单
         <svg-icon icon-class="playing" slot="right"></svg-icon>
       </x-header>
-      <scroll ref="scroll" class="scroll">
+      <scroll>
         <div>
           <div class="champion">
             <div class="img-wrapper" v-if="champion">
@@ -43,7 +43,7 @@
               <flexbox-item class="list-item" :span="1/2" v-for="(item, index) in list" v-if="index < 20" :key="item.id" @click.native="selectItem(item)">
                 <div class="playCount">
                   <svg-icon icon-class="earphone"></svg-icon>
-                  <span>{{item.playCount}}</span>
+                  <span>{{item.playCount > 99999 ? (item.playCount / 10000).toFixed(0) + '万': item.playCount}}</span>
                 </div>
                 <div class="author">
                   <svg-icon icon-class="user"></svg-icon>
@@ -132,7 +132,7 @@ export default {
       }
     }
   }
-  .scroll {
+  .list-wrapper {
     @include wh(100%, 100%);
     overflow: hidden;
     .champion {
@@ -156,10 +156,10 @@ export default {
         margin-left: .7rem;
         flex: 1;
         h2 {
-          @include sc(.7rem, #000);
+          @include sc(.7rem, #e2e2e2);
           margin-bottom: .5rem;
           .svg-icon {
-            @include svg(0.5rem, #d2d2d2);
+            @include svg(0.5rem, #e2e2e2);
           }
           .svg-icon:first-child {
             display: inline-block;
@@ -171,11 +171,11 @@ export default {
         }
         .des {
           .des-name {
-            @include sc(.6rem, #000);
+            @include sc(.6rem, #e2e2e2);
             margin-bottom: .2rem;
           }
           .des-tips {
-            @include sc(.5rem, #b2b2b2);
+            @include sc(.5rem, #e2e2e2);
           }
         }
       }
@@ -219,8 +219,8 @@ export default {
       margin-bottom: 0.5rem;
       .playCount {
         position: absolute;
-        top: 0;
-        right: 0;
+        top: .1rem;
+        right: .1rem;
         @include sc(0.5rem, #fff);
         .svg-icon {
           @include svg(0.7rem, #fff);
