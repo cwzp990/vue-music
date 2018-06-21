@@ -6,57 +6,91 @@
         歌单
         <svg-icon icon-class="playing" slot="right"></svg-icon>
       </x-header>
-      <h3 class="title">
-        <p class="left" @click="gotoAddress('/home/list/category')">
-          {{tag}}
-          <svg-icon icon-class="right"></svg-icon>
-        </p>
-        <ul class="right">
-          <li class="item vux-1px-r">欧美</li>
-          <li class="item vux-1px-r">电子</li>
-          <li class="item" style="padding-right: 0;">影视原声</li>
-        </ul>
-      </h3>
-      <div class="list-content">
-        <flexbox :gutter="0" wrap="wrap">
-          <flexbox-item class="list-item" :span="1/2" v-for="(item, index) in list" v-if="index < 20" :key="item.id" @click.native="selectItem(item)">
-            <div class="playCount">
-              <svg-icon icon-class="earphone"></svg-icon>
-              <span>{{item.playCount}}</span>
+      <scroll ref="scroll" class="scroll">
+        <div>
+          <div class="champion">
+            <div class="img-wrapper" v-if="champion">
+              <img :src="champion.coverImgUrl" width="100%" height="100%" />
             </div>
-            <div class="author">
-              <svg-icon icon-class="user"></svg-icon>
-              <span v-if="item.subscribers.length">{{item.subscribers[0].nickname}}</span>
+            <div class="content">
+              <h2>
+                <svg-icon icon-class="crown"></svg-icon>
+                精品歌单
+                <svg-icon icon-class="right"></svg-icon>
+              </h2>
+              <div class="des">
+                <p class="des-name" v-if="champion">{{champion.name}}</p>
+                <p class="des-tips" v-if="champion">{{champion.copywriter}}</p>
+              </div>
             </div>
-            <img :src="item.coverImgUrl" width="100%" height="100%">
-            <p class="name">{{item.name}}</p>
-          </flexbox-item>
-        </flexbox>
-      </div>
-      <router-view></router-view>
+            <div class="bg-img" v-if="champion">
+              <img :src="champion.coverImgUrl" width="100%" height="100%" />
+            </div>
+          </div>
+          <h3 class="title">
+            <p class="left" @click="gotoAddress('/home/list/category')">
+              {{tag}}
+              <svg-icon icon-class="right"></svg-icon>
+            </p>
+            <ul class="right">
+              <li class="item vux-1px-r">欧美</li>
+              <li class="item vux-1px-r">电子</li>
+              <li class="item" style="padding-right: 0;">影视原声</li>
+            </ul>
+          </h3>
+          <div class="list-content">
+            <flexbox :gutter="0" wrap="wrap">
+              <flexbox-item class="list-item" :span="1/2" v-for="(item, index) in list" v-if="index < 20" :key="item.id" @click.native="selectItem(item)">
+                <div class="playCount">
+                  <svg-icon icon-class="earphone"></svg-icon>
+                  <span>{{item.playCount}}</span>
+                </div>
+                <div class="author">
+                  <svg-icon icon-class="user"></svg-icon>
+                  <span v-if="item.subscribers.length">{{item.subscribers[0].nickname}}</span>
+                </div>
+                <img :src="item.coverImgUrl" width="100%" height="100%">
+                <p class="name">{{item.name}}</p>
+              </flexbox-item>
+            </flexbox>
+          </div>
+        </div>
+      </scroll>
     </div>
   </transition>
 </template>
 
 <script>
 import { XHeader, Flexbox, FlexboxItem } from 'vux'
+import Scroll from 'components/scroll/scroll'
 import { api } from 'api/index'
 import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
       tag: '全部歌单',
-      list: []
+      list: [],
+      highQuality: []
     }
   },
   created () {
     this.getData()
+  },
+  computed: {
+    champion () {
+      return this.highQuality[0]
+    }
   },
   methods: {
     getData () {
       api.getTopPlaylistResource(this.tag).then(res => {
         if (res.status === 200) {
           this.list = res.data.playlists
+        }
+      })
+      api.getHighQuality().then(res => {
+        if (res.status === 200) {
+          this.highQuality = res.data.playlists
         }
       })
     },
@@ -76,7 +110,8 @@ export default {
   components: {
     XHeader,
     Flexbox,
-    FlexboxItem
+    FlexboxItem,
+    Scroll
   }
 }
 </script>
@@ -97,57 +132,114 @@ export default {
       }
     }
   }
-  .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 0 0.5rem;
-    @include wh(100%, 3rem);
-    .left {
-      @include sc(0.7rem, #000);
-      padding: 0.3rem 0.5rem;
-      border: 0.025rem solid #b2b2b2;
-      border-radius: 20px;
-      .svg-icon {
-        margin-left: 0.3rem;
-        @include svg(0.6rem, #b2b2b2);
-      }
-    }
-    .right {
+  .scroll {
+    @include wh(100%, 100%);
+    overflow: hidden;
+    .champion {
       display: flex;
+      justify-content: center;
       align-items: center;
-      @include sc(0.7rem, #000);
-      .item {
-        padding: 0 0.3rem;
+      position: relative;
+      @include wh(100%, 5rem);
+      box-sizing: border-box;
+      padding: 0 .5rem;
+      background: rgba(141, 159, 159, 0.5);
+      .img-wrapper {
+        flex: 0 0 3rem;
+        @include wh(3rem, 3rem);
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 53%;
+        margin-left: .7rem;
+        flex: 1;
+        h2 {
+          @include sc(.7rem, #000);
+          margin-bottom: .5rem;
+          .svg-icon {
+            @include svg(0.5rem, #d2d2d2);
+          }
+          .svg-icon:first-child {
+            display: inline-block;
+            padding: .1rem;
+            border: .025rem solid $juzi;
+            border-radius: 50%;
+            @include svg(0.5rem, $juzi);
+          }
+        }
+        .des {
+          .des-name {
+            @include sc(.6rem, #000);
+            margin-bottom: .2rem;
+          }
+          .des-tips {
+            @include sc(.5rem, #b2b2b2);
+          }
+        }
+      }
+      .bg-img {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: -1;
+        @include wh(100%, 100%);
+        filter: blur(10px);
       }
     }
-  }
-  .list-item {
-    position: relative;
-    margin-bottom: 0.5rem;
-    .playCount {
-      position: absolute;
-      top: 0;
-      right: 0;
-      @include sc(0.5rem, #fff);
-      .svg-icon {
-        @include svg(0.7rem, #fff);
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 0 0.5rem;
+      @include wh(100%, 3rem);
+      .left {
+        @include sc(0.7rem, #000);
+        padding: 0.3rem 0.5rem;
+        border: 0.025rem solid #b2b2b2;
+        border-radius: 20px;
+        .svg-icon {
+          margin-left: 0.3rem;
+          @include svg(0.6rem, #b2b2b2);
+        }
+      }
+      .right {
+        display: flex;
+        align-items: center;
+        @include sc(0.7rem, #000);
+        .item {
+          padding: 0 0.3rem;
+        }
       }
     }
-    .author {
-      position: absolute;
-      left: 0;
-      bottom: 1.5rem;
-      @include sc(0.5rem, #fff);
-      .svg-icon {
-        @include svg(0.7rem, #fff);
+    .list-item {
+      position: relative;
+      margin-bottom: 0.5rem;
+      .playCount {
+        position: absolute;
+        top: 0;
+        right: 0;
+        @include sc(0.5rem, #fff);
+        .svg-icon {
+          @include svg(0.7rem, #fff);
+        }
+      }
+      .author {
+        position: absolute;
+        left: 0;
+        bottom: 1.5rem;
+        @include sc(0.5rem, #fff);
+        .svg-icon {
+          @include svg(0.7rem, #fff);
+        }
       }
     }
-  }
-  .name {
-    @include sc(0.6rem, #777);
-    @include txtEllipsis(2);
+    .name {
+      @include sc(0.6rem, #777);
+      @include txtEllipsis(2);
+    }
   }
 }
 .fade-enter-active, .fade-leave-active {

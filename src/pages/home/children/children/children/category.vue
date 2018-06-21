@@ -14,6 +14,11 @@ import { XHeader } from 'vux'
 import { mapMutations } from 'vuex'
 import { api } from 'api/index'
 export default {
+  data () {
+    return {
+      list: []
+    }
+  },
   created () {
     this.getData()
   },
@@ -21,12 +26,45 @@ export default {
     getData () {
       api.getCategoryPlayList().then(res => {
         if (res.status === 200) {
-          console.log(res)
+          this.list = this._normalizeData(res.data)
+          console.log(this.list)
         }
       })
     },
+    _normalizeData (data) {
+      let arr1 = [], arr2 = [], arr3 = [], arr4 = [], arr5 = []
+      data.sub.forEach(item => {
+        switch (item.category)
+        {
+          case 0:
+            arr1.push(item)
+            break
+          case 1:
+            arr2.push(item)
+            break
+          case 2:
+            arr3.push(item)
+            break
+          case 3:
+            arr4.push(item)
+            break
+          case 4:
+            arr5.push(item)
+            break
+        }
+      })
+      let result = {
+        all: data.all,
+        language: arr1,
+        style: arr2,
+        scene: arr3,
+        emotion: arr4,
+        theme: arr5
+      }
+      return result
+    },
     ...mapMutations({
-      setTag: 'SET_TAG'
+      setTag: 'SETTAG'
     })
   },
   components: {
@@ -56,6 +94,6 @@ export default {
   transition: all 0.3s ease
 }
 .fade-enter, .fade-leave-to {
-  transform: translate3d(0, 100%, 0)
+  transform: translate3d(100%, 0, 0)
 }
 </style>

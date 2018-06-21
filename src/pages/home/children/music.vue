@@ -76,7 +76,7 @@ export default {
   created () {
     this.getData()
   },
-  computed:{
+  computed: {
     today () {
       return new Date().getDate()
     }
@@ -98,11 +98,11 @@ export default {
           this.list.exclusive = res.data.result
         }
       })
-      api.getNewSong().then(res => {
-        if (res.status === 200) {
-          this.list.newSong = res.data.result
-        }
-      })
+      // api.getNewSong().then(res => {
+      //   if (res.status === 200) {
+      //     this.list.newSong = res.data.result
+      //   }
+      // })
       api.getPersonalizedMv().then(res => {
         if (res.status === 200) {
           this.list.MV = res.data.result
@@ -141,7 +141,7 @@ export default {
       flex-direction: column;
       justify-content: space-around;
       align-items: center;
-      position: relative;      
+      position: relative;
       @include sc(0.6rem, #333);
       .svg-wrapper {
         position: relative;

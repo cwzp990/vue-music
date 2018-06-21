@@ -27,10 +27,13 @@ const apiMusic = {
   topArtists: '/top/artists', //  热门歌手
   topList: '/top/list', //  音乐排行榜
   personalized: '/personalized', //  推荐歌单
+  highquality: '/top/playlist/highquality', // 精品歌单
   privatecontent: '/personalized/privatecontent', // 独家放送
   personalizedMv: '/personalized/mv', // 推荐MV
   newSong: '/personalized/newsong', // 推荐音乐
   djProgram: '/personalized/djprogram', // 推荐电台
+  djRecommend: '/dj/recommend', // 推荐电台
+  djClassify: '/dj/catelist', // 电台分类
   mv: '/mv', // 获取mv数据
   simiMv: '/simi/mv', // 获取相似mv
   mvComment: '/comment/mv', // 获取mv评论
@@ -65,10 +68,13 @@ export const NewAlbumResource = API_ROOT.concat(apiMusic.newAlbum)
 export const TopArtistsResource = API_ROOT.concat(apiMusic.topArtists)
 export const TopListResource = API_ROOT.concat(apiMusic.topList)
 export const PersonalizedResource = API_ROOT.concat(apiMusic.personalized)
+export const HighQuality = API_ROOT.concat(apiMusic.highquality)
 export const PrivatecontentResource = API_ROOT.concat(apiMusic.privatecontent)
 export const PersonalizedMvResource = API_ROOT.concat(apiMusic.personalizedMv)
 export const NewSongResource = API_ROOT.concat(apiMusic.newSong)
 export const DjProgramResource = API_ROOT.concat(apiMusic.djProgram)
+export const DjRecommend = API_ROOT.concat(apiMusic.djRecommend)
+export const DjClassify = API_ROOT.concat(apiMusic.djClassify)
 export const MvResource = API_ROOT.concat(apiMusic.mv)
 export const SimiMvResource = API_ROOT.concat(apiMusic.simiMv)
 export const MvCommentResource = API_ROOT.concat(apiMusic.mvComment)

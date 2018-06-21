@@ -55,10 +55,12 @@ export default {
   },
   methods: {
     selectItem (item) {
-      this.$router.push({
-        path: `/songList/${item.id}`
-      })
-      this.setDisc(item)
+      if (this.music) {
+        this.$router.push({
+          path: `/songList/${item.id}`
+        })
+        this.setDisc(item)
+      }
     },
     ...mapMutations({
       setDisc: 'SET_DISC'

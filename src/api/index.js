@@ -27,10 +27,13 @@ import {
   TopArtistsResource,
   TopListResource,
   PersonalizedResource,
+  HighQuality,
   PrivatecontentResource,
   PersonalizedMvResource,
   NewSongResource,
   DjProgramResource,
+  DjRecommend,
+  DjClassify,
   MvResource,
   SimiMvResource,
   MvCommentResource,
@@ -288,6 +291,15 @@ export const api = {
     return axios.get(PersonalizedResource)
   },
 
+  // 获取精品歌单
+  getHighQuality (limit) {
+    return axios.get(HighQuality, {
+      params: {
+        limit: limit || 30
+      }
+    })
+  },
+
   // 获取独家放送
   getPrivatecontent () {
     return axios.get(PrivatecontentResource)
@@ -306,6 +318,13 @@ export const api = {
   // 获取推荐DJ
   getDjProgram () {
     return axios.get(DjProgramResource)
+  },
+  // 获取推荐DJ-页面
+  getDjRecommend () {
+    return axios.get(DjRecommend)
+  },
+  getDjClassify () {
+    return axios.get(DjClassify)
   },
   // 获取mv数据
   getMvResource (id) {
