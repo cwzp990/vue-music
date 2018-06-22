@@ -13,7 +13,19 @@
           </div>
           <ul>
             <li>
-              <category-box title="语种" :list="list.language"></category-box>
+              <category-box title="语种" :icon="'earth'" :list="list.language"></category-box>
+            </li>
+            <li>
+              <category-box title="风格" :icon="'piano'" :list="list.style"></category-box>
+            </li>
+            <li>
+              <category-box title="场景" :icon="'coffee'" :list="list.scene"></category-box>
+            </li>
+            <li>
+              <category-box title="情感" :icon="'smile'" :list="list.emotion"></category-box>
+            </li>
+            <li>
+              <category-box title="主题" :icon="'classify'" :list="list.theme"></category-box>
             </li>
           </ul>
         </div>
