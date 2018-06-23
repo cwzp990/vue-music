@@ -33,9 +33,9 @@
               <svg-icon icon-class="right"></svg-icon>
             </p>
             <ul class="right">
-              <li class="item vux-1px-r">欧美</li>
-              <li class="item vux-1px-r">电子</li>
-              <li class="item" style="padding-right: 0;">影视原声</li>
+              <li class="item vux-1px-r" @click="selected($event)">欧美</li>
+              <li class="item vux-1px-r" @click="selected($event)">电子</li>
+              <li class="item" style="padding-right: 0;" @click="selected($event)">摇滚</li>
             </ul>
           </h3>
           <div class="list-content">
@@ -63,17 +63,19 @@
 <script>
 import { XHeader, Flexbox, FlexboxItem } from 'vux'
 import Scroll from 'components/scroll/scroll'
+import { loadCategory } from 'utils/cache'
 import { api } from 'api/index'
 import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      tag: '全部歌单',
+      tag: '',
       list: [],
       highQuality: []
     }
   },
   created () {
+    this.tag = loadCategory() || '全部歌单'
     this.getData()
   },
   computed: {
@@ -83,16 +85,14 @@ export default {
   },
   methods: {
     getData () {
-      api.getTopPlaylistResource(this.tag).then(res => {
-        if (res.status === 200) {
-          this.list = res.data.playlists
-        }
-      })
       api.getHighQuality().then(res => {
         if (res.status === 200) {
           this.highQuality = res.data.playlists
         }
       })
+    },
+    selected (event) {
+      this.tag = event.currentTarget.innerText
     },
     selectItem (item) {
       this.$router.push({
@@ -106,6 +106,15 @@ export default {
     ...mapMutations({
       setDisc: 'SET_DISC'
     })
+  },
+  watch: {
+    tag () {
+      api.getTopPlaylistResource(this.tag).then(res => {
+        if (res.status === 200) {
+          this.list = res.data.playlists
+        }
+      })
+    }
   },
   components: {
     XHeader,

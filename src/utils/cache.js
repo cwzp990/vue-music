@@ -9,6 +9,8 @@ const PLAY_MAX_LEN = 200
 const FAVORITE_KEY = '__favorite__'
 const FAVORITE_MAX_LEN = 200
 
+const CATEGORY_KEY = '__category__'
+
 function insertArray (arr, val, compare, maxLen) {
   const index = arr.findIndex(compare)
   if (index === 0) {
@@ -90,4 +92,12 @@ export function deleteFavorite (song) {
 
 export function loadFavorite () {
   return storage.get(FAVORITE_KEY, [])
+}
+
+export function saveCategory (category) {
+  storage.set(CATEGORY_KEY, category)
+}
+
+export function loadCategory () {
+  return storage.get(CATEGORY_KEY, '')
 }

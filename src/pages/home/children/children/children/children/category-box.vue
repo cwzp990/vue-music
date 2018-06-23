@@ -4,7 +4,7 @@
     <div class="top">
       <h2><svg-icon :icon-class="icon"></svg-icon><p>{{title}}</p></h2>
       <ul class="lists">
-        <li v-for="(item, index) in list" v-if="index < 6" :key="index" class="list-item-t" @click="selected">
+        <li v-for="(item, index) in list" v-if="index < 6" :key="index" class="list-item-t" @click="selectItem($event)">
           <svg-icon icon-class="hot" v-show="item.hot"></svg-icon>
           {{item.name}}
           <svg-icon icon-class="selected-triangle" v-show="tick"></svg-icon>
@@ -13,7 +13,7 @@
     </div>
     <div class="down">
       <ul class="lists">
-        <li v-for="(item, index) in list" v-if="index > 5" :key="index" class="list-item-d" @click="selected">
+        <li v-for="(item, index) in list" v-if="index > 5" :key="index" class="list-item-d" @click="selectItem($event)">
           <svg-icon icon-class="hot" v-show="item.hot"></svg-icon>
           {{item.name}}
           <svg-icon icon-class="selected-triangle" v-show="tick"></svg-icon>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import {saveCategory, loadCategory} from 'utils/cache'
 export default {
   data () {
     return {
@@ -44,9 +45,19 @@ export default {
       default: () => []
     }
   },
+  created () {
+    this.getCategory()
+  },
   methods: {
-    selected () {
-      this.tick = !this.tick
+    getCategory () {
+    },
+    selectItem (event) {
+      let category = event.currentTarget.innerText
+      saveCategory(category)
+      this.gotoAddress('/home/list')
+    },
+    gotoAddress (path) {
+      this.$router.push(path)
     }
   }
 }
