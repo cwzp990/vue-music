@@ -6,32 +6,22 @@
         排行榜
         <svg-icon icon-class="playing" slot="right"></svg-icon>
       </x-header>
-      <div class="scroll-wrapper">
-        <scroll ref="scroll" class="scroll">
-          <div>
-            <h3 class="title vux-1px-l">
-              云音乐官方榜
-            </h3>
-            <ul style="overflow: hidden;">
-              <li v-for="(item, index) in officialList" :key="index" class="list-item" @click="selectItem(item)">
-                <div class="img-wrapper">
-                  <img :src="item.data.playlist.coverImgUrl" width="100%" height="100%">
-                  <span class="update">每周四更新</span>
-                </div>
-                <ul class="song-lists">
-                  <li v-for="(song, index) in item.data.playlist.tracks" :key="song.id" v-if="index < 3" class="song-item">
-                    {{index + 1}}. {{song.name}} -
-                    <p class="singer">
-                      <span v-for="singer in song.ar" :key="singer.id">{{singer.name}}</span>
-                    </p>
-                  </li>
-                </ul>
+      <scroll>
+        <h3 class="title">云音乐官方榜</h3>
+        <ul>
+          <li v-for="(item, index) in officialList" :key="index" class="list-item">
+            <div class="img-wrapper">
+              <img :src="item.playlist.coverImgUrl" width="100%" height="100%">
+              <p class="update">{{new Date(item.playlist.updateTime).getDay() === new Date().getDay()?'每天更新':'每周'+ new Date(item.playlist.updateTime).getDay() + '更新'}}</p>
+            </div>
+            <ul class="song-lists">
+              <li v-for="(song, index) in item.playlist.tracks" :key="song.id" v-if = "index < 3" class="song-item">
+                {{index + 1}}. {{song.name}}
               </li>
             </ul>
-          </div>
-        </scroll>
-      </div>
-      <!-- <h3 class="title">全球榜</h3> -->
+          </li>
+        </ul>
+      </scroll>
     </div>
   </transition>
 </template>
@@ -50,6 +40,7 @@ export default {
   },
   created () {
     this.getData()
+    console.log(this.officialList)
   },
   methods: {
     // axios同时发送多个请求
@@ -63,10 +54,10 @@ export default {
         ])
         .then(
           axios.spread((res1, res2, res3, res4) => {
-            this.officialList.surge = res1
-            this.officialList.new = res2
-            this.officialList.original = res3
-            this.officialList.hot = res4
+            this.officialList.surge = res1.data
+            this.officialList.new = res2.data
+            this.officialList.original = res3.data
+            this.officialList.hot = res4.data
           })
         )
     },
@@ -103,45 +94,42 @@ export default {
       }
     }
   }
-  .scroll-wrapper {
+  .list-wrapper {
     @include wh(100%, 100%);
     overflow: hidden;
-    .scroll {
-      height: 100%;
-      .title {
-        padding-left: 0.5rem;
-        @include sc(0.7rem, #000);
-        line-height: 2rem;
-        border-color: $juzi;
-      }
-      .list-item {
-        display: flex;
-        margin-bottom: 0.3rem;
-        height: 5rem;
-        .img-wrapper {
-          flex: 0 0 5rem;
-          position: relative;
-          @include wh(5rem, 5rem);
-          margin-right: 0.3rem;
-          .update {
-            position: absolute;
-            left: 0.3rem;
-            bottom: 0.3rem;
-            @include sc(0.5rem, #fff);
-          }
+    .title {
+      padding-left: 0.5rem;
+      @include sc(0.7rem, #000);
+      line-height: 2rem;
+      border-color: $juzi;
+    }
+    .list-item {
+      display: flex;
+      margin-bottom: 0.3rem;
+      height: 5rem;
+      .img-wrapper {
+        flex: 0 0 5rem;
+        position: relative;
+        @include wh(5rem, 5rem);
+        margin-right: 0.3rem;
+        .update {
+          position: absolute;
+          left: 0.3rem;
+          bottom: 0.3rem;
+          @include sc(0.5rem, #fff);
         }
-        .song-lists {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          .song-item {
-            @include sc(0.7rem, #777);
-            margin-bottom: 0.5rem;
-            @include nowrap();
-            .singer {
-              display: inline;
-            }
+      }
+      .song-lists {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .song-item {
+          @include sc(0.7rem, #777);
+          margin-bottom: 0.5rem;
+          @include nowrap();
+          .singer {
+            display: inline;
           }
         }
       }

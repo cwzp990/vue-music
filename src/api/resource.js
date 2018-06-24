@@ -10,7 +10,7 @@ const apiMusic = {
   search: '/search', // 搜素音乐
   hotKeys: '/search/hot', // 热搜
   lyric: '/lyric', // 获取歌词
-  comment: '/comment', // 获取评论
+  comment: '/comment/music', // 获取评论
   album: '/album', //  获取专辑内容
   artists: '/artists', // 获取歌手单曲列表
   artistAlbum: '/artist/album', // 获取歌手专辑列表

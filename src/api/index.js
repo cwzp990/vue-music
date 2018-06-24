@@ -125,10 +125,11 @@ export const api = {
   },
 
   // 获取评论， id为单曲id
-  getCommentResource (id) {
+  getCommentResource (id, limit) {
     return axios.get(CommentResource, {
       params: {
-        id: id
+        id: id,
+        limit: limit || 30
       }
     })
   },

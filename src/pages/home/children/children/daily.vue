@@ -1,17 +1,24 @@
 <!-- 每日推荐 -->
 <template>
   <transition name="fade">
-    <div class="list">
+    <div class="daily">
       <x-header :left-options="{backText: ''}">
         每日推荐
         <svg-icon icon-class="playing" slot="right"></svg-icon>
       </x-header>
+      <div class="title">
+        <svg-icon icon-class="date"></svg-icon>
+        根据你的音乐口味生成，每天6:00更新
+        <span class="date">{{date}}</span>
+      </div>
+      <!-- <list-details></list-details> -->
     </div>
   </transition>
 </template>
 
 <script>
 import { XHeader } from 'vux'
+import ListDetails from 'components/list-details/list-details'
 import { api } from 'api/index'
 export default {
   data () {
@@ -22,6 +29,11 @@ export default {
   created () {
     this.getData()
   },
+  computed: {
+    date () {
+      return new Date().getDate()
+    }
+  },
   methods: {
     getData () {
       api.getRecommendSongsResource().then(res => {
@@ -30,14 +42,15 @@ export default {
     }
   },
   components: {
-    XHeader
+    XHeader,
+    ListDetails
   }
 }
 </script>
 
 <style lang='scss' scoped>
 @import '../../../../style/mixin';
-.list {
+.daily {
   position: fixed;
   top: 0;
   bottom: 1.95rem;
@@ -49,6 +62,27 @@ export default {
       .svg-icon {
         @include svg(0.9rem, #fff);
       }
+    }
+  }
+  .title {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    box-sizing: border-box;
+    padding: 0 .5rem;
+    @include wh(100%, 4rem);
+    @include sc(.5rem, #b2b2b2);
+    .svg-icon {
+      @include svg(2.5rem, #000);
+      margin-bottom: .5rem;
+    }
+    .date {
+      position: absolute;
+      top: 1.3rem;
+      left: 1.2rem;
+      @include sc(.8rem, #000);
     }
   }
 }

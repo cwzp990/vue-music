@@ -13,7 +13,7 @@
           <ul class="btn">
             <li class="btn-item"><svg-icon icon-class="fav"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="download"></svg-icon></li>
-            <li class="btn-item"><svg-icon icon-class="comment"></svg-icon></li>
+            <li class="btn-item" @click="onCommentList"><svg-icon icon-class="comment"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="more"></svg-icon></li>
           </ul>
         </div>
@@ -112,6 +112,12 @@ export default {
         len++
       }
       return num
+    },
+    onCommentList () {
+      console.log(1)
+      this.$router.push({
+        path: `/comment/${this.currentSong.id}`
+      })
     },
     ...mapMutations({
       setFullScreen: 'SET_FULL_SCREEN',

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {saveCategory, loadCategory} from 'utils/cache'
+import { saveCategory } from 'utils/cache'
 export default {
   data () {
     return {

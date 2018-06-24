@@ -24,6 +24,7 @@ const singerVideo = () => import('components/singer/children/children/singer-vid
 const singerInfo = () => import('components/singer/children/children/singer-info')
 const songList = () => import('components/song-list/song-list')
 const songListDetails = () => import('components/song-list/children/songlist-details')
+const comment = () => import('components/comment/comment')
 
 Vue.use(Router)
 
@@ -83,6 +84,7 @@ export default new Router({
       children: [
         {path: '/songList/:id/details', component: songListDetails}
       ]
-    }
+    },
+    {path: '/comment/:id', component: comment}
   ]
 })

@@ -5,9 +5,9 @@
       <div class="left">
         <svg-icon icon-class="play"></svg-icon>
         播放全部
-        <span class="number">(共{{count}}首)</span>
+        <span class="number" v-show="count">(共{{count}}首)</span>
       </div>
-      <div class="right">
+      <div class="right" v-show="collect">
         <svg-icon icon-class="add"></svg-icon>
         收藏({{collect}}万)
       </div>
