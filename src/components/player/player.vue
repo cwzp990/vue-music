@@ -2,25 +2,25 @@
 <template>
   <div class="player" v-show="fullScreen">
     <div class="normal-player">
-      <v-header :title="currentSong.name" :subhead="currentSong.artists" :isPlayer="true" @back="back"></v-header>
+      <v-header :title="currentSong.name" :subhead="currentSong.ar" :isPlayer="true" @back="back"></v-header>
       <div class="middle">
         <div class="cd-wrapper">
-          <div class="cd" :class="CDCls" v-if="currentSong.album">
-            <img :src="currentSong.album.blurPicUrl" width="100%" height="100%" class="cd-img">
+          <div class="cd" :class="CDCls" v-if="currentSong.al">
+            <img :src="currentSong.al.picUrl" width="100%" height="100%" class="cd-img">
           </div>
         </div>
         <div>
           <ul class="btn">
             <li class="btn-item"><svg-icon icon-class="fav"></svg-icon></li>
             <li class="btn-item"><svg-icon icon-class="download"></svg-icon></li>
-            <li class="btn-item" @click="onCommentList"><svg-icon icon-class="comment"></svg-icon></li>
+            <li class="btn-item comment" @click="onCommentList"><svg-icon icon-class="comment"></svg-icon><span class="count">{{comment > 9999 ? '1w+' : comment}}</span></li>
             <li class="btn-item"><svg-icon icon-class="more"></svg-icon></li>
           </ul>
         </div>
       </div>
       <div class="footer">
-        <div class="progress-wrapper" v-if="currentSong.mMusic">
-          <progress-bar :start="formate(currentTime)" :end="formate(currentSong.mMusic.playTime / 1000)" :percent="percent" @percentChanging="onProgressChange"></progress-bar>
+        <div class="progress-wrapper" v-if="currentSong.m">
+          <progress-bar :start="formate(currentTime)" :end="formate(currentSong.dt / 1000)" :percent="percent" @percentChanging="onProgressChange"></progress-bar>
         </div>
         <div>
           <ul class="btn">
@@ -33,8 +33,8 @@
         </div>
       </div>
     </div>
-    <div class="bg-img" v-if="currentSong.album">
-      <img :src="currentSong.album.blurPicUrl" width="100%" height="100%">
+    <div class="bg-img" v-if="currentSong.al">
+      <img :src="currentSong.al.picUrl" width="100%" height="100%">
     </div>
     <audio ref="audio" :src="songUrl" @canplay="ready" @error="error" @timeupdate="updateTime">
     </audio>
@@ -44,17 +44,25 @@
 <script>
 import VHeader from 'components/header/header'
 import ProgressBar from 'components/progress-bar/progress-bar'
+import { api } from 'api/index'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
       songReady: false,
-      currentTime: 0
+      currentTime: 0,
+      comment: 0
     }
   },
   mounted () {
+    this.getData()
   },
   methods: {
+    getData () {
+      api.getCommentResource(this.currentSong.id).then(res => {
+        this.comment = res.data.total
+      })
+    },
     back () {
       this.setFullScreen(false)
     },
@@ -100,7 +108,7 @@ export default {
       return `${minute}:${second}`
     },
     onProgressChange (percent) {
-      this.$refs.audio.currentTime = this.currentSong.mMusic.playTime / 1000 * percent
+      this.$refs.audio.currentTime = this.currentSong.dt / 1000 * percent
       if (!this.playing) {
         this.togglePlaying()
       }
@@ -114,7 +122,6 @@ export default {
       return num
     },
     onCommentList () {
-      console.log(1)
       this.$router.push({
         path: `/comment/${this.currentSong.id}`
       })
@@ -136,7 +143,7 @@ export default {
       return this.songReady ? '' : 'disable'
     },
     percent () {
-      return this.currentTime / (this.currentSong.mMusic.playTime / 1000)
+      return this.currentTime / (this.currentSong.dt / 1000)
     },
     songUrl () {
       return `http://music.163.com/song/media/outer/url?id=${this.currentSong.id}.mp3`
@@ -215,6 +222,15 @@ export default {
           text-align: center;
           .svg-icon {
             @include svg(1.5rem, #fff);
+          }
+        }
+        .comment {
+          position: relative;
+          .count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            @include sc(.5rem, #fff);
           }
         }
       }

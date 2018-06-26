@@ -16,12 +16,12 @@
           </div>
           <div class="author">
             <h3 class="title">{{songList.name}}</h3>
-            <div class="authorInfo">
-              <div class="avatar-wrapper" v-if="songList.creator">
+            <div class="authorInfo" v-if="songList.creator">
+              <div class="avatar-wrapper">
                 <img :src="songList.creator.avatarUrl" width="100%" height="100%">
                 <svg-icon icon-class="star"></svg-icon>
               </div>
-              <div class="name" v-if="songList.creator">{{songList.creator.nickname}}</div>
+              <div class="name">{{songList.creator.nickname}}</div>
               <svg-icon icon-class="right"></svg-icon>
             </div>
           </div>
@@ -85,7 +85,7 @@ export default {
     getData () {
       api.getPlaylistDetailResource(this.disc.id).then(res => {
         if (res.status === 200) {
-          this.songList = res.data.result
+          this.songList = res.data.playlist
         }
       })
     },
