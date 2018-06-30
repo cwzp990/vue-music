@@ -6,7 +6,7 @@
       <svg-icon icon-class="playing" slot="right" :class="{play: playing, pause: !playing}"></svg-icon>
       <span>视频</span>
     </x-header>
-    <scroll :probeType="3" direction="horizontal">
+    <scroll>
       <ul class="classify">
         <li>推荐</li>
         <li>音乐</li>
@@ -16,6 +16,7 @@
         <li>舞蹈</li>
         <li>游戏</li>
       </ul>
+      <video-list></video-list>
     </scroll>
   </div>
 </template>
@@ -24,13 +25,15 @@
 import { XHeader } from 'vux'
 import { mapGetters } from 'vuex'
 import Scroll from 'components/scroll/scroll'
+import VideoList from 'pages/video/children/video-list'
 export default {
   computed: {
     ...mapGetters(['userid', 'playing', 'playlist'])
   },
   components: {
     XHeader,
-    Scroll
+    Scroll,
+    VideoList
   }
 }
 </script>
@@ -54,8 +57,6 @@ export default {
     }
   }
   .list-wrapper {
-    @include wh(100%, 1rem);
-    overflow: hidden;
     .classify {
       @include wh(200%, 1rem);
       li {
