@@ -60,7 +60,6 @@ export default {
       api.getCategoryPlayList().then(res => {
         if (res.status === 200) {
           this.list = this._normalizeData(res.data)
-          console.log(this.list)
         }
       })
     },

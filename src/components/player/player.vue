@@ -81,7 +81,6 @@ export default {
       this.songReady = false
     },
     next () {
-      console.log(this.currentSong.id)
       let index = this.currentIndex + 1
       if (index === this.playlist.length) {
         index = 0

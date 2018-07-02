@@ -2,6 +2,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import VueVideoPlayer from 'vue-video-player'
 import { ToastPlugin } from 'vux'
+import axios from 'axios'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -9,6 +10,8 @@ import './style/reset.scss'
 import 'video.js/dist/video-js.css'
 import './utils/rem'
 import './icons'
+
+axios.defaults.withCredentials = true
 
 Vue.use(ToastPlugin)
 Vue.use(VueVideoPlayer)

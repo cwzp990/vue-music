@@ -40,7 +40,6 @@ export default {
   },
   created () {
     this.getData()
-    console.log(this.officialList)
   },
   methods: {
     // axios同时发送多个请求

@@ -88,7 +88,6 @@ export default {
       // })
     },
     gotoAddress (path) {
-      console.log(1)
       this.$router.push(path)
     }
   },

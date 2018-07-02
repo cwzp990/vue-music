@@ -25,7 +25,6 @@ import { Tab, TabItem } from 'vux'
 import { mapGetters } from 'vuex'
 export default {
   created () {
-    console.log('singer is', this.singer)
   },
   computed: {
     ...mapGetters(['singer'])

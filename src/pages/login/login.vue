@@ -32,11 +32,13 @@ export default {
   methods: {
     login () {
       if (this.loginForm.username === '' || this.loginForm.password === '') {
-        this.this.$vux.toast.text('请输入用户名和密码', 'top')
+        this.$vux.toast.text('请输入用户名和密码', 'top')
         return
       }
-      this.$store.dispatch('login', this.loginForm).then(res => {
+      this.$store.dispatch('login', this.loginForm).then(() => {
         this.$router.push('/home')
+      }).catch(err => {
+        this.$vux.toast.text(err, 'top')
       })
     }
   },

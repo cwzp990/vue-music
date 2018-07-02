@@ -37,7 +37,6 @@ export default {
   methods: {
     getData () {
       api.getRecommendSongsResource().then(res => {
-        console.log(res)
       })
     }
   },
