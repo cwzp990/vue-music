@@ -26,8 +26,12 @@
               </div>
             </div>
             <div class="right">
-              <svg-icon icon-class="play_box"></svg-icon>
-              <svg-icon icon-class="more"></svg-icon>
+              <span class="svg-wrapper">
+                <svg-icon icon-class="play_box"></svg-icon>
+              </span>
+              <span class="svg-wrapper" @click.stop="onMore(item)">
+                <svg-icon icon-class="more"></svg-icon>
+              </span>
             </div>
           </li>
         </ul>
@@ -56,6 +60,10 @@ export default {
   methods: {
     selectItem (item, index) {
       this.$emit('select', item, index)
+    },
+    onMore (item) {
+      console.log('click')
+      this.$emit('more', item)
     }
   },
   components: {
@@ -123,9 +131,12 @@ export default {
         .right {
           display: flex;
           align-items: center;
-          .svg-icon {
-            @include svg(0.8rem, #b2b2b2);
-            margin-left: 0.5rem;
+          .svg-wrapper {
+            @include wh(1.5rem, 1.5rem);
+            .svg-icon {
+              @include svg(0.8rem, #b2b2b2);
+              margin-left: 0.5rem;
+            }
           }
         }
       }

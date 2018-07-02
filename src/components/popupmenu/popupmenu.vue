@@ -1,39 +1,73 @@
 <template>
 	<div>
-		<popup-header right-text="开通音乐包" :title="title"></popup-header>
-		<group>
-      <x-switch v-model="show" :title="显示/隐藏"></x-switch>
-    </group>
 		<div v-transfer-dom>
-      <popup v-model="show">
+      <popup v-model="menu">
         <!-- group already has a top border, so we need to hide header's bottom border-->
         <popup-header
-        :left-text="$t('cancel')"
-        :right-text="$t('done')"
-        :title="$t('Please select your card')"
+        left-text=""
+        right-text="开通音乐包"
+        :title="title"
         :show-bottom-border="false"
-        @on-click-left="show1 = false"
-        @on-click-right="show1 = false"></popup-header>
+        @on-click-right="onMembership"></popup-header>
         <group gutter="0">
-          <radio :options="[$t('Card 1'), $t('Card 2'), $t('Card 3'), $t('Card 4')]"></radio>
+          <radio :options="options"></radio>
         </group>
       </popup>
     </div>
+		<toast v-model="tips" type="text" width="20em">无法购买哦</toast>
 	</div>
 </template>
 
 <script>
+import { PopupHeader, Popup, TransferDom, Group, Radio } from 'vux'
 export default {
+	directives: {
+		TransferDom
+	},
 	props: {
 		title: {
 			type: String,
 			default: ''
+		},
+		song: {
+			type: Object,
+			default: () => {}
+		},
+		menu: {
+			type: Boolean,
+			default: false
+		},
+		tips: {
+			type: Boolean,
+			default: false
 		}
 	},
 	data () {
 		return {
-			show: false
+			options: [
+				'收藏到歌单',
+				'相似推荐',
+				`歌手：${song.singer}`,
+				`专辑：${song.album}`,
+				`来源：${song.list}`,
+				'音质：自动选择',
+				'查看视频',
+				'定时关闭',
+				'打开驾驶模式'
+			]
 		}
+	},
+	methods: {
+		onMembership () {
+			this.tips = true
+		}
+	},
+	components: {
+		PopupHeader,
+		Popup,
+		TransferDom,
+		Group,
+		Radio
 	}
 }
 </script>
