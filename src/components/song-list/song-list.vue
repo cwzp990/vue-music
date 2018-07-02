@@ -33,7 +33,7 @@
               <svg-icon icon-class="collect"></svg-icon>
               <span class="text">{{songList.subscribedCount}}</span>
             </li> -->
-            <li class="item">
+            <li class="item" @click="onCommentList">
               <svg-icon icon-class="comment"></svg-icon>
               <span class="text">{{songList.commentCount}}</span>
             </li>
@@ -99,6 +99,11 @@ export default {
       this.$router.push({
         path: `/songList/${path}/details`,
         query: {details: this.songList}
+      })
+    },
+    onCommentList () {
+      this.$router.push({
+        path: `/comment/list/${this.songList.id}`
       })
     },
     back () {

@@ -85,6 +85,7 @@ export default new Router({
         {path: '/songList/:id/details', component: songListDetails}
       ]
     },
-    {path: '/comment/:id', component: comment}
+    {path: '/comment/song/:id', component: comment},
+    {path: '/comment/list/:id', component: comment}
   ]
 })

@@ -45,9 +45,17 @@ export default {
   },
   methods: {
     getData () {
-      api.getCommentResource(this.$route.params.id).then(res => {
-        this.comment = res.data
-      })
+      let url = this.$route.path
+      if (url.indexOf('song') > 0) {
+        api.getCommentResource(this.$route.params.id).then(res => {
+          this.comment = res.data
+        })
+      } else {
+        api.getPlaylistCommentResource(this.$route.params.id).then(res => {
+          console.log(res)
+          this.comment = res.data
+        })
+      }
     }
   },
   components: {
