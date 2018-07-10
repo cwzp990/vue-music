@@ -59,7 +59,7 @@
       <div class="list-down">
         <list-details @select="selectItem" @more="selectMore" :data="songList.tracks" :count="songList.trackCount" :collect="songList.subscribedCount"></list-details>
       </div>
-      <popupmenu title="江南" :song="{}" :menu="_switch" :tips="_switch"></popupmenu>
+      <popupmenu title="江南" :song="{}" :menu="switchs" :tips="switchs"></popupmenu>
       <router-view></router-view>
     </div>
   </transition>
@@ -75,7 +75,7 @@ export default {
   data () {
     return {
       songList: {},
-      _switch: false
+      switchs: false
     }
   },
   created () {
@@ -99,7 +99,7 @@ export default {
       })
     },
     selectMore (item) {
-      this._switch = true
+      this.switchs = true
       console.log(item)
     },
     gotoAddress (path) {

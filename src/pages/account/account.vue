@@ -17,7 +17,7 @@
                 <p class="grade">Lv.{{userinfo.level}}</p>
               </div>
             </div>
-            <div class="sign-in">
+            <div class="sign-in" @click="signin">
               签到
             </div>
           </div>
@@ -151,7 +151,8 @@ import { api } from 'api/index'
 export default {
   data () {
     return {
-      userinfo: {}
+      userinfo: {},
+      show: false
     }
   },
   created () {
@@ -165,6 +166,18 @@ export default {
       api.getUserDetails(this.userid).then(res => {
         if (res.status === 200) {
           this.userinfo = res.data
+        }
+      })
+    },
+    signin () {
+      var that = this
+      api.getDailySigninResource(1).then(res => {
+        if (res.status === 200) {
+          if (res.data.code === 200) {
+            that.$vux.toast.text('签到成功', 'top')
+          } else {
+            that.$vux.toast.text(res.data.msg, 'center')
+          }
         }
       })
     },

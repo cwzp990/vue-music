@@ -3,6 +3,7 @@ const API_ROOT = 'http://localhost:3000'
 const apiMusic = {
   loginCellphone: '/login/cellphone', // 手机登陆
   userDetails: '/user/detail', // 用户详情
+  userInfos: '/user/subcount', // 用户信息
   banner: '/banner',
   userPlaylist: '/user/playlist', // 获取用户歌单
   playlistDetail: '/playlist/detail', // 获取歌单详情
@@ -11,6 +12,7 @@ const apiMusic = {
   hotKeys: '/search/hot', // 热搜
   lyric: '/lyric', // 获取歌词
   comment: '/comment/music', // 获取评论
+  liked: 'comment/like', // 评论点赞
   album: '/album', //  获取专辑内容
   artists: '/artists', // 获取歌手单曲列表
   artistAlbum: '/artist/album', // 获取歌手专辑列表
@@ -44,6 +46,7 @@ const apiMusic = {
 
 export const LoginCellphoneResource = API_ROOT.concat(apiMusic.loginCellphone)
 export const UserDetails = API_ROOT.concat(apiMusic.userDetails)
+export const UserInfos = API_ROOT.concat(apiMusic.userInfos)
 export const Banner = API_ROOT.concat(apiMusic.banner)
 export const UserPlaylistResource = API_ROOT.concat(apiMusic.userPlaylist)
 export const PlaylistDetailResource = API_ROOT.concat(apiMusic.playlistDetail)
@@ -52,6 +55,7 @@ export const SearchResource = API_ROOT.concat(apiMusic.search)
 export const HotKeys = API_ROOT.concat(apiMusic.hotKeys)
 export const LyricResource = API_ROOT.concat(apiMusic.lyric)
 export const CommentResource = API_ROOT.concat(apiMusic.comment)
+export const CommentLiked = API_ROOT.concat(apiMusic.liked)
 export const AlbumResource = API_ROOT.concat(apiMusic.album)
 export const ArtistsResource = API_ROOT.concat(apiMusic.artists)
 export const ArtistAlbumResource = API_ROOT.concat(apiMusic.artistAlbum)

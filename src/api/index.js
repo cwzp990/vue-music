@@ -3,6 +3,7 @@ import axios from 'axios'
 import {
   LoginCellphoneResource,
   UserDetails,
+  UserInfos,
   Banner,
   UserPlaylistResource,
   PlaylistDetailResource,
@@ -11,6 +12,7 @@ import {
   HotKeys,
   LyricResource,
   CommentResource,
+  CommentLiked,
   AlbumResource,
   ArtistsResource,
   ArtistAlbumResource,
@@ -59,6 +61,11 @@ export const api = {
         uid: id
       }
     })
+  },
+
+  // 获取用户信息，歌单、收藏、mv、dj数量
+  getUserInfos () {
+    return axios.get(UserInfos)
   },
 
   getBanner () {
@@ -130,6 +137,18 @@ export const api = {
       params: {
         id: id,
         limit: limit || 30
+      }
+    })
+  },
+
+  // 评论点赞
+  getCommentLiked (songid, cid, liked, type) {
+    return axios.get(CommentLiked, {
+      params: {
+        id: songid,
+        cid: cid,
+        t: liked,
+        type: type
       }
     })
   },

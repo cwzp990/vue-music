@@ -25,7 +25,7 @@ export default {
     return {
       loginForm: {
         username: '18655323262',
-        password: 'cwz100812'
+        password: 'cwzp990.!'
       }
     }
   },

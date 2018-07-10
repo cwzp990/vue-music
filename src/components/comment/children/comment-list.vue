@@ -13,7 +13,7 @@
               <p class="date">{{new Date(item.time).toLocaleString().substring(0,9)}}</p>
             </div>
           </div>
-          <div class="like">
+          <div class="like" @click="onLiked(item.commentId)">
             <span>{{item.likedCount > 9999 ? (item.likedCount / 10000).toFixed(1) + '万' : item.likedCount === 0 ? '' : item.likedCount }}</span>
             <svg-icon icon-class="like" :class="liked"></svg-icon>
           </div>
@@ -27,16 +27,31 @@
 </template>
 
 <script>
+import { api } from 'api/index'
 export default {
   props: {
     data: {
       type: Array,
       default: () => []
+    },
+    songid: {
+      type: String,
+      default: ''
     }
   },
   computed: {
     liked () {
       return this.data.liked ? 'red-like' : 'gray-like'
+    }
+  },
+  methods: {
+    // songid: 歌曲id cid：评论id t： 1点赞 0取消 type： 0歌曲 1mv 2歌单 3专辑 4电台
+    onLiked (cid) {
+      api.getCommentLiked(this.songid, cid, 1, 0).then(res => {
+        if (res.status === 200) {
+          console.log(res)
+        }
+      })
     }
   }
 }

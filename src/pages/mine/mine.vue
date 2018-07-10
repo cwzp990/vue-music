@@ -24,13 +24,13 @@
             <div class="list-item vux-1px-b">
               <svg-icon icon-class="radio"></svg-icon>
               <span class="title">我的电台</span>
-              <span class="count">0</span>
+              <span class="count">{{count.djRadioCount}}</span>
               <svg-icon icon-class="right"></svg-icon>
             </div>
             <div class="list-item vux-1px-b">
               <svg-icon icon-class="fav"></svg-icon>
               <span class="title">我的收藏</span>
-              <span class="count">0</span>
+              <span class="count">{{count.artistCount + count.mvCount}}</span>
               <svg-icon icon-class="right"></svg-icon>
             </div>
           </div>
@@ -65,7 +65,8 @@ import { mapGetters, mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      userList: []
+      userList: [],
+      count: {}
     }
   },
   created () {
@@ -79,6 +80,11 @@ export default {
       api.getUserPlaylistResource(this.userid).then(res => {
         if (res.status === 200) {
           this.userList = res.data.playlist
+        }
+      })
+      api.getUserInfos().then(res => {
+        if (res.status === 200) {
+          this.count = res.data
         }
       })
     },

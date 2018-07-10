@@ -17,9 +17,9 @@
           </div>
         </div>
         <h3 class="comment-title">精彩评论</h3>
-        <comment-list :data="comment.hotComments"></comment-list>
+        <comment-list :data="comment.hotComments" :songid="songid"></comment-list>
         <h3 class="comment-title">最新评论{{comment.total}}</h3>
-        <comment-list :data="comment.comments"></comment-list>
+        <comment-list :data="comment.comments" :songid="songid"></comment-list>
       </div>
     </scroll>
   </div>
@@ -41,7 +41,10 @@ export default {
     this.getData()
   },
   computed: {
-    ...mapGetters(['userid', 'playing', 'playlist'])
+    ...mapGetters(['userid', 'playing', 'playlist']),
+    songid () {
+      return this.$route.params.id
+    }
   },
   methods: {
     getData () {
