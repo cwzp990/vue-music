@@ -14,7 +14,7 @@
             </div>
             <svg-icon icon-class="about"></svg-icon>
           </div>
-          <div class="author">
+          <div class="author" @click.stop="authorInfo(songList.creator.userId)">
             <h3 class="title">{{songList.name}}</h3>
             <div class="authorInfo" v-if="songList.creator">
               <div class="avatar-wrapper">
@@ -106,6 +106,12 @@ export default {
       this.$router.push({
         path: `/songList/${path}/details`,
         query: {details: this.songList}
+      })
+    },
+    authorInfo (id) {
+      this.$router.push({
+        path: `/userinfo/${id}`,
+        params: {id: id}
       })
     },
     onCommentList () {

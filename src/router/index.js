@@ -25,6 +25,7 @@ const singerInfo = () => import('components/singer/children/children/singer-info
 const songList = () => import('components/song-list/song-list')
 const songListDetails = () => import('components/song-list/children/songlist-details')
 const comment = () => import('components/comment/comment')
+const userinfo = () => import('components/userinfo/userinfo')
 
 Vue.use(Router)
 
@@ -74,7 +75,8 @@ export default new Router({
               ]
             }
           ]
-        }
+        },
+        {path: '/userinfo/:id', component: userinfo}
       ]
     },
     {path: '/search', component: search},
