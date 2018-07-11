@@ -12,7 +12,7 @@ const apiMusic = {
   hotKeys: '/search/hot', // 热搜
   lyric: '/lyric', // 获取歌词
   comment: '/comment/music', // 获取评论
-  liked: 'comment/like', // 评论点赞
+  liked: '/comment/like', // 评论点赞
   album: '/album', //  获取专辑内容
   artists: '/artists', // 获取歌手单曲列表
   artistAlbum: '/artist/album', // 获取歌手专辑列表

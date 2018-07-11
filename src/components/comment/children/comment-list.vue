@@ -2,7 +2,7 @@
 <template>
   <div class="comment-list vux-1px-b">
     <ul>
-      <li v-for="(item, index) in data" :key="index" class="list-item">
+      <li v-for="(item, index) in comments" :key="index" class="list-item">
         <div class="up">
           <div class="user">
             <div class="avatar">
@@ -13,9 +13,9 @@
               <p class="date">{{new Date(item.time).toLocaleString().substring(0,9)}}</p>
             </div>
           </div>
-          <div class="like" @click="onLiked(item.commentId)">
+          <div class="like" @click="onLiked(item.commentId, $event, index)" :class="[(item.liked ? 'liked' : 'dislike'),{'liked':ind1 === index},{'dislike':ind2 === index}]">
             <span>{{item.likedCount > 9999 ? (item.likedCount / 10000).toFixed(1) + '万' : item.likedCount === 0 ? '' : item.likedCount }}</span>
-            <svg-icon icon-class="like" :class="liked"></svg-icon>
+            <svg-icon icon-class="like"></svg-icon>
           </div>
         </div>
         <div class="content">
@@ -30,7 +30,7 @@
 import { api } from 'api/index'
 export default {
   props: {
-    data: {
+    comments: {
       type: Array,
       default: () => []
     },
@@ -39,19 +39,39 @@ export default {
       default: ''
     }
   },
-  computed: {
-    liked () {
-      return this.data.liked ? 'red-like' : 'gray-like'
+  data () {
+    return {
+      type: -1,
+      ind1: '',
+      ind2: ''
     }
   },
   methods: {
     // songid: 歌曲id cid：评论id t： 1点赞 0取消 type： 0歌曲 1mv 2歌单 3专辑 4电台
-    onLiked (cid) {
-      api.getCommentLiked(this.songid, cid, 1, 0).then(res => {
-        if (res.status === 200) {
-          console.log(res)
-        }
-      })
+    onLiked (cid, e, index) {
+      let classValue = e.currentTarget.className
+      console.log(classValue.indexOf('liked'))
+      if (classValue.indexOf('liked') > -1) {
+        api.getCommentLiked(this.songid, cid, 0, 0).then(res => {
+          if (res.status === 200) {
+            if (res.data.code === 200) {
+              this.ind2 = index
+            } else {
+              this.$vux.toast.text(res.data.msg, 'top')
+            }
+          }
+        })
+      } else {
+        api.getCommentLiked(this.songid, cid, 1, 0).then(res => {
+          if (res.status === 200) {
+            if (res.data.code === 200) {
+              this.ind1 = index
+            } else {
+              this.$vux.toast.text(res.data.msg, 'top')
+            }
+          }
+        })
+      }
     }
   }
 }
@@ -87,12 +107,15 @@ export default {
           }
         }
       }
-      .like {
-        @include sc(.5rem, #000);
-        .red-like {
+      .liked {
+        @include sc(.5rem, $juzi);
+        .svg-icon {
           @include svg(.5rem, $juzi);
         }
-        .gray-like {
+      }
+      .dislike {
+        @include sc(.5rem, #000);
+        .svg-icon {
           @include svg(.5rem, #000);
         }
       }

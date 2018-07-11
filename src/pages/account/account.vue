@@ -18,7 +18,7 @@
               </div>
             </div>
             <div class="sign-in" @click="signin">
-              签到
+              {{sign}}
             </div>
           </div>
           <div class="message">
@@ -152,6 +152,7 @@ export default {
   data () {
     return {
       userinfo: {},
+      sign: '签到',
       show: false
     }
   },
@@ -170,13 +171,13 @@ export default {
       })
     },
     signin () {
-      var that = this
       api.getDailySigninResource(1).then(res => {
         if (res.status === 200) {
           if (res.data.code === 200) {
-            that.$vux.toast.text('签到成功', 'top')
+            this.$vux.toast.text('签到成功', 'top')
+            this.sign = '已签到'
           } else {
-            that.$vux.toast.text(res.data.msg, 'center')
+            this.$vux.toast.text(res.data.msg, 'center')
           }
         }
       })

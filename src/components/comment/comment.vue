@@ -17,16 +17,20 @@
           </div>
         </div>
         <h3 class="comment-title">精彩评论</h3>
-        <comment-list :data="comment.hotComments" :songid="songid"></comment-list>
+        <comment-list :comments="comment.hotComments" :songid="songid"></comment-list>
         <h3 class="comment-title">最新评论{{comment.total}}</h3>
-        <comment-list :data="comment.comments" :songid="songid"></comment-list>
+        <comment-list :comments="comment.comments" :songid="songid"></comment-list>
       </div>
     </scroll>
+    <div class="input-wrapper">
+      <input type="text" class="comment-box" placeholder="说点什么吧，也行ta都听得到" v-model="commentVal">
+      <x-button mini class="submit" @click.native="submit">发送</x-button>
+    </div>
   </div>
 </template>
 
 <script>
-import { XHeader } from 'vux'
+import { XHeader, XButton } from 'vux'
 import { mapGetters } from 'vuex'
 import Scroll from 'components/scroll/scroll'
 import CommentList from 'components/comment/children/comment-list'
@@ -34,7 +38,8 @@ import { api } from 'api/index'
 export default {
   data () {
     return {
-      comment: {}
+      comment: {},
+      commentVal: ''
     }
   },
   created () {
@@ -55,14 +60,21 @@ export default {
         })
       } else {
         api.getPlaylistCommentResource(this.$route.params.id).then(res => {
-          console.log(res)
           this.comment = res.data
         })
+      }
+    },
+    submit () {
+      if (!this.commentVal) {
+        this.$vux.toast.text('输入不能为空', 'top')
+      } else {
+        this.$vux.toast.text('暂无对应接口', 'top')
       }
     }
   },
   components: {
     XHeader,
+    XButton,
     Scroll,
     CommentList
   }
@@ -120,6 +132,32 @@ export default {
       @include font(.4rem, 1.2rem);
       background: #d2d2d2;
       padding: 0 .5rem;
+    }
+  }
+  .input-wrapper {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 300;
+    box-sizing: border-box;
+    padding: 0 .5rem;
+    @include wh(100%, 1.7rem);
+    background: #fff;
+    .comment-box {
+      margin-top: .3rem;
+      @include wh(85%, 1rem);
+      border: .025rem solid #b2b2b2;
+      border-radius: .5rem;
+      outline: none;
+      box-sizing: border-box;
+      padding: 0 .5rem;
+      @include sc(.6rem, #000);
+    }
+    .submit {
+      position: absolute;
+      top: .3rem;
+      right: 0;
+      @include wh(2.5rem, 1rem);
     }
   }
 }
