@@ -4,6 +4,7 @@ import {
   LoginCellphoneResource,
   UserDetails,
   UserInfos,
+  UserEvent,
   Banner,
   UserPlaylistResource,
   PlaylistDetailResource,
@@ -66,6 +67,14 @@ export const api = {
   // 获取用户信息，歌单、收藏、mv、dj数量
   getUserInfos () {
     return axios.get(UserInfos)
+  },
+
+  getUserEvent (id) {
+    return axios.get(UserEvent, {
+      params: {
+        uid: id
+      }
+    })
   },
 
   getBanner () {

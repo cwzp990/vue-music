@@ -6,6 +6,7 @@ const apiMusic = {
   userInfos: '/user/subcount', // 用户信息
   banner: '/banner',
   userPlaylist: '/user/playlist', // 获取用户歌单
+  userEvent: '/user/event', // 获取用户动态
   playlistDetail: '/playlist/detail', // 获取歌单详情
   musicUrl: '/music/url', // 获取音乐url
   search: '/search', // 搜素音乐
@@ -49,6 +50,7 @@ export const UserDetails = API_ROOT.concat(apiMusic.userDetails)
 export const UserInfos = API_ROOT.concat(apiMusic.userInfos)
 export const Banner = API_ROOT.concat(apiMusic.banner)
 export const UserPlaylistResource = API_ROOT.concat(apiMusic.userPlaylist)
+export const UserEvent = API_ROOT.concat(apiMusic.userEvent)
 export const PlaylistDetailResource = API_ROOT.concat(apiMusic.playlistDetail)
 export const MusicUrlResource = API_ROOT.concat(apiMusic.musicUrl)
 export const SearchResource = API_ROOT.concat(apiMusic.search)
