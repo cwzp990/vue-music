@@ -8,8 +8,8 @@
               <img :src="item.user.avatarUrl" width="100%" height="100%">
             </div>
             <div class="info">
-              <p class="name">{{item.user.nickname}} 分享</p>
-              <p class="date">{{new Date(item.eventTime).toLocaleString().substring(0,9)}}</p>
+              <p class="name" style="color: #79C3EB">{{item.user.nickname}} <span style="color:#777">分享</span></p>
+              <p class="date" style="color:#b2b2b2">{{new Date(item.eventTime).toLocaleString().substring(0,9)}}</p>
             </div>
           </div>
         </div>
@@ -17,9 +17,12 @@
           <p class="article">{{JSON.parse(item.json).msg}}</p>
           <ul class="pic-wrapper">
             <li v-for="(pic, index) in item.pics" :key="index" class="pic-item">
-              <img :src="pic.squareUrl" :width="pic.width" :height="pic.height">
+              <img :src="pic.squareUrl" width="100%" height="100%">
             </li>
           </ul>
+        </div>
+        <div class="box-wrapper">
+          <comment-box :info="item.info"></comment-box>
         </div>
       </li>
     </ul>
@@ -27,6 +30,7 @@
 </template>
 
 <script>
+import CommentBox from 'components/comment/children/comment-box'
 export default {
   props: {
     list: {
@@ -36,6 +40,9 @@ export default {
   },
   created () {
     console.log(this.list)
+  },
+  components: {
+    CommentBox
   }
 }
 </script>
@@ -44,9 +51,9 @@ export default {
 @import '../../style/mixin';
 .event-list {
   .list-item {
-    @include wh(100%, 4rem);
     box-sizing: border-box;
     padding: 0 .5rem;
+    margin-bottom: .5rem;
     .up {
       display: flex;
       justify-content: space-between;
@@ -93,11 +100,18 @@ export default {
       }
       .pic-wrapper {
         display: flex;
+        flex-flow: wrap;
+        width: 50%;
+        margin-left: 2rem;
         .pic-item {
-          flex: 0 0 33%;
-          @include wh(33%, 5rem);
+          flex: 0 0 50%;
+          @include wh(50%, 3.7rem);
         }
       }
+    }
+    .box-wrapper {
+      margin-left: 2rem;
+      margin-top: .5rem;
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="userinfo">
     <div class="cover">
       <div class="header">
-        <svg-icon icon-class="back" @click="back"></svg-icon>
+        <span class="svg-wrapper" @click="back"><svg-icon icon-class="back"></svg-icon></span>
         <svg-icon icon-class="playing" :class="{play: playing, pause: !playing}"></svg-icon>
       </div>
       <div class="user">
@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="list">
-      <tab>
+      <tab v-if="user.profile">
         <tab-item selected @on-item-click="onItemClick">音乐</tab-item>
         <tab-item @on-item-click="onItemClick">动态{{user.profile.eventCount}}</tab-item>
         <tab-item @on-item-click="onItemClick">关于TA</tab-item>
