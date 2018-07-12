@@ -76,18 +76,18 @@ export default new Router({
             }
           ]
         },
-        {path: '/userinfo/:id', component: userinfo}
+        {path: '/userinfo', component: userinfo}
       ]
     },
     {path: '/search', component: search},
     {
-      path: '/songList/:id',
+      path: '/songList',
       component: songList,
       children: [
         {path: '/songList/:id/details', component: songListDetails}
       ]
     },
-    {path: '/comment/song/:id', component: comment},
-    {path: '/comment/list/:id', component: comment}
+    {path: '/comment/song', component: comment},
+    {path: '/comment/list', component: comment}
   ]
 })

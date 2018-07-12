@@ -6,7 +6,7 @@
         <!-- 歌单信息 -->
         <v-header title="歌单详情" @back="back"></v-header>
         <div class="info" @click="gotoAddress(songList.id)">
-          <div class="img-wrapper">
+          <div class="img-wrapper" v-if="songList">
             <img :src="songList.coverImgUrl" width="100%" height="100%">
             <div class="playCount">
               <svg-icon icon-class="earphone"></svg-icon>
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     getData () {
-      api.getPlaylistDetailResource(this.disc.id).then(res => {
+      api.getPlaylistDetailResource(this.$route.query.id).then(res => {
         if (res.status === 200) {
           this.songList = res.data.playlist
         }
@@ -114,13 +114,18 @@ export default {
     },
     authorInfo (id) {
       this.$router.push({
-        path: `/userinfo/${id}`,
-        params: {id: id}
+        path: `/userinfo`,
+        query: {
+          id: id
+        }
       })
     },
     onCommentList () {
       this.$router.push({
-        path: `/comment/list/${this.songList.id}`
+        path: `/comment/list`,
+        query: {
+          id: this.songList.id
+        }
       })
     },
     back () {

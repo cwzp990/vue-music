@@ -23,7 +23,7 @@
       </div>
     </scroll>
     <div class="input-wrapper">
-      <input type="text" class="comment-box" placeholder="说点什么吧，也行ta都听得到" v-model="commentVal">
+      <input type="text" class="comment-box" placeholder="说点什么吧，也许ta都听得到" v-model="commentVal">
       <x-button mini class="submit" @click.native="submit">发送</x-button>
     </div>
   </div>
@@ -48,18 +48,18 @@ export default {
   computed: {
     ...mapGetters(['userid', 'playing', 'playlist']),
     songid () {
-      return this.$route.params.id
+      return this.$route.query.id
     }
   },
   methods: {
     getData () {
       let url = this.$route.path
       if (url.indexOf('song') > 0) {
-        api.getCommentResource(this.$route.params.id).then(res => {
+        api.getCommentResource(this.$route.query.id).then(res => {
           this.comment = res.data
         })
       } else {
-        api.getPlaylistCommentResource(this.$route.params.id).then(res => {
+        api.getPlaylistCommentResource(this.$route.query.id).then(res => {
           this.comment = res.data
         })
       }

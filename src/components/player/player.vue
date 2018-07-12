@@ -122,7 +122,10 @@ export default {
     },
     onCommentList () {
       this.$router.push({
-        path: `/comment/song/${this.currentSong.id}`
+        path: `/comment/song`,
+        query: {
+          id: this.currentSong.id
+        }
       })
     },
     ...mapMutations({

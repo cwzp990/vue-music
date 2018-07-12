@@ -62,7 +62,10 @@ export default {
     },
     selectItem (item) {
       this.$router.push({
-        path: `/songList/${item.data.playlist.id}`
+        path: `/songList`,
+        query: {
+          id: item.data.playlist.id
+        }
       })
       this.setDisc(item.data.playlist)
     },

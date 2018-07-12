@@ -107,17 +107,17 @@ export default {
   },
   methods: {
     getData () {
-      api.getUserDetails(this.$route.params.id).then(res => {
+      api.getUserDetails(this.$route.query.id).then(res => {
         if (res.status === 200) {
           this.user = res.data
         }
       })
-      api.getUserPlaylistResource(this.$route.params.id).then(res => {
+      api.getUserPlaylistResource(this.$route.query.id).then(res => {
         if (res.status === 200) {
           this.songlist = res.data.playlist
         }
       })
-      api.getUserEvent(this.$route.params.id).then(res => {
+      api.getUserEvent(this.$route.query.id).then(res => {
         if (res.status === 200) {
           this.events = res.data.events
         }
