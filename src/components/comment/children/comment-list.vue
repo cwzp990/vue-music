@@ -50,7 +50,6 @@ export default {
     // songid: 歌曲id cid：评论id t： 1点赞 0取消 type： 0歌曲 1mv 2歌单 3专辑 4电台
     onLiked (cid, e, index) {
       let classValue = e.currentTarget.className
-      console.log(classValue.indexOf('liked'))
       if (classValue.indexOf('liked') > -1) {
         api.getCommentLiked(this.songid, cid, 0, 0).then(res => {
           if (res.status === 200) {

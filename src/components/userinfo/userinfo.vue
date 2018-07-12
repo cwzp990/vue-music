@@ -120,12 +120,10 @@ export default {
       api.getUserEvent(this.$route.params.id).then(res => {
         if (res.status === 200) {
           this.events = res.data.events
-          console.log(res)
         }
       })
     },
     onItemClick (index) {
-      console.log(index)
       this.active = index
     },
     back () {
@@ -151,6 +149,8 @@ export default {
   .cover {
     position: relative;
     @include wh(100%, 40%);
+    background: #888;
+    opacity: .7;
     .header {
       display: flex;
       justify-content: space-between;
@@ -247,8 +247,8 @@ export default {
       @include wh(100%, 100%);
       position: absolute;
       z-index: -1;
+      opacity: .7;
       filter: blur(10px);
-      opacity: 0.8;
     }
   }
   .main-container {

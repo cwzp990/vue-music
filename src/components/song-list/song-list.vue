@@ -59,7 +59,7 @@
       <div class="list-down">
         <list-details @select="selectItem" @more="selectMore" :data="songList.tracks" :count="songList.trackCount" :collect="songList.subscribedCount"></list-details>
       </div>
-      <popupmenu title="江南" :song="{}" :menu="switchs" :tips="switchs"></popupmenu>
+      <popupmenu :switchs="show" :song="songInfo" @change="switchsChange"></popupmenu>
       <router-view></router-view>
     </div>
   </transition>
@@ -68,14 +68,15 @@
 <script>
 import VHeader from 'components/header/header'
 import ListDetails from 'components/list-details/list-details'
-import Popupmenu from 'components/popupmenu/popupmenu.vue'
+import Popupmenu from 'components/popupmenu/popupmenu'
 import { mapGetters, mapActions } from 'vuex'
 import { api } from 'api/index'
 export default {
   data () {
     return {
       songList: {},
-      switchs: false
+      show: false,
+      songInfo: null
     }
   },
   created () {
@@ -99,8 +100,11 @@ export default {
       })
     },
     selectMore (item) {
-      this.switchs = true
-      console.log(item)
+      this.show = true
+      this.songInfo = item
+    },
+    switchsChange (status) {
+      this.show = false
     },
     gotoAddress (path) {
       this.$router.push({

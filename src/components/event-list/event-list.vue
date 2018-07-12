@@ -38,9 +38,6 @@ export default {
       default: () => []
     }
   },
-  created () {
-    console.log(this.list)
-  },
   components: {
     CommentBox
   }

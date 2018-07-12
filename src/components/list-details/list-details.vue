@@ -15,13 +15,13 @@
     <div class="scroll-wrapper">
       <scroll ref="scroll" class="scroll">
         <ul>
-          <li v-for="(item, index) in data" :key="index" class="list-item" @click="selectItem(item, index)">
+          <li v-for="(item, index) in data" :key="index" class="list-item vux-1px-b" @click="selectItem(item, index)">
             <div class="left">
               <span class="index">{{index + 1}}</span>
               <div class="title">
                 <p class="name">{{item.name}}</p>
                 <p class="singer">
-                  <span v-for="(singer, index) in item.artists" :key="index">{{singer.name}} </span>
+                  <span v-for="(singer, index) in item.ar" :key="index">{{singer.name}} </span>
                 </p>
               </div>
             </div>
@@ -62,7 +62,6 @@ export default {
       this.$emit('select', item, index)
     },
     onMore (item) {
-      console.log('click')
       this.$emit('more', item)
     }
   },
@@ -79,6 +78,7 @@ export default {
     display: flex;
     justify-content: space-between;
     line-height: 1.5rem;
+    padding-left: .5rem;
     .left {
       @include sc(0.7rem, #000);
       .number {
@@ -88,6 +88,8 @@ export default {
     .right {
       background: $juzi;
       @include sc(0.5rem, #fff);
+      box-sizing: border-box;
+      padding-right: .5rem;
       .svg-icon {
         @include svg(0.5rem, #fff);
       }
@@ -97,7 +99,9 @@ export default {
     position: absolute;
     top: 11rem;
     bottom: 0;
-    @include wh(93%, 62%);
+    @include wh(100%, 62%);
+    box-sizing: border-box;
+    padding: 0 .5rem;
     overflow: hidden;
     .scroll {
       height: 100%;
@@ -116,10 +120,11 @@ export default {
           .title {
             display: flex;
             flex-direction: column;
+            justify-content: space-around;
             line-height: 1rem;
             max-width: 11rem;
             .name {
-              @include sc(0.7rem, #000);
+              @include sc(0.5rem, #000);
               @include nowrap();
             }
             .singer {
