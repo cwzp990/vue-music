@@ -12,7 +12,7 @@
         收藏({{collect}}万)
       </div>
     </h3>
-    <div class="scroll-wrapper">
+    <div class="scroll-wrapper" ref="songList">
       <scroll ref="scroll" class="scroll">
         <ul>
           <li v-for="(item, index) in data" :key="index" class="list-item vux-1px-b" @click="selectItem(item, index)">
@@ -55,7 +55,14 @@ export default {
     collect: {
       type: Number,
       default: null
+    },
+    vtop: {
+      type: Boolean,
+      default: false
     }
+  },
+  mounted () {
+    if (this.vtop) this.$refs.songList.style.top = '15rem'
   },
   methods: {
     selectItem (item, index) {

@@ -38,11 +38,15 @@ import {
   DjRecommend,
   DjClassify,
   MvResource,
+  playMV,
   SimiMvResource,
   MvCommentResource,
   PlaylistCommentResource,
   AlbumCommentResource,
-  ArtistMvResource
+  ArtistMvResource,
+  MVRank,
+  UserFollows,
+  UserFans
 } from './resource'
 
 export const api = {
@@ -363,7 +367,23 @@ export const api = {
       }
     })
   },
-  // 获取mv数据
+  // 获取MV播放地址
+  getMVPlay (url) {
+    return axios.get(playMV, {
+      params: {
+        url: url
+      }
+    })
+  },
+  getMVRank (limit) {
+    return axios.get(MVRank, {
+      params: {
+        limit: limit || 30
+      }
+    })
+  },
+
+  // 获取相似mv数据
   getSimiMvResource (id) {
     return axios.get(SimiMvResource, {
       params: {
@@ -371,7 +391,7 @@ export const api = {
       }
     })
   },
-  // 获取mv数据
+  // 获取mv评论
   getMvCommentResource (id) {
     return axios.get(MvCommentResource, {
       params: {
@@ -400,6 +420,21 @@ export const api = {
     return axios.get(ArtistMvResource, {
       params: {
         id: id
+      }
+    })
+  },
+  // 获取用户关注列表
+  getUserFollows (id) {
+    return axios.get(UserFollows, {
+      params: {
+        uid: id
+      }
+    })
+  },
+  getUserFans (id) {
+    return axios.get(UserFans, {
+      params: {
+        uid: id
       }
     })
   }

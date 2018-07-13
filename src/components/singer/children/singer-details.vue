@@ -7,43 +7,63 @@
     </div>
     <div class="tab">
       <tab>
-        <tab-item selected @on-item-click="gotoAddress(`/singer/${singer.id}/details/hot`)">音乐</tab-item>
-        <tab-item @on-item-click="gotoAddress(`/singer/${singer.id}/details/album`)">专辑</tab-item>
-        <tab-item @on-item-click="gotoAddress(`/singer/${singer.id}/details/video`)">视频</tab-item>
-        <tab-item @on-item-click="gotoAddress(`/singer/${singer.id}/details/info`)">歌手信息</tab-item>
+        <tab-item selected @on-item-click="onItemClick">音乐</tab-item>
+        <tab-item @on-item-click="onItemClick">专辑</tab-item>
+        <tab-item @on-item-click="onItemClick">视频</tab-item>
+        <tab-item @on-item-click="onItemClick">歌手信息</tab-item>
       </tab>
     </div>
     <div class="singer-content">
-      <router-view></router-view>
+      <div v-show="active === 0">
+        <singer-hot></singer-hot>
+      </div>
+      <div v-show="active === 1">
+        <singer-album></singer-album>
+      </div>
+      <div v-show="active === 2">
+        <singer-video></singer-video>
+      </div>
+      <div v-show="active === 3">
+        <singer-info></singer-info>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import VHeader from 'components/header/header'
+import SingerHot from 'components/singer/children/children/singer-hot'
+import SingerAlbum from 'components/singer/children/children/singer-album'
+import SingerVideo from 'components/singer/children/children/singer-video'
+import SingerInfo from 'components/singer/children/children/singer-info'
 import { Tab, TabItem } from 'vux'
 import { mapGetters } from 'vuex'
 export default {
-  created () {
+  data () {
+    return {
+      active: 0
+    }
   },
   computed: {
     ...mapGetters(['singer'])
   },
   methods: {
+    onItemClick (index) {
+      this.active = index
+      console.log(index)
+    },
     back () {
       this.$router.go(-1)
-    },
-    gotoAddress (path) {
-      this.$router.push({
-        path: path,
-        query: {id: this.singer.id}
-      })
     }
   },
   components: {
     VHeader,
     Tab,
-    TabItem
+    TabItem,
+    SingerHot,
+    SingerAlbum,
+    SingerVideo,
+    SingerInfo
   }
 }
 </script>
@@ -69,6 +89,9 @@ export default {
   }
   .tab {
     margin-top: 60%;
+  }
+  .singer-content {
+    @include wh(100%, 100%);
   }
 }
 </style>

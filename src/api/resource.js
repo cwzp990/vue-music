@@ -38,11 +38,15 @@ const apiMusic = {
   djRecommend: '/dj/recommend', // 推荐电台
   djClassify: '/dj/catelist', // 电台分类
   mv: '/mv', // 获取mv数据
+  playMV: '/mv/url',
+  topMv: '/top/mv', // 获取mv排行
   simiMv: '/simi/mv', // 获取相似mv
   mvComment: '/comment/mv', // 获取mv评论
   playlistComment: '/comment/playlist', // 获取歌单评论
   albumComment: '/comment/album', // 获取专辑评论
-  artistMv: '/artist/mv' // 获取歌手MV
+  artistMv: '/artist/mv', // 获取歌手MV
+  userFollows: '/user/follows', // 获取用户关注列表
+  userFans: '/user/followeds' // 获取用户粉丝列表
 }
 
 export const LoginCellphoneResource = API_ROOT.concat(apiMusic.loginCellphone)
@@ -82,8 +86,12 @@ export const DjProgramResource = API_ROOT.concat(apiMusic.djProgram)
 export const DjRecommend = API_ROOT.concat(apiMusic.djRecommend)
 export const DjClassify = API_ROOT.concat(apiMusic.djClassify)
 export const MvResource = API_ROOT.concat(apiMusic.mv)
+export const playMV = API_ROOT.concat(apiMusic.playMV)
+export const MVRank = API_ROOT.concat(apiMusic.topMv)
 export const SimiMvResource = API_ROOT.concat(apiMusic.simiMv)
 export const MvCommentResource = API_ROOT.concat(apiMusic.mvComment)
 export const PlaylistCommentResource = API_ROOT.concat(apiMusic.playlistComment)
 export const AlbumCommentResource = API_ROOT.concat(apiMusic.albumComment)
 export const ArtistMvResource = API_ROOT.concat(apiMusic.artistMv)
+export const UserFollows = API_ROOT.concat(apiMusic.userFollows)
+export const UserFans = API_ROOT.concat(apiMusic.userFans)

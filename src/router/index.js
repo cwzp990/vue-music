@@ -18,14 +18,11 @@ const social = () => import('pages/social/social')
 const search = () => import('components/search/search')
 const singer = () => import('components/singer/singer')
 const singerDetails = () => import('components/singer/children/singer-details')
-const singerHot = () => import('components/singer/children/children/singer-hot')
-const singerAlbum = () => import('components/singer/children/children/singer-album')
-const singerVideo = () => import('components/singer/children/children/singer-video')
-const singerInfo = () => import('components/singer/children/children/singer-info')
 const songList = () => import('components/song-list/song-list')
 const songListDetails = () => import('components/song-list/children/songlist-details')
 const comment = () => import('components/comment/comment')
 const userinfo = () => import('components/userinfo/userinfo')
+const fansList = () => import('components/fans-list/fans-list')
 
 Vue.use(Router)
 
@@ -65,14 +62,7 @@ export default new Router({
           children: [
             {
               path: '/singer/:id/details',
-              component: singerDetails,
-              children: [
-                {path: '/', redirect: '/singer/:id/details/hot'},
-                {path: '/singer/:id/details/hot', component: singerHot},
-                {path: '/singer/:id/details/album', component: singerAlbum},
-                {path: '/singer/:id/details/video', component: singerVideo},
-                {path: '/singer/:id/details/info', component: singerInfo}
-              ]
+              component: singerDetails
             }
           ]
         },
@@ -88,6 +78,8 @@ export default new Router({
       ]
     },
     {path: '/comment/song', component: comment},
-    {path: '/comment/list', component: comment}
+    {path: '/comment/list', component: comment},
+    {path: '/follows', component: fansList},
+    {path: '/fans', component: fansList}
   ]
 })

@@ -25,10 +25,10 @@
             <div class="msg-item">动态
               <span class="num" v-if="userinfo.profile">{{userinfo.profile.eventCount}}</span>
             </div>
-            <div class="msg-item">关注
+            <div class="msg-item" @click="selectedFollow">关注
               <span class="num" v-if="userinfo.profile">{{userinfo.profile.follows}}</span>
             </div>
-            <div class="msg-item">粉丝
+            <div class="msg-item" @click="selectedFans">粉丝
               <span class="num" v-if="userinfo.profile">{{userinfo.profile.followeds}}</span>
             </div>
             <div class="msg-item">
@@ -152,6 +152,8 @@ export default {
   data () {
     return {
       userinfo: {},
+      follows: [],
+      fans: [],
       sign: '签到',
       show: false
     }
@@ -167,6 +169,31 @@ export default {
       api.getUserDetails(this.userid).then(res => {
         if (res.status === 200) {
           this.userinfo = res.data
+        }
+      })
+      api.getUserFollows(this.userid).then(res => {
+        if (res.status === 200) {
+          this.follows = res.data.follow
+        }
+      })
+      api.getUserFans(this.userid).then(res => {
+        if (res.status === 200) {
+          this.fans = res.data.followeds
+        }
+      })
+    },
+    selectedFollow () {
+      this.gotoAddress('/follows', '关注', this.follows)
+    },
+    selectedFans () {
+      this.gotoAddress('/fans', '粉丝', this.fans)
+    },
+    gotoAddress (path, title, list) {
+      this.$router.push({
+        path: path,
+        query: {
+          title: title,
+          list: list
         }
       })
     },

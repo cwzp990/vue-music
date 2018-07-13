@@ -16,19 +16,43 @@
         <li>舞蹈</li>
         <li>游戏</li>
       </ul>
-      <video-list></video-list>
     </scroll>
+    <div class="mv-list">
+      <ul>
+        <li v-for="item in MV" :key="item.id" class="list-item">
+          <video-list :mvid="item.id"></video-list>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import { XHeader } from 'vux'
 import { mapGetters } from 'vuex'
+import { api } from 'api/index'
 import Scroll from 'components/scroll/scroll'
 import VideoList from 'pages/video/children/video-list'
 export default {
+  created () {
+    this.getData()
+  },
+  data () {
+    return {
+      MV: []
+    }
+  },
   computed: {
     ...mapGetters(['userid', 'playing', 'playlist'])
+  },
+  methods: {
+    getData () {
+      api.getMVRank().then(res => {
+        if (res.status === 200) {
+          this.MV = res.data.data
+        }
+      })
+    }
   },
   components: {
     XHeader,
