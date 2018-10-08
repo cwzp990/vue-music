@@ -11,7 +11,7 @@
         <div class="cd-wrapper">
           <div class="cd"
                :class="CDCls"
-               v-if="currentSong.al">
+               v-if="currentSong.album">
             <img :src="currentSong.album.picUrl"
                  width="100%"
                  height="100%"
@@ -20,7 +20,8 @@
         </div>
         <div>
           <ul class="btn">
-            <li class="btn-item">
+            <li class="btn-item"
+                @click="changeMode">
               <svg-icon icon-class="fav"></svg-icon>
             </li>
             <li class="btn-item">
@@ -70,7 +71,7 @@
       </div>
     </div>
     <div class="bg-img"
-         v-if="currentSong.al">
+         v-if="currentSong.album">
       <img :src="currentSong.album.picUrl"
            width="100%"
            height="100%">
@@ -79,7 +80,8 @@
            :src="songUrl"
            @canplay="ready"
            @error="error"
-           @timeupdate="updateTime">
+           @timeupdate="updateTime"
+           @ended="end">
     </audio>
   </div>
 </template>
@@ -87,6 +89,7 @@
 <script>
 import VHeader from 'components/header/header'
 import ProgressBar from 'components/progress-bar/progress-bar'
+import { playMode } from 'utils/config'
 import { api } from 'api/index'
 import { mapGetters, mapMutations } from 'vuex'
 export default {
@@ -140,6 +143,21 @@ export default {
     },
     error () {
       this.songReady = true
+    },
+    end () {
+      if (this.playMode === playMode.loop) {
+        this.loop()
+      } else {
+        this.next()
+      }
+    },
+    loop () {
+      this.$refs.audio.currentTime = 0
+      this.$refs.audio.play()
+      this.setPlaying(true)
+      // if (this.currentLyric) {
+      //   this.currentLyric.seek()
+      // }
     },
     updateTime (e) {
       this.currentTime = e.target.currentTime
