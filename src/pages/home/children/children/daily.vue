@@ -4,14 +4,18 @@
     <div class="daily">
       <x-header :left-options="{backText: ''}">
         每日推荐
-        <svg-icon icon-class="playing" slot="right"></svg-icon>
+        <svg-icon icon-class="playing"
+                  slot="right"></svg-icon>
       </x-header>
       <div class="title">
         <svg-icon icon-class="date"></svg-icon>
         根据你的音乐口味生成，每天6:00更新
         <span class="date">{{date}}</span>
       </div>
-      <!-- <list-details></list-details> -->
+      <list-details @select="selectItem"
+                    @more="selectMore"
+                    :data="songList"
+                    :count="count"></list-details>
     </div>
   </transition>
 </template>
@@ -20,10 +24,12 @@
 import { XHeader } from 'vux'
 import ListDetails from 'components/list-details/list-details'
 import { api } from 'api/index'
+import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      songList: []
+      songList: [],
+      count: 0
     }
   },
   created () {
@@ -37,8 +43,24 @@ export default {
   methods: {
     getData () {
       api.getRecommendSongsResource().then(res => {
+        this.songList = res.data.recommend
+        this.count = res.data.recommend.length
       })
-    }
+    },
+    selectItem (item, index) {
+      console.log(item)
+      this.selectPlay({
+        list: this.songList,
+        index: index
+      })
+    },
+    selectMore (item) {
+      this.show = true
+      this.songInfo = item
+    },
+    ...mapActions([
+      'selectPlay'
+    ])
   },
   components: {
     XHeader,
@@ -70,26 +92,28 @@ export default {
     justify-content: center;
     align-items: start;
     box-sizing: border-box;
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     @include wh(100%, 4rem);
-    @include sc(.5rem, #b2b2b2);
+    @include sc(0.5rem, #b2b2b2);
     .svg-icon {
       @include svg(2.5rem, #000);
-      margin-bottom: .5rem;
+      margin-bottom: 0.5rem;
     }
     .date {
       position: absolute;
       top: 1.3rem;
       left: 1.2rem;
-      @include sc(.8rem, #000);
+      @include sc(0.8rem, #000);
     }
   }
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: all 0.3s ease
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
 }
-.fade-enter, .fade-leave-to {
-  transform: translate3d(100%, 0, 0)
+.fade-enter,
+.fade-leave-to {
+  transform: translate3d(100%, 0, 0);
 }
 </style>

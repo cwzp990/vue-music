@@ -1,42 +1,85 @@
 <!-- 播放器 -->
 <template>
-  <div class="player" v-show="fullScreen">
+  <div class="player"
+       v-show="fullScreen">
     <div class="normal-player">
-      <v-header :title="currentSong.name" :subhead="currentSong.ar" :isPlayer="true" @back="back"></v-header>
+      <v-header :title="currentSong.name"
+                :subhead="currentSong.ar"
+                :isPlayer="true"
+                @back="back"></v-header>
       <div class="middle">
         <div class="cd-wrapper">
-          <div class="cd" :class="CDCls" v-if="currentSong.al">
-            <img :src="currentSong.al.picUrl" width="100%" height="100%" class="cd-img">
+          <div class="cd"
+               :class="CDCls"
+               v-if="currentSong.al">
+            <img :src="currentSong.album.picUrl"
+                 width="100%"
+                 height="100%"
+                 class="cd-img">
           </div>
         </div>
         <div>
           <ul class="btn">
-            <li class="btn-item"><svg-icon icon-class="fav"></svg-icon></li>
-            <li class="btn-item"><svg-icon icon-class="download"></svg-icon></li>
-            <li class="btn-item comment" @click="onCommentList"><svg-icon icon-class="comment"></svg-icon><span class="count">{{comment > 9999 ? '1w+' : comment}}</span></li>
-            <li class="btn-item"><svg-icon icon-class="more"></svg-icon></li>
+            <li class="btn-item">
+              <svg-icon icon-class="fav"></svg-icon>
+            </li>
+            <li class="btn-item">
+              <svg-icon icon-class="download"></svg-icon>
+            </li>
+            <li class="btn-item comment"
+                @click="onCommentList">
+              <svg-icon icon-class="comment"></svg-icon>
+              <span class="count">{{comment > 9999 ? '1w+' : comment}}</span>
+            </li>
+            <li class="btn-item">
+              <svg-icon icon-class="more"></svg-icon>
+            </li>
           </ul>
         </div>
       </div>
       <div class="footer">
-        <div class="progress-wrapper" v-if="currentSong.m">
-          <progress-bar :start="formate(currentTime)" :end="formate(currentSong.dt / 1000)" :percent="percent" @percentChanging="onProgressChange"></progress-bar>
+        <div class="progress-wrapper"
+             v-if="currentSong.m">
+          <progress-bar :start="formate(currentTime)"
+                        :end="formate(currentSong.dt / 1000)"
+                        :percent="percent"
+                        @percentChanging="onProgressChange"></progress-bar>
         </div>
         <div>
           <ul class="btn">
-            <li class="btn-item"><svg-icon icon-class="list_loop"></svg-icon></li>
-            <li class="btn-item" @click="pre"><svg-icon icon-class="pre"></svg-icon></li>
-            <li class="btn-item" @click="togglePlaying"><svg-icon :icon-class="playIcon"></svg-icon></li>
-            <li class="btn-item" @click="next"><svg-icon icon-class="next"></svg-icon></li>
-            <li class="btn-item"><svg-icon icon-class="song_list"></svg-icon></li>
+            <li class="btn-item">
+              <svg-icon icon-class="list_loop"></svg-icon>
+            </li>
+            <li class="btn-item"
+                @click="pre">
+              <svg-icon icon-class="pre"></svg-icon>
+            </li>
+            <li class="btn-item"
+                @click="togglePlaying">
+              <svg-icon :icon-class="playIcon"></svg-icon>
+            </li>
+            <li class="btn-item"
+                @click="next">
+              <svg-icon icon-class="next"></svg-icon>
+            </li>
+            <li class="btn-item">
+              <svg-icon icon-class="song_list"></svg-icon>
+            </li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="bg-img" v-if="currentSong.al">
-      <img :src="currentSong.al.picUrl" width="100%" height="100%">
+    <div class="bg-img"
+         v-if="currentSong.al">
+      <img :src="currentSong.album.picUrl"
+           width="100%"
+           height="100%">
     </div>
-    <audio ref="audio" :src="songUrl" @canplay="ready" @error="error" @timeupdate="updateTime">
+    <audio ref="audio"
+           :src="songUrl"
+           @canplay="ready"
+           @error="error"
+           @timeupdate="updateTime">
     </audio>
   </div>
 </template>
@@ -56,6 +99,7 @@ export default {
   },
   mounted () {
     this.getData()
+    console.log(this.imgUrl)
   },
   methods: {
     getData () {
@@ -232,7 +276,7 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
-            @include sc(.5rem, #fff);
+            @include sc(0.5rem, #fff);
           }
         }
       }

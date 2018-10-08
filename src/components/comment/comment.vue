@@ -3,13 +3,16 @@
   <div class="comment">
     <x-header :left-options="{backText: ''}">
       评论({{comment.total}})
-      <svg-icon icon-class="playing" slot="right"></svg-icon>
+      <svg-icon icon-class="playing"
+                slot="right"></svg-icon>
     </x-header>
     <scroll>
       <div class="comment-main">
         <div class="title">
           <div class="img-wrapper">
-            <img src="" width="100%" height="100%">
+            <img src=""
+                 width="100%"
+                 height="100%">
           </div>
           <div class="info">
             <h2 class="name">江南</h2>
@@ -17,14 +20,22 @@
           </div>
         </div>
         <h3 class="comment-title">精彩评论</h3>
-        <comment-list :comments="comment.hotComments" :songid="songid"></comment-list>
+        <comment-list :comments="comment.hotComments"
+                      :songid="songid"
+                      @selected="itemSelected"></comment-list>
         <h3 class="comment-title">最新评论{{comment.total}}</h3>
-        <comment-list :comments="comment.comments" :songid="songid"></comment-list>
+        <comment-list :comments="comment.comments"
+                      :songid="songid"></comment-list>
       </div>
     </scroll>
     <div class="input-wrapper">
-      <input type="text" class="comment-box" placeholder="说点什么吧，也许ta都听得到" v-model="commentVal">
-      <x-button mini class="submit" @click.native="submit">发送</x-button>
+      <input type="text"
+             class="comment-box"
+             placeholder="说点什么吧，也许ta都听得到"
+             v-model="commentVal">
+      <x-button mini
+                class="submit"
+                @click.native="submit">发送</x-button>
     </div>
   </div>
 </template>
@@ -68,8 +79,16 @@ export default {
       if (!this.commentVal) {
         this.$vux.toast.text('输入不能为空', 'top')
       } else {
-        this.$vux.toast.text('暂无对应接口', 'top')
+        api.sendOrDelComment(1, 0, this.$route.query.id, this.commentVal).then(res => {
+          if (res.data.code === 200) {
+            this.$vux.toast.text('评论成功', 'top')
+          } else {
+            this.$vux.toast.text(res.data.msg, 'top')
+          }
+        })
       }
+    },
+    itemSelected (item) {
     }
   },
   components: {
@@ -107,7 +126,7 @@ export default {
       display: flex;
       justify-content: start;
       align-items: center;
-      padding: .5rem;
+      padding: 0.5rem;
       box-sizing: border-box;
       @include wh(100%, 5rem);
       .img-wrapper {
@@ -120,18 +139,18 @@ export default {
         justify-content: center;
         align-items: center;
         .name {
-          @include sc(.7rem, #000);
-          margin-bottom: .5rem;
+          @include sc(0.7rem, #000);
+          margin-bottom: 0.5rem;
         }
         .singer {
-          @include sc(.6rem, #0C73C2);
+          @include sc(0.6rem, #0c73c2);
         }
       }
     }
     .comment-title {
-      @include font(.4rem, 1.2rem);
+      @include font(0.4rem, 1.2rem);
       background: #d2d2d2;
-      padding: 0 .5rem;
+      padding: 0 0.5rem;
     }
   }
   .input-wrapper {
@@ -140,22 +159,22 @@ export default {
     bottom: 0;
     z-index: 300;
     box-sizing: border-box;
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     @include wh(100%, 1.7rem);
     background: #fff;
     .comment-box {
-      margin-top: .3rem;
+      margin-top: 0.3rem;
       @include wh(85%, 1rem);
-      border: .025rem solid #b2b2b2;
-      border-radius: .5rem;
+      border: 0.025rem solid #b2b2b2;
+      border-radius: 0.5rem;
       outline: none;
       box-sizing: border-box;
-      padding: 0 .5rem;
-      @include sc(.6rem, #000);
+      padding: 0 0.5rem;
+      @include sc(0.6rem, #000);
     }
     .submit {
       position: absolute;
-      top: .3rem;
+      top: 0.3rem;
       right: 0;
       @include wh(2.5rem, 1rem);
     }

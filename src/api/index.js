@@ -13,6 +13,7 @@ import {
   HotKeys,
   LyricResource,
   CommentResource,
+  sendComment,
   CommentLiked,
   AlbumResource,
   ArtistsResource,
@@ -142,6 +143,36 @@ export const api = {
         id: id
       }
     })
+  },
+
+  /**
+   * @method 发送/删除评论
+   * @param action 1 发送；2 删除
+   * @param type 0: 歌曲 1: mv 2: 歌单 3: 专辑 4: 电台 5: 视频
+   * @param id 对应资源id
+   * @param content 发送时为文字，删除时为id
+   * @returns response  数据返回值
+   */
+  sendOrDelComment (action, type, id, content) {
+    if (action === 1) {
+      return axios.get(sendComment, {
+        params: {
+          action: action,
+          type: type,
+          id: id,
+          content: content
+        }
+      })
+    } else if (action === 2) {
+      return axios.get(sendComment, {
+        params: {
+          action: action,
+          type: type,
+          id: id,
+          commentId: content
+        }
+      })
+    }
   },
 
   // 获取评论， id为单曲id

@@ -5,23 +5,31 @@
       <div class="left">
         <svg-icon icon-class="play"></svg-icon>
         播放全部
-        <span class="number" v-show="count">(共{{count}}首)</span>
+        <span class="number"
+              v-show="count">(共{{count}}首)</span>
       </div>
-      <div class="right" v-show="collect">
+      <div class="right"
+           v-show="collect">
         <svg-icon icon-class="add"></svg-icon>
         收藏({{collect}}万)
       </div>
     </h3>
-    <div class="scroll-wrapper" ref="songList">
-      <scroll ref="scroll" class="scroll">
+    <div class="scroll-wrapper"
+         ref="songList">
+      <scroll ref="scroll"
+              class="scroll">
         <ul>
-          <li v-for="(item, index) in data" :key="index" class="list-item vux-1px-b" @click="selectItem(item, index)">
+          <li v-for="(item, index) in data"
+              :key="index"
+              class="list-item vux-1px-b"
+              @click="selectItem(item, index)">
             <div class="left">
               <span class="index">{{index + 1}}</span>
               <div class="title">
                 <p class="name">{{item.name}}</p>
                 <p class="singer">
-                  <span v-for="(singer, index) in item.ar" :key="index">{{singer.name}} </span>
+                  <span v-for="(singer, index) in item.ar"
+                        :key="index">{{singer.name}} </span>
                 </p>
               </div>
             </div>
@@ -29,7 +37,8 @@
               <span class="svg-wrapper">
                 <svg-icon icon-class="play_box"></svg-icon>
               </span>
-              <span class="svg-wrapper" @click.stop="onMore(item)">
+              <span class="svg-wrapper"
+                    @click.stop="onMore(item)">
                 <svg-icon icon-class="more"></svg-icon>
               </span>
             </div>
@@ -61,11 +70,15 @@ export default {
       default: false
     }
   },
+  created () {
+  },
   mounted () {
     if (this.vtop) this.$refs.songList.style.top = '15rem'
+    console.log(this.data)
   },
   methods: {
     selectItem (item, index) {
+      console.log(item)
       this.$emit('select', item, index)
     },
     onMore (item) {
@@ -85,7 +98,7 @@ export default {
     display: flex;
     justify-content: space-between;
     line-height: 1.5rem;
-    padding-left: .5rem;
+    padding-left: 0.5rem;
     .left {
       @include sc(0.7rem, #000);
       .number {
@@ -96,7 +109,7 @@ export default {
       background: $juzi;
       @include sc(0.5rem, #fff);
       box-sizing: border-box;
-      padding-right: .5rem;
+      padding-right: 0.5rem;
       .svg-icon {
         @include svg(0.5rem, #fff);
       }
@@ -108,7 +121,7 @@ export default {
     bottom: 0;
     @include wh(100%, 62%);
     box-sizing: border-box;
-    padding: 0 .5rem;
+    padding: 0 0.5rem;
     overflow: hidden;
     .scroll {
       height: 100%;

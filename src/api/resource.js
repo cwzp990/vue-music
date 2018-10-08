@@ -12,7 +12,8 @@ const apiMusic = {
   search: '/search', // 搜素音乐
   hotKeys: '/search/hot', // 热搜
   lyric: '/lyric', // 获取歌词
-  comment: '/comment/music', // 获取评论
+  getComment: '/comment/music', // 获取评论
+  sendComment: '/comment', // 写评论
   liked: '/comment/like', // 评论点赞
   album: '/album', //  获取专辑内容
   artists: '/artists', // 获取歌手单曲列表
@@ -60,7 +61,8 @@ export const MusicUrlResource = API_ROOT.concat(apiMusic.musicUrl)
 export const SearchResource = API_ROOT.concat(apiMusic.search)
 export const HotKeys = API_ROOT.concat(apiMusic.hotKeys)
 export const LyricResource = API_ROOT.concat(apiMusic.lyric)
-export const CommentResource = API_ROOT.concat(apiMusic.comment)
+export const CommentResource = API_ROOT.concat(apiMusic.getComment)
+export const sendComment = API_ROOT.concat(apiMusic.sendComment)
 export const CommentLiked = API_ROOT.concat(apiMusic.liked)
 export const AlbumResource = API_ROOT.concat(apiMusic.album)
 export const ArtistsResource = API_ROOT.concat(apiMusic.artists)
