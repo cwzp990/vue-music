@@ -1,4 +1,4 @@
-<!-- 歌手详情也 -->
+<!-- 歌手详情页 -->
 <template>
   <div class="singerDetails">
     <v-header :title="singer.name" @back="back"></v-header>

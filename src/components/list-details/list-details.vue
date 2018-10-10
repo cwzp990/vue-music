@@ -66,15 +66,24 @@ export default {
       default: null
     },
     vtop: {
-      type: Boolean,
-      default: false
+      type: Number,
+      default: 0
     }
   },
   created () {
   },
   mounted () {
-    if (this.vtop) this.$refs.songList.style.top = '15rem'
-    console.log(this.data)
+    /*
+      vtop
+      0:
+      1:singer/15rem
+      2:daily/7rem
+    */
+    if (this.vtop === 1) {
+      this.$refs.songList.style.top = '15rem'
+    } else if (this.vtop === 2) {
+      this.$refs.songList.style.top = '7rem'
+    }
   },
   methods: {
     selectItem (item, index) {

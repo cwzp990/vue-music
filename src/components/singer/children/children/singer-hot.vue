@@ -1,7 +1,10 @@
 <!-- 歌手热门 -->
 <template>
   <div class="singerHot">
-    <list-details @select="selectItem" :data="songList" :count="songList.length" :vtop="true"></list-details>
+    <list-details @select="selectItem"
+                  :data="songList"
+                  :count="songList.length"
+                  :vtop="1"></list-details>
   </div>
 </template>
 

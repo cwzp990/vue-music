@@ -1,12 +1,16 @@
 <template>
   <div class="mine">
     <x-header>
-      <svg-icon icon-class="cloud" slot="overwrite-left"></svg-icon>
-      <svg-icon icon-class="playing" slot="right" :class="{play: playing, pause: !playing}"></svg-icon>
+      <svg-icon icon-class="cloud"
+                slot="overwrite-left"></svg-icon>
+      <svg-icon icon-class="playing"
+                slot="right"
+                :class="{play: playing, pause: !playing}"></svg-icon>
       <span>我的音乐</span>
     </x-header>
     <div class="scroll-wrapper">
-      <scroll ref="scroll" class="scroll">
+      <scroll ref="scroll"
+              class="scroll">
         <div>
           <div class="mine-list">
             <div class="list-item vux-1px-b">
@@ -40,9 +44,14 @@
               <span class="count">({{userList.length}})</span>
             </h3>
             <ul>
-              <li class="list-item" v-for="item in userList" :key="item.id" @click="selectItem(item)">
+              <li class="list-item"
+                  v-for="item in userList"
+                  :key="item.id"
+                  @click="selectItem(item)">
                 <div class="img-wrapper">
-                  <img :src="item.coverImgUrl" width="100%" height="100%">
+                  <img :src="item.coverImgUrl"
+                       width="100%"
+                       height="100%">
                 </div>
                 <div class="content vux-1px-b">
                   <h4 class="name">{{item.name}}</h4>
@@ -71,6 +80,7 @@ export default {
   },
   created () {
     this.getData()
+    console.log(this.userList)
   },
   computed: {
     ...mapGetters(['userid', 'playing', 'playlist'])

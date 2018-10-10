@@ -20,8 +20,7 @@
         </div>
         <div>
           <ul class="btn">
-            <li class="btn-item"
-                @click="changeMode">
+            <li class="btn-item">
               <svg-icon icon-class="fav"></svg-icon>
             </li>
             <li class="btn-item">
@@ -102,7 +101,6 @@ export default {
   },
   mounted () {
     this.getData()
-    console.log(this.imgUrl)
   },
   methods: {
     getData () {

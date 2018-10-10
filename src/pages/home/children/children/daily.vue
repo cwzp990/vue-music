@@ -15,7 +15,8 @@
       <list-details @select="selectItem"
                     @more="selectMore"
                     :data="songList"
-                    :count="count"></list-details>
+                    :count="count"
+                    :vtop="2"></list-details>
     </div>
   </transition>
 </template>
