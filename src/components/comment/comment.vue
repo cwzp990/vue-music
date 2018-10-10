@@ -9,23 +9,36 @@
     <scroll>
       <div class="comment-main">
         <div class="title">
-          <div class="img-wrapper">
-            <img src=""
+          <div class="img-wrapper"
+               v-if="song.al">
+            <img :src="song.al.picUrl"
                  width="100%"
                  height="100%">
           </div>
-          <div class="info">
-            <h2 class="name">江南</h2>
-            <p class="singer">林俊杰</p>
+          <div class="img-wrapper"
+               v-else-if="!song.al">
+            <img :src="songlist.coverImgUrl"
+                 width="100%"
+                 height="100%">
+          </div>
+          <div class="info"
+               v-if="song.al">
+            <h2 class="name">{{song.al.name}}</h2>
+            <p class="singer">{{song.ar[0].name}}</p>
+          </div>
+          <div class="info"
+               v-else-if="!song.al && songlist.creator">
+            <h2 class="name">{{songlist.name}}</h2>
+            <p class="singer">{{songlist.creator.nickname}}</p>
           </div>
         </div>
         <h3 class="comment-title">精彩评论</h3>
         <comment-list :comments="comment.hotComments"
-                      :songid="songid"
+                      songid="songid"
                       @selected="itemSelected"></comment-list>
         <h3 class="comment-title">最新评论{{comment.total}}</h3>
         <comment-list :comments="comment.comments"
-                      :songid="songid"></comment-list>
+                      songid="songid"></comment-list>
       </div>
     </scroll>
     <div class="input-wrapper">
@@ -50,7 +63,9 @@ export default {
   data () {
     return {
       comment: {},
-      commentVal: ''
+      commentVal: '',
+      song: {},
+      songlist: {}
     }
   },
   created () {
@@ -74,6 +89,15 @@ export default {
           this.comment = res.data
         })
       }
+      api.getSongDetails(this.$route.query.id).then(res => {
+        if (res.data.songs.length !== 0) {
+          this.song = res.data.songs[0]
+        }
+      })
+
+      api.getPlaylistDetailResource(this.$route.query.id).then(res => {
+        this.songlist = res.data.playlist
+      })
     },
     submit () {
       if (!this.commentVal) {
@@ -136,8 +160,6 @@ export default {
       .info {
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
         .name {
           @include sc(0.7rem, #000);
           margin-bottom: 0.5rem;

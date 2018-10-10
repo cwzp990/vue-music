@@ -3,6 +3,7 @@ const API_ROOT = 'http://localhost:3000'
 const apiMusic = {
   loginCellphone: '/login/cellphone', // 手机登陆
   userDetails: '/user/detail', // 用户详情
+  songDetails: '/song/detail', // 歌曲详情
   userInfos: '/user/subcount', // 用户信息
   banner: '/banner',
   userPlaylist: '/user/playlist', // 获取用户歌单
@@ -52,6 +53,7 @@ const apiMusic = {
 
 export const LoginCellphoneResource = API_ROOT.concat(apiMusic.loginCellphone)
 export const UserDetails = API_ROOT.concat(apiMusic.userDetails)
+export const SongDetails = API_ROOT.concat(apiMusic.songDetails)
 export const UserInfos = API_ROOT.concat(apiMusic.userInfos)
 export const Banner = API_ROOT.concat(apiMusic.banner)
 export const UserPlaylistResource = API_ROOT.concat(apiMusic.userPlaylist)

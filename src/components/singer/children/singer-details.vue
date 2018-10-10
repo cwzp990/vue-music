@@ -50,7 +50,6 @@ export default {
   methods: {
     onItemClick (index) {
       this.active = index
-      console.log(index)
     },
     back () {
       this.$router.go(-1)

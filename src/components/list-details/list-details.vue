@@ -87,7 +87,6 @@ export default {
   },
   methods: {
     selectItem (item, index) {
-      console.log(item)
       this.$emit('select', item, index)
     },
     onMore (item) {

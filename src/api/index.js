@@ -3,6 +3,7 @@ import axios from 'axios'
 import {
   LoginCellphoneResource,
   UserDetails,
+  SongDetails,
   UserInfos,
   UserEvent,
   Banner,
@@ -65,6 +66,15 @@ export const api = {
     return axios.get(UserDetails, {
       params: {
         uid: id
+      }
+    })
+  },
+
+  // 获取歌曲详情
+  getSongDetails (id) {
+    return axios.get(SongDetails, {
+      params: {
+        ids: id
       }
     })
   },

@@ -25,7 +25,6 @@ export default {
   },
   methods: {
     onLike () {
-      console.log('赞')
     }
   }
 }

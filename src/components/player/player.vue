@@ -11,8 +11,8 @@
         <div class="cd-wrapper">
           <div class="cd"
                :class="CDCls"
-               v-if="currentSong.album">
-            <img :src="currentSong.album.picUrl"
+               v-if="imgUrl">
+            <img :src="imgUrl.picUrl"
                  width="100%"
                  height="100%"
                  class="cd-img">
@@ -70,8 +70,8 @@
       </div>
     </div>
     <div class="bg-img"
-         v-if="currentSong.album">
-      <img :src="currentSong.album.picUrl"
+         v-if="imgUrl">
+      <img :src="imgUrl.picUrl"
            width="100%"
            height="100%">
     </div>
@@ -209,6 +209,9 @@ export default {
     },
     songUrl () {
       return `http://music.163.com/song/media/outer/url?id=${this.currentSong.id}.mp3`
+    },
+    imgUrl () {
+      return this.currentSong.album ? this.currentSong.album : this.currentSong.al
     },
     ...mapGetters(['fullScreen', 'playlist', 'currentIndex', 'currentSong', 'playing'])
   },

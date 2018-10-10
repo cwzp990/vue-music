@@ -60,10 +60,8 @@ export default {
       })
     },
     onPlayerPlay (player) {
-      console.log('play')
     },
     onPlayerPause (player) {
-      console.log('pause')
     }
   },
   components: {
