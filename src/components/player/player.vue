@@ -62,7 +62,8 @@
                 @click="next">
               <svg-icon icon-class="next"></svg-icon>
             </li>
-            <li class="btn-item">
+            <li class="btn-item"
+                @click="showList">
               <svg-icon icon-class="song_list"></svg-icon>
             </li>
           </ul>
@@ -82,12 +83,18 @@
            @timeupdate="updateTime"
            @ended="end">
     </audio>
+    <popupmenu :switchs="show"
+               :song="songInfo"
+               :options="list"
+               :current="currentSong.name"
+               @change="switchsChange"></popupmenu>
   </div>
 </template>
 
 <script>
 import VHeader from 'components/header/header'
 import ProgressBar from 'components/progress-bar/progress-bar'
+import Popupmenu from 'components/popupmenu/popupmenu'
 import { playMode } from 'utils/config'
 import { api } from 'api/index'
 import { mapGetters, mapMutations } from 'vuex'
@@ -96,7 +103,10 @@ export default {
     return {
       songReady: false,
       currentTime: 0,
-      comment: 0
+      comment: 0,
+      show: false,
+      songInfo: null,
+      list: []
     }
   },
   mounted () {
@@ -113,6 +123,12 @@ export default {
     },
     togglePlaying () {
       this.setPlayingState(!this.playing)
+    },
+    showList () {
+      this.show = true
+    },
+    switchsChange (status) {
+      this.show = false
     },
     pre () {
       let index = this.currentIndex - 1
@@ -228,11 +244,17 @@ export default {
       that.$nextTick(() => {
         newPlaying ? audio.play() : audio.pause()
       })
+    },
+    playlist () {
+      this.playlist.forEach(item => {
+        this.list.push(item.name)
+      })
     }
   },
   components: {
     VHeader,
-    ProgressBar
+    ProgressBar,
+    Popupmenu
   }
 }
 </script>

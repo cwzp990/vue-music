@@ -2,11 +2,14 @@
 <template>
   <div class="home-video">
     <x-header>
-      <svg-icon icon-class="player" slot="overwrite-left"></svg-icon>
-      <svg-icon icon-class="playing" slot="right" :class="{play: playing, pause: !playing}"></svg-icon>
+      <svg-icon icon-class="player"
+                slot="overwrite-left"></svg-icon>
+      <svg-icon icon-class="playing"
+                slot="right"
+                :class="{play: playing, pause: !playing}"></svg-icon>
       <span>视频</span>
     </x-header>
-    <scroll>
+    <scroll class="row">
       <ul class="classify">
         <li>推荐</li>
         <li>音乐</li>
@@ -17,13 +20,22 @@
         <li>游戏</li>
       </ul>
     </scroll>
-    <div class="mv-list">
-      <ul>
-        <li v-for="item in MV" :key="item.id" class="list-item">
-          <video-list :mvid="item.id"></video-list>
-        </li>
-      </ul>
-    </div>
+    <scroll class="col">
+      <div class="mv-list">
+        <ul>
+          <li v-for="item in MV"
+              :key="item.id"
+              class="list-item">
+            <video-list :mvid="item.id"></video-list>
+            <div>
+              <span class="name">{{item.name}}</span>
+              <span class="artist">{{item.artistName}}</span>
+            </div>
+            <p class="brief">{{item.briefDesc}}</p>
+          </li>
+        </ul>
+      </div>
+    </scroll>
   </div>
 </template>
 
@@ -50,6 +62,7 @@ export default {
       api.getMVRank().then(res => {
         if (res.status === 200) {
           this.MV = res.data.data
+          console.log(this.MV)
         }
       })
     }
@@ -80,14 +93,34 @@ export default {
       animation-play-state: paused;
     }
   }
-  .list-wrapper {
+  .row {
+    height: auto;
     .classify {
       @include wh(200%, 1rem);
       li {
         float: left;
         height: 1rem;
-        padding: 0 .7rem;
-        @include font(.7rem, 1rem);
+        padding: 0 0.7rem;
+        @include font(0.7rem, 1rem);
+      }
+    }
+  }
+  .col {
+    height: 100%;
+    overflow: hidden;
+    .mv-list {
+      .list-item {
+        margin-bottom: 0.5rem;
+        .name {
+          @include sc(0.8rem, #000);
+        }
+        .artist {
+          @include sc(0.6rem, #666);
+        }
+        .brief {
+          @include sc(0.6rem, #000);
+          margin-top: 0.3rem;
+        }
       }
     }
   }
