@@ -91,7 +91,7 @@
 
 - 登录后可以查看自己的歌单信息
 
-###
+### 搜索
 
 - 哇, 兄弟, 你想听这首歌? 点击上面的搜索啊
 
@@ -124,6 +124,38 @@
 - 上拉加载（正在整理思路）
 
 ## 项目截图
+
+**部分界面截图**
+
+![all](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/all.gif)
+
+**首页截图**
+
+![index](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/index.gif)
+
+**发现界面**
+
+![discover](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/discover.gif)
+
+**我的列表界面**
+
+![my](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/my.gif)
+
+**歌单界面**
+
+![songlist](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/songlist.gif)
+
+**排行榜界面**
+
+![rank](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/rank.gif)
+
+**搜索歌曲界面**
+
+![search](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/search.gif)
+
+**歌手界面**
+
+![singer](https://github.com/cwzp990/vue-music/blob/master/src/assets/gifs/singer.gif)
 
 ## 我学到了什么？
 
