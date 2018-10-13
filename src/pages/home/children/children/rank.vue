@@ -4,18 +4,28 @@
     <div class="rank">
       <x-header :left-options="{backText: ''}">
         排行榜
-        <svg-icon icon-class="playing" slot="right"></svg-icon>
+        <svg-icon icon-class="playing"
+                  slot="right"></svg-icon>
       </x-header>
       <scroll>
         <h3 class="title">云音乐官方榜</h3>
         <ul>
-          <li v-for="(item, index) in officialList" :key="index" class="list-item">
+          <li v-for="(item, index) in officialList"
+              :key="index"
+              class="list-item"
+              v-if="item.playlist"
+              @click="selectItem(item)">
             <div class="img-wrapper">
-              <img :src="item.playlist.coverImgUrl" width="100%" height="100%">
+              <img :src="item.playlist.coverImgUrl"
+                   width="100%"
+                   height="100%">
               <p class="update">{{new Date(item.playlist.updateTime).getDay() === new Date().getDay()?'每天更新':'每周'+ new Date(item.playlist.updateTime).getDay() + '更新'}}</p>
             </div>
             <ul class="song-lists">
-              <li v-for="(song, index) in item.playlist.tracks" :key="song.id" v-if = "index < 3" class="song-item">
+              <li v-for="(song, index) in item.playlist.tracks"
+                  :key="song.id"
+                  v-if="index < 3"
+                  class="song-item">
                 {{index + 1}}. {{song.name}}
               </li>
             </ul>
@@ -35,11 +45,17 @@ import { mapMutations } from 'vuex'
 export default {
   data () {
     return {
-      officialList: {}
+      officialList: {
+        surge: {},
+        new: {},
+        original: {},
+        hot: {}
+      }
     }
   },
   created () {
     this.getData()
+    console.log(this.officialList)
   },
   methods: {
     // axios同时发送多个请求
@@ -64,10 +80,10 @@ export default {
       this.$router.push({
         path: `/songList`,
         query: {
-          id: item.data.playlist.id
+          id: item.playlist.id
         }
       })
-      this.setDisc(item.data.playlist)
+      this.setDisc(item.playlist)
     },
     ...mapMutations({
       setDisc: 'SET_DISC'

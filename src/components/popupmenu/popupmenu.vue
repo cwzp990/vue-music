@@ -1,7 +1,8 @@
 <template>
   <div v-transfer-dom
        class="popupmenu">
-    <popup v-model="switchs">
+    <popup v-model="switchs"
+           :max-height="maxHeight">
       <!-- group already has a top border, so we need to hide header's bottom border-->
       <popup-header left-text="取消"
                     right-text="确定"
@@ -27,6 +28,10 @@ export default {
       type: Boolean,
       default: false
     },
+    maxHeight: {
+      type: String,
+      default: ''
+    },
     song: {
       type: Object,
       default: () => { }
@@ -48,9 +53,6 @@ export default {
         '查看视频'
       ]
     }
-  },
-  created () {
-    console.log(this.current)
   },
   methods: {
     changeSwitchs () {

@@ -84,6 +84,7 @@
            @ended="end">
     </audio>
     <popupmenu :switchs="show"
+               :maxHeight="'50%'"
                :song="songInfo"
                :options="list"
                :current="currentSong.name"
