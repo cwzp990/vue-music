@@ -1,20 +1,16 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-    <player></player>
-  </div>
+<div id="app">
+  <router-view />
+  <player />
+</div>
 </template>
 
 <script>
-import player from 'components/player/player'
+import player from "./components/player/index.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
     player
   }
-}
+};
 </script>
-
-<style lang="less">
-@import '~vux/src/styles/1px.less';
-</style>
