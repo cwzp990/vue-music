@@ -1,11 +1,9 @@
 <template>
-<div class="m-player">
-
-</div>
+  <div class="m-player"></div>
 </template>
 
 <script>
 export default {
-  name: 'Player'
-}
+  name: "Player"
+};
 </script>

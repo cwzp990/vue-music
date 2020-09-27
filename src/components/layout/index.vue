@@ -1,18 +1,18 @@
 <template>
-<div class="m-juzi-music">
+  <div class="m-juzi-music">
     <m-header />
     <router-view></router-view>
     <m-footer />
-</div>
+  </div>
 </template>
 
 <script>
-import MHeader from '../header/index.vue'
-import MFooter from '../footer/index.vue'
+import MHeader from "../header/index.vue";
+import MFooter from "../footer/index.vue";
 export default {
-    components: {
-        MHeader,
-        MFooter
-    }
-}
+  components: {
+    MHeader,
+    MFooter
+  }
+};
 </script>

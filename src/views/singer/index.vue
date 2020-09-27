@@ -1,5 +1,3 @@
 <template>
-<div class="m-singer">
-
-</div>
+  <div class="m-singer"></div>
 </template>

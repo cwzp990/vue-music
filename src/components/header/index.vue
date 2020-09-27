@@ -1,5 +1,3 @@
 <template>
-<div class="m-header">
-
-</div>
+  <div class="m-header"></div>
 </template>

@@ -1,3 +1,3 @@
 <template>
-<div class="m-rank"></div>
+  <div class="m-rank"></div>
 </template>

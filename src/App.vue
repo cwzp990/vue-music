@@ -1,8 +1,8 @@
 <template>
-<div id="app">
-  <router-view />
-  <player />
-</div>
+  <div id="app">
+    <router-view />
+    <player />
+  </div>
 </template>
 
 <script>
