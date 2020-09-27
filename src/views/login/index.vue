@@ -1,5 +1,5 @@
 <template>
   <div class="m-login">
-    我是登录页
+    <div class="login-wrapper"></div>
   </div>
 </template>
