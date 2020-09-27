@@ -1,5 +1,3 @@
 <template>
-  <div class="m-login">
-    <div class="login-wrapper"></div>
-  </div>
+  <div class="m-login"></div>
 </template>
