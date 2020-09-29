@@ -1,3 +1,3 @@
 <template>
-  <div class="m-rank"></div>
+  <div class="m-rank">我是排行榜</div>
 </template>
