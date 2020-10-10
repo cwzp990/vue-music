@@ -1,4 +1,5 @@
 const initialState = {
+  mode: 0,
   showPlayer: false, //Player显示状态
   showList: false, // 播放列表状态
   playerState: false, //Player播放状态

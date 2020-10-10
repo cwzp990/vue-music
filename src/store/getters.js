@@ -1,0 +1,10 @@
+export const mode = state => state.mode;
+export const showPlayer = state => state.showPlayer;
+export const showList = state => state.showList;
+export const playerState = state => state.playerState;
+export const playList = state => state.playList;
+export const currentIndex = state => state.currentIndex;
+export const currentMusic = state => state.currentMusic;
+export const singer = state => state.singer;
+export const userInfo = state => state.userInfo;
+export const category = state => state.category;
