@@ -1,24 +1,21 @@
 <template>
-<div class="songlist-box" @Click="goToSongList(info.id)">
-  <div class="img-wrapper">
-    <img :src="info.coverImgUrl || info.picUrl" alt=" 歌单" />
-    <span class="count"><i class="iconfont icon-play-hollow"></i>{{convertCount(info.playCount)}}</span>
-    <span class="sub">{{info.updateFrequency}}</span>
+  <div class="songlist-box" @Click="goToSongList(info.id)">
+    <div class="img-wrapper">
+      <img :src="info.coverImgUrl || info.picUrl" alt=" 歌单" />
+      <span class="count">
+        <i class="iconfont icon-play-hollow"></i>
+        {{ convertCount(info.playCount) }}
+      </span>
+      <span class="sub">{{ info.updateFrequency }}</span>
+    </div>
+    <p class="title">{{ info.name }}</p>
   </div>
-  <p class="title">{{info.name}}</p>
-</div>
 </template>
 
 <script>
-import {
-  defineComponent
-} from "vue";
-import {
-  useRouter
-} from "vue-router";
-import {
-  convertCount
-} from '../../utils'
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import { convertCount } from "../../utils";
 
 export default defineComponent({
   props: {
@@ -32,14 +29,14 @@ export default defineComponent({
 
     const goToSongList = () => {
       router.push("/list_detail");
-    }
+    };
 
     return {
       goToSongList,
       convertCount
-    }
+    };
   }
-})
+});
 </script>
 
 <style lang="scss">

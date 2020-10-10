@@ -20,7 +20,7 @@ import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
-  setup () {
+  setup() {
     const router = useRouter();
     const goHome = () => {
       router.push("/songlist");
