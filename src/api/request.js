@@ -1,5 +1,4 @@
 import axios from "axios";
-import Toast from "../components/toast";
 
 let instance = axios.create();
 
