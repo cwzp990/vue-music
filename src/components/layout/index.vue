@@ -24,7 +24,11 @@ export default {
 .m-juzi-music {
   @include wh(100%, 100%);
   .m-main {
+    padding: 0 10px;
     @include wh(100%, calc(100% - 120px));
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
 </style>

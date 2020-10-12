@@ -2,14 +2,14 @@
   <div class="m-square">
     <div class="square-category">
       <div class="cat-wrapper">
-        <span v-for="(name, index) in hotCategory" :key="index">{{
+        <span v-for="(name, index) in hotCategory" :key="index" @click="onSelected(name)">{{
           name
         }}</span>
       </div>
       <i class="iconfont icon-category" @Click="gotoAll"></i>
     </div>
-    <div class="m-rank">
-      <div class="ranklist-wrapper">
+    <div class="m-songlist">
+      <div class="songlist-wrapper">
         <div class="box-wrapper" v-for="list in squareList" :key="list.id">
           <Box :info="list" />
         </div>
@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import { defineComponent, ref, onMounted, watch } from "vue";
+import { defineComponent, ref, computed, onMounted, watch } from "vue";
+import { useStore } from 'vuex'
 import Box from "../../components/box/box.vue";
 import api from "../../api";
 
@@ -28,15 +29,16 @@ export default defineComponent({
     Box
   },
   setup () {
+    const store = useStore();
     const hotCategory = ref([]);
-    const list = ref([]);
-
+    const squareList = ref([]);
+    const category = computed(() => store.getters.category)
     onMounted(() => {
       getHotCategory();
     });
 
     watch(
-      () => category,
+      () => category.value,
       val => {
         if (val) {
           getSongList(val);
@@ -55,15 +57,21 @@ export default defineComponent({
     const getSongList = cat => {
       api.getTopPlaylistResource(cat).then(resp => {
         if (resp.data.code === 200) {
-          list.value = resp.data.playlists;
+          squareList.value = resp.data.playlists;
         }
       });
     };
+
+    const onSelected = (name) => {
+      store.commit('SET_CATEGORY', name)
+    }
 
     const gotoAll = () => { };
 
     return {
       hotCategory,
+      squareList,
+      onSelected,
       gotoAll
     };
   }
@@ -99,6 +107,21 @@ export default defineComponent({
       display: inline-block;
       padding: 5px;
       @include sc($font_huge, $gray);
+    }
+  }
+
+  .m-songlist {
+    .songlist-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      .box-wrapper {
+        width: 32%;
+        margin-right: 2%;
+        margin-bottom: 8px;
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
     }
   }
 }
