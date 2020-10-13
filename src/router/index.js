@@ -1,6 +1,11 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Login from "../views/login/index.vue";
 import Layout from "../components/layout/index.vue";
+const songList = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
+const singer = () => import(/* webpackChunkName: "singer" */ "../views/singer/index.vue")
+const rank = () => import(/* webpackChunkName: "rank" */ "../views/rank/index.vue")
+const mine = () => import(/* webpackChunkName: "mine" */ "../views/mine/index.vue")
+const songlist_details = () => import(/* webpackChunkName: "songlist_details" */ "../components/songlist_details/index.vue")
 
 const routes = [
   {
@@ -18,28 +23,27 @@ const routes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () =>
-          import(
-            /* webpackChunkName: "Songlist" */ "../views/songlist/index.vue"
-          )
+        component: songList
+      },
+      {
+        path: "/list_detail",
+        name: "List_detail",
+        component: songlist_details
       },
       {
         path: "/singer",
         name: "Singer",
-        component: () =>
-          import(/* webpackChunkName: "Singer" */ "../views/singer/index.vue")
+        component: singer
       },
       {
         path: "/rank",
         name: "Rank",
-        component: () =>
-          import(/* webpackChunkName: "Rank" */ "../views/rank/index.vue")
+        component: rank
       },
       {
         path: "/mine",
         name: "Mine",
-        component: () =>
-          import(/* webpackChunkName: "Mine" */ "../views/mine/index.vue")
+        component: mine
       }
     ]
   }

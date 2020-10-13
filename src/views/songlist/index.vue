@@ -35,6 +35,7 @@ export default defineComponent({
     const category = computed(() => store.getters.category)
     onMounted(() => {
       getHotCategory();
+      getSongList()
     });
 
     watch(

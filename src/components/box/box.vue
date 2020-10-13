@@ -27,8 +27,11 @@ export default defineComponent({
   setup() {
     const router = useRouter();
 
-    const goToSongList = () => {
-      router.push("/list_detail");
+    const goToSongList = (id) => {
+      router.push({
+        path: "/list_detail",
+        query: { id }
+      });
     };
 
     return {
