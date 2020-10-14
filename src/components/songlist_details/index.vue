@@ -47,10 +47,17 @@ export default defineComponent({
   },
 
   setup () {
-    const songlist = ref({})
+    const songlist = ref({
+      coverImgUrl: '',
+      playCount: '',
+      name: '',
+      creator: '',
+      description: '',
+      tracks: [],
+      subscribedCount: ''
+    })
     const route = useRouter()
     const id = route.currentRoute.value.query.id
-
     onMounted(() => {
       api.getPlaylistDetailResource(id).then((resp) => {
         songlist.value = resp.data.playlist;
@@ -69,3 +76,72 @@ export default defineComponent({
   }
 })
 </script>
+
+<style lang="scss">
+@import "../../styles/mixin.scss";
+
+.m-songlist-details {
+	position: relative;
+	.songlist-info {
+		position: relative;
+		@include wh(100%, 30%);
+		padding: 10px 0 25px 0;
+		box-sizing: border-box;
+		.list-wrapper {
+			display: flex;
+			justify-content: space-between;
+			.cover {
+				position: relative;
+				@include wh(140px, 140px);
+				margin-right: 15px;
+				.count {
+					position: absolute;
+					top: 5px;
+					right: 5px;
+					@include sc($font_small, #fff);
+				}
+			}
+			.info {
+				width: calc(100% - 155px);
+				.title {
+					@include sc($font_large, #fff);
+					font-weight: 700;
+					margin-bottom: 20px;
+				}
+				.creator {
+					@include sc($font_small, #fff);
+					margin-bottom: 20px;
+					.avatar-wrapper {
+						display: inline-block;
+						vertical-align: middle;
+						@include avatar(36px, 36px);
+						margin-right: 10px;
+					}
+					.name {
+						display: inline-block;
+						vertical-align: middle;
+					}
+				}
+				.desc {
+					@include more;
+					@include sc($font_small, #fff);
+					line-height: 20px;
+				}
+			}
+		}
+
+		.list-title {
+      color: #fff !important;
+      line-height: 24px;
+		}
+	}
+	.songlist-main {
+		position: relative;
+		top: -10px;
+		z-index: 100;
+		background: #fff;
+		border-radius: 15px 15px 0 0;
+		padding: 15px 5px;
+	}
+}
+</style>

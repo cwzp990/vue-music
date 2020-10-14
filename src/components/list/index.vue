@@ -1,5 +1,5 @@
 <template>
-<div className="m-list container">
+<div className="m-list">
 	<div className="title">
 		<p>
 			<i className="iconfont icon-play"></i>
@@ -29,7 +29,8 @@
 
 <script>
 import { defineComponent } from "vue";
-import { useStore } from 'vuex'
+import { useStore } from 'vuex';
+import { more } from "../../utils";
 
 export default defineComponent({
   props: {
@@ -43,7 +44,7 @@ export default defineComponent({
     }
   },
   setup (props) {
-    console.log(111, props)
+    console.log(111, props.list)
     const store = useStore();
 
     const onPlay = (index) => {
@@ -54,8 +55,65 @@ export default defineComponent({
     }
 
     return {
+      more,
       onPlay
     }
   }
 })
 </script>
+
+<style lang="scss">
+@import "../../styles/mixin.scss";
+
+.m-list {
+	.title {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px 0;
+		.all {
+			margin-left: 10px;
+			@include sc($font_large, $black);
+		}
+		.count {
+			@include sc($font_small);
+		}
+		.collect {
+			padding: 8px 5px;
+			background: $theme;
+			@include sc($font_small, #fff);
+			border-radius: 10px;
+		}
+	}
+	.list-wrapper {
+		margin-top: 10px;
+		.item-song {
+			display: flex;
+			justify-content: space-between;
+			height: 48px;
+			.item-left {
+				width: 90%;
+				.index {
+					display: inline-block;
+					@include sc($font_normal, $gray);
+					margin-right: 15px;
+				}
+				.song-name {
+					display: inline-flex;
+					flex-direction: column;
+					.name {
+						@include sc($font_normal, $black);
+						line-height: 1.5;
+					}
+					.singer {
+						@include sc($font_small, $gray);
+						line-height: 1.5;
+					}
+				}
+			}
+			.play {
+				@include sc($font_huge, $black);
+			}
+		}
+	}
+}
+</style>

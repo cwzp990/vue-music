@@ -4,9 +4,9 @@
       <i className="iconfont icon-songlist"></i>
       <span>歌单</span>
     </router-link>
-    <router-link to="/singer">
-      <i className="iconfont icon-person"></i>
-      <span>歌手</span>
+    <router-link to="/search">
+      <i className="iconfont icon-search"></i>
+      <span>搜索</span>
     </router-link>
     <router-link to="/rank">
       <i className="iconfont icon-rank"></i>

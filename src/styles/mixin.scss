@@ -75,6 +75,16 @@ $font_huge: 18px;
 	white-space: nowrap;
 }
 
+.bg-img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	@include wh(100%, 100%);
+	z-index: -1;
+	filter: blur(30px);
+	transform: scale(1.2);
+}
+
 html,
 body,
 #app {
