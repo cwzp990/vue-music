@@ -1,3 +1,227 @@
 <template>
-  <div class="m-singer">我是搜索</div>
+<div class="m-search">
+  <div class="m-search-list" v-if="result.length">
+    <p class="title">搜索 "{{ key }}"</p>
+    <ul class="result-wrapper">
+      <li class="item-result" v-for="item in result" :key="item.id" @click="onPlay(item.id)">
+        <i class="iconfont icon-search"></i>
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+  <div class="container" v-else>
+    <div class="search-history">
+      <p class="title">
+        <span class="history">搜索历史</span>
+        <i class="iconfont icon-empty" @click="onEmpty"></i>
+      </p>
+      <ul class="history-wrapper">
+        <li class="item-search" v-for="item in history" :key="item">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="search-hot">
+      <p class="hot">热搜榜</p>
+      <ul class="hot-wrapper">
+        <li class="item-hot" v-for="(item, index) in hotKeys" :key="index" @click="onSelected(item.searchWord)">
+          <p :class="item < 4 ? 'index red' : 'index'">{{ index + 1 }}</p>
+          <p class="main">
+            <span>
+              <em class="name">{{ item.searchWord }}</em>
+              <i :class="item.iconType === 1 ? 'icon-HOT iconfont red' : 'icon-NEW iconfont blue'"></i>
+            </span>
+            <span class="sub more">{{ item.content }}</span>
+          </p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 </template>
+
+<script>
+import {
+  defineComponent,
+  onMounted,
+  ref
+} from 'vue'
+import api from '../../api'
+export default defineComponent({
+  setup() {
+    const key = ref('')
+    const result = ref([])
+    const hotKeys = ref([])
+    const history = ref([])
+
+    onMounted(() => {
+      history.value = JSON.parse(localStorage.getItem('_search_')) || []
+      getHotKeys()
+    })
+
+    const onEmpty = () => {
+      localStorage.clear()
+    }
+
+    const getHotKeys = () => {
+      api.getHotKeys().then((resp) => {
+        if (resp.data.code === 200) {
+          hotKeys.value = resp.data.data
+        }
+      })
+    }
+
+    const onSelected = (val) => {
+      key.value = val
+      const isHas = history.value.indexOf(val) > -1
+      if (isHas) return
+      history.value.push(val)
+      localStorage.setItem('_search_', JSON.stringify(history.value))
+    }
+
+    const onQuery = () => {
+      if (!key.value) return
+      api.getSearchResource(key.value).then((resp) => {
+        if (resp.data.code === 200) {
+          result.value = resp.data.result.songs
+        }
+      })
+    }
+
+    return {
+      key,
+      result,
+      hotKeys,
+      history,
+      onEmpty,
+      onSelected,
+    }
+  },
+})
+</script>
+
+<style lang="scss">
+@import '../../styles/mixin.scss';
+
+.m-search {
+  .search-box {
+    @include wh(90%, 100%);
+    @include sc;
+    padding: 0 10px 0 25px;
+    box-sizing: border-box;
+    background: $bgc;
+    border-radius: 15px;
+  }
+
+  .search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    margin-top: -5px;
+    @include sc;
+  }
+
+  .cancel {
+    @include sc($font_small, $gray);
+  }
+
+  .history,
+  .hot {
+    @include sc($font_huge, $black);
+    line-height: 24px;
+  }
+
+  .search-history {
+    margin: 10px 0;
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      line-height: 30px;
+
+      .icon-empty {
+        @include sc($font_large, $light_gray);
+      }
+    }
+
+    .history-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+
+      .item-search {
+        padding: 5px 8px;
+        margin: 0 10px 10px 0;
+        border-radius: 5px;
+        background: $bgc;
+        @include sc($font_normal, $gray);
+      }
+    }
+  }
+
+  .search-hot {
+    .hot-wrapper {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      .item-hot {
+        display: flex;
+        align-items: center;
+        width: 50%;
+        margin-bottom: 10px;
+
+        .index {
+          @include sc($font_huge, $gray);
+          margin-right: 10px;
+        }
+
+        .main {
+          display: flex;
+          flex-direction: column;
+          width: 90%;
+
+          .name {
+            display: inline-block;
+            @include sc($font_large, $black);
+            line-height: 24px;
+            margin-right: 3px;
+          }
+
+          .iconfont {
+            @include sc($font_large);
+          }
+
+          .sub {
+            @include sc($font_small, $light_gray);
+          }
+        }
+      }
+    }
+  }
+}
+
+.m-search-list {
+  .title {
+    line-height: 36px;
+    @include sc($font_normal, $blue);
+  }
+
+  .result-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .item-result {
+      line-height: 36px;
+      border-bottom: 1px solid $bgc;
+      @include sc($font_normal, $black);
+
+      .iconfont {
+        display: inline-block;
+        @include sc($font_normal, $light_gray);
+        margin-right: 10px;
+      }
+    }
+  }
+}
+</style>
