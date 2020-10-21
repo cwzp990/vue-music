@@ -1,176 +1,131 @@
 <template>
 <!--进度条拖动-->
-<div ref="progress" class="m-progress" @click="barClick">
-  <div class="m-progress-bar"></div>
-  <div ref="progressOuter" class="m-progress-outer"></div>
-  <div ref="progressInner" class="m-progress-inner">
-    <div class="m-progress-dot" @mousedown="barDown" @touchstart.prevent="barDown"></div>
+<div class="m-progress">
+  <div class="bar-inner" ref="progressBar" @click="progressClick">
+    <div class="progress" ref="progress"></div>
+    <div class="progress-btn-wrapper" ref="progressBtn" @touchStart="progressTouchStart" @touchMove="progressTouchMove" @touchEnd="progressTouchEnd">
+      <div class="progress-btn"></div>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-const dotWidth = 10
-export default {
-  name: 'Progress',
-  props: {
-    // 进度值一
-    percent: {
-      type: [Number],
-      default: 0,
-    },
-    // 进度值二（歌曲缓冲进度用）
-    percentProgress: {
-      type: [Number],
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      move: {
-        status: false, // 是否可拖动
-        startX: 0, // 记录最开始点击的X坐标
-        left: 0, // 记录当前已经移动的距离
-      },
+const progressBtnWidth = 16
+
+import {
+  defineComponent,
+  ref,
+  watch
+} from "vue";
+
+export default defineComponent({
+  props: ['percent', 'percentChange'],
+
+  setup(props) {
+    const touch = ref({})
+    const progressBar = ref(null)
+    const progress = ref(null)
+    const progressBtn = ref(null)
+
+    const _offset = (offsetWidth) => {
+      progress.value.style.width = `${offsetWidth}px`;
+      progressBtn.value.style.transform = `translate3d(${offsetWidth}px, 0, 0)`;
     }
-  },
-  watch: {
-    percent(newPercent) {
-      if (newPercent >= 0 && !this.move.status) {
-        const barWidth = this.$refs.progress.clientWidth - dotWidth
-        const offsetWidth = newPercent * barWidth
-        this.moveSilde(offsetWidth)
+
+    const _changePercent = () => {
+      const barWidth = progressBar.value.clientWidth - progressBtnWidth;
+      const curPercent = progress.value.clientWidth / barWidth;
+      props.percentChange(curPercent);
+    }
+
+    const progressClick = (e) => {
+      const rect = progressBar.value.getBoundingClientRect();
+      const offsetWidth = e.pageX - rect.left;
+      _offset(offsetWidth);
+      _changePercent();
+    }
+
+    const progressTouchStart = (e) => {
+      const startTouch = {};
+      startTouch.initiated = true;
+      startTouch.startX = e.touches[0].pageX;
+      startTouch.left = progress.value.clientWidth;
+      touch.value = startTouch;
+    }
+
+    const progressTouchMove = (e) => {
+      if (!touch.value.initiated) return;
+      const deltaX = e.touches[0].pageX - touch.value.startX;
+      const barWidth = progressBar.value.clientWidth - progressBtnWidth;
+      const offsetWidth = Math.min(Math.max(0, touch.value.left + deltaX), barWidth);
+      _offset(offsetWidth);
+    }
+
+    const progressTouchEnd = () => {
+      const endTouch = JSON.parse(JSON.stringify(touch.value));
+      endTouch.initiated = false;
+      touch.value = endTouch;
+      _changePercent();
+    }
+
+    watch(props, () => {
+      if (props.percent >= 0 && props.percent <= 1 && !touch.value.initiated) {
+        const barWidth = progressBar.value.clientWidth - progressBtnWidth;
+        const offsetWidth = props.percent * barWidth;
+        progress.value.style.width = `${offsetWidth}px`;
+        progressBtn.value.style.transform = `translate3d(${offsetWidth}px, 0, 0)`;
       }
-    },
-    percentProgress(newValue) {
-      let offsetWidth = this.$refs.progress.clientWidth * newValue
-      this.$refs.progressOuter.style.width = `${offsetWidth}px`
-    },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.bindEvents()
-      const barWidth = this.$refs.progress.clientWidth - dotWidth
-      const offsetWidth = this.percent * barWidth
-      this.moveSilde(offsetWidth)
     })
-  },
-  beforeDestroy() {
-    this.unbindEvents()
-  },
-  methods: {
-    // 添加绑定事件
-    bindEvents() {
-      document.addEventListener('mousemove', this.barMove)
-      document.addEventListener('mouseup', this.barUp)
-      document.addEventListener('touchmove', this.barMove)
-      document.addEventListener('touchend', this.barUp)
-    },
-    // 移除绑定事件
-    unbindEvents() {
-      document.removeEventListener('mousemove', this.barMove)
-      document.removeEventListener('mouseup', this.barUp)
-      document.removeEventListener('touchmove', this.barMove)
-      document.removeEventListener('touchend', this.barUp)
-    },
-    // 点击事件
-    barClick(e) {
-      let rect = this.$refs.progress.getBoundingClientRect()
-      let offsetWidth = Math.min(
-        this.$refs.progress.clientWidth - dotWidth,
-        Math.max(0, e.clientX - rect.left)
-      )
-      this.moveSilde(offsetWidth)
-      this.commitPercent(true)
-    },
-    // 鼠标按下事件
-    barDown(e) {
-      this.move.status = true
-      this.move.startX = e.clientX || e.touches[0].pageX
-      this.move.left = this.$refs.progressInner.clientWidth
-    },
-    // 鼠标/触摸移动事件
-    barMove(e) {
-      if (!this.move.status) {
-        return false
-      }
-      e.preventDefault()
-      let endX = e.clientX || e.touches[0].pageX
-      let dist = endX - this.move.startX
-      let offsetWidth = Math.min(
-        this.$refs.progress.clientWidth - dotWidth,
-        Math.max(0, this.move.left + dist)
-      )
-      this.moveSilde(offsetWidth)
-      this.commitPercent()
-    },
-    // 鼠标/触摸释放事件
-    barUp(e) {
-      if (this.move.status) {
-        this.commitPercent(true)
-        this.move.status = false
-      }
-    },
-    // 移动滑块
-    moveSilde(offsetWidth) {
-      this.$refs.progressInner.style.width = `${offsetWidth}px`
-    },
-    // 修改 percent
-    commitPercent(isEnd = false) {
-      const {
-        progress,
-        progressInner
-      } = this.$refs
-      const lineWidth = progress.clientWidth - dotWidth
-      const percent = progressInner.clientWidth / lineWidth
-      this.$emit(isEnd ? 'percentChangeEnd' : 'percentChange', percent)
-    },
-  },
-}
+
+    return {
+      progressBar,
+      progress,
+      progressBtn,
+      progressClick,
+      progressTouchStart,
+      progressTouchMove,
+      progressTouchEnd
+    }
+  }
+
+})
 </script>
 
 <style lang="scss">
 @import '../../styles/mixin.scss';
 
 .m-progress {
-  position: relative;
-  padding: 5px;
-  user-select: none;
-  cursor: pointer;
-  overflow: hidden;
+  height: 30px;
 
-  .m-progress-bar {
-    @include wh(100%, 2px);
-    background: $bgc;
-  }
+  .bar-inner {
+    position: relative;
+    top: 13px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.7);
 
-  .m-progress-outer {
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    display: inline-block;
-    @include wh(0, 2px);
-    margin-top: -1px;
-    background: rgba(255, 255, 255, 0.2);
-  }
-
-  .m-progress-inner {
-    position: absolute;
-    top: 50%;
-    left: 5px;
-    display: inline-block;
-    @include wh(0, 2px);
-    margin-top: -1px;
-    background: $theme;
-
-    .m-progress-dot {
+    .progress {
       position: absolute;
-      top: 50%;
-      right: -5px;
-      @include wh(10px, 10px);
-      border-radius: 50%;
-      background-color: $theme;
-      transform: translateY(-50%);
+      height: 100%;
+      background: $theme;
+    }
+
+    .progress-btn-wrapper {
+      position: absolute;
+      left: -8px;
+      top: -13px;
+      @include wh(30px, 30px);
+
+      .progress-btn {
+        position: relative;
+        top: 7px;
+        left: 7px;
+        box-sizing: border-box;
+        @include wh(16px, 16px);
+        border: 3px solid $bgc;
+        border-radius: 50%;
+        background: $theme;
+      }
     }
   }
 }

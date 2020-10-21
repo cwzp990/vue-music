@@ -12,23 +12,23 @@
         <p class="title more">{{currentMusic.name}}</p>
         <p v-if="currentMusic.ar" class="subtitle">{{currentMusic.ar[0].name}}</p>
       </div>
-      <div class="player-middle">
-        <div class="middle-l" ref="middleL">
-          <div class="cd-wrapper" ref="cdWrapper">
-            <div class="cd">
+      <div class="player-middle" @click="toggleLyric">
+        <div class="middle-l" v-if="currentShow==='cd'">
+          <div class="cd-wrapper">
+            <div class="cd play" :class="isPlaying ? '' : 'pause'">
               <img v-if="currentMusic.al" class="image" :src="currentMusic.al.picUrl" alt />
             </div>
           </div>
           <div class="playing-lyric-wrapper">
-            <div class="playing-lyric"></div>
+            <div class="playing-lyric">{{playingLyric || '暂无歌词'}}</div>
           </div>
         </div>
 
-        <div>
+        <div v-else>
           <div class="lyric-wrapper">
             <div>
-              <!-- <p class="no-lrc" v-if="!lyric.length">暂无歌词</p> -->
-              <p ref="lyricLine" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="item + index">{{ line.txt }}</p>
+              <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
+              <p ref="lyricLine" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
             </div>
           </div>
         </div>
@@ -41,34 +41,34 @@
         <div class="progress-wrapper">
           <span class="time time-l">{{ formatPlayTime(currentTime) }}</span>
           <div class="progress-bar-wrapper">
-            <progress-bar :percent="percent" @percentChange="percentChange"></progress-bar>
+            <progress-bar :percent="percent" :percentChange="percentChange"></progress-bar>
           </div>
           <span class="time time-r">{{ formatPlayTime(duration) }}</span>
         </div>
         <div class="operators-wrapper">
-          <span className="btn-wrapper" @click="changeMode">
-            <i className="iconfont icon-order" v-if="mode === 0"></i>
-            <i className="iconfont icon-loop" v-else-if="mode === 1"></i>
-            <i className="iconfont icon-random" v-else></i>
+          <span class="btn-wrapper" @click="changeMode">
+            <i class="iconfont icon-order" v-if="mode === 0"></i>
+            <i class="iconfont icon-loop" v-else-if="mode === 1"></i>
+            <i class="iconfont icon-random" v-else></i>
           </span>
-          <span className="btn-wrapper" @click="prev">
-            <i className="iconfont icon-back"></i>
+          <span class="btn-wrapper" @click="prev">
+            <i class="iconfont icon-back"></i>
           </span>
-          <span className="btn-wrapper" @click="toggle">
-            <i className="iconfont icon-pause" v-if="isPlaying"></i>
-            <i className="iconfont icon-play-circle" v-else></i>
+          <span class="btn-wrapper" @click="toggle">
+            <i class="iconfont icon-pause" v-if="isPlaying"></i>
+            <i class="iconfont icon-play-circle" v-else></i>
           </span>
-          <span className="btn-wrapper" @click="next">
-            <i className="iconfont icon-next"></i>
+          <span class="btn-wrapper" @click="next">
+            <i class="iconfont icon-next"></i>
           </span>
-          <span className="btn-wrapper" @click="showList">
-            <i className="iconfont icon-menu"></i>
+          <span class="btn-wrapper" @click="showList">
+            <i class="iconfont icon-menu"></i>
           </span>
         </div>
       </div>
     </div>
   </transition>
-  <audio ref="player" :src="songUrl" @canplay="ready" @ended="end" @timeupdate="updateTime" @error="urlError"></audio>
+  <audio ref="player" @canplay="ready" @ended="end" @timeupdate="updateTime" @error="urlError"></audio>
 </div>
 </template>
 
@@ -77,7 +77,7 @@ import {
   defineComponent,
   ref,
   computed,
-  watchEffect
+  watch
 } from 'vue';
 import {
   useStore
@@ -88,17 +88,21 @@ import {
   formatPlayTime,
   lyricParser
 } from '../../utils/index';
+import progressBar from '../progress/index.vue';
 export default defineComponent({
+  components: {
+    progressBar
+  },
   setup() {
     const player = ref(null)
     const currentShow = ref('cd')
+    const playingLyric = ref('')
     const lyric = ref([])
     const currentTime = ref(0)
     const currentLine = ref(0)
     const mode = ref(0)
     const isPlaying = ref(false)
     const isReady = ref(false)
-    const songUrl = ref('')
     const store = useStore()
 
     const showPlayer = computed(() => store.getters.showPlayer)
@@ -113,7 +117,7 @@ export default defineComponent({
     )
 
     const percentChange = (percent) => {
-      const newTime = currentMusic.value.duration * percent.value
+      const newTime = duration.value * percent
       player.value.currentTime = newTime
       currentTime.value = newTime
       if (!isPlaying.value) {
@@ -124,7 +128,6 @@ export default defineComponent({
       store.commit('SET_SHOW_PLAYER', false)
     }
     const toggle = () => {
-      isPlaying.value = !isPlaying.value
       if (isPlaying.value) {
         store.commit('SET_PLAYER_STATE', false)
         player.value.pause()
@@ -132,6 +135,7 @@ export default defineComponent({
         store.commit('SET_PLAYER_STATE', true)
         player.value.play()
       }
+      isPlaying.value = !isPlaying.value
     }
     const ready = () => {
       isReady.value = true
@@ -146,35 +150,19 @@ export default defineComponent({
     }
     const prev = () => {
       if (!isReady.value) return
-      if (playList.value.length === 1) {
-        loop()
-        return
-      } else {
-        let index = currentIndex.value - 1
-        if (index === -1) {
-          index = playList.value.length - 1
-        }
-        currentIndex.value = index
-        if (!isPlaying.value) {
-          toggle()
-        }
+      let index = currentIndex.value - 1
+      if (index < 0) {
+        store.commit("SET_CURRENTINDEX", playList.value.length - 1)
       }
+      store.commit("SET_CURRENTINDEX", index)
+      store.commit("SET_CURRENTMUSIC", playList.value[index])
     }
     const next = () => {
       if (!isReady.value) return
-      if (playList.value.length === 1) {
-        loop()
-        return
-      } else {
-        let index = currentIndex.value + 1
-        if (index === playList.value.length) {
-          index = 0
-        }
-        currentIndex.value = index
-        if (!isPlaying.value) {
-          toggle()
-        }
-      }
+      let index = currentIndex.value + 1
+      if (index === playList.value.length) index = 0
+      store.commit("SET_CURRENTINDEX", index)
+      store.commit("SET_CURRENTMUSIC", playList.value[index])
     }
     const end = () => {
       if (mode.value === playMode.loop) {
@@ -186,6 +174,9 @@ export default defineComponent({
     const changeMode = () => {
       let newMode = (mode.value + 1) % 3
       mode.value = newMode
+    }
+    const toggleLyric = () => {
+      currentShow.value = currentShow.value === 'cd' ? 'lyric' : 'cd'
     }
     const updateTime = e => {
       currentTime.value = e.target.currentTime
@@ -201,8 +192,7 @@ export default defineComponent({
             lyric.value = []
             return
           }
-          let lyric = resp.data.lrc.lyric
-          let lyrics = lyricParser(lyric)
+          let lyrics = lyricParser(resp.data.lrc.lyric)
           lyric.value = lyrics
         }
       })
@@ -213,9 +203,10 @@ export default defineComponent({
         api.getSongUrl(currentMusic.value.id).then(resp => {
           if (resp.status === 200) {
             if (resp.data.code === 200) {
-              songUrl.value = resp.data.url
+              player.value.src = resp.data.url
               currentTime.value = 0
               currentLine.value = 0
+              playingLyric.value = ''
               isPlaying.value = true
               isReady.value = true
               player.value.play()
@@ -223,18 +214,32 @@ export default defineComponent({
           }
         })
       }
-
     }
 
-    watchEffect(() => {
-      if (currentMusic.value && currentMusic.value.id && isReady.value) {
+    watch(currentMusic, () => {
+      if (currentMusic.value) {
         currentTime.value = 0
         currentLine.value = 0
+        playingLyric.value = ''
         isPlaying.value = true
-        songUrl.value = `http://music.163.com/song/media/outer/url?id=${currentMusic.value.id}.mp3`
+        player.value.src = `http://music.163.com/song/media/outer/url?id=${currentMusic.value.id}.mp3`
         getLyric(currentMusic.value.id)
         player.value.play()
       }
+    })
+
+    watch(currentTime, () => {
+      if (!lyric.value.length || !isPlaying.value) return
+      let lyricIndex = 0,
+        nowLyric = ''
+      for (let i = 0; i < lyric.value.length; i++) {
+        if (currentTime.value > lyric.value[i].time) {
+          lyricIndex = i
+          nowLyric = lyric.value[i].txt
+        }
+      }
+      currentLine.value = lyricIndex
+      playingLyric.value = nowLyric
     })
 
     return {
@@ -244,16 +249,17 @@ export default defineComponent({
       currentLine,
       mode,
       changeMode,
+      toggleLyric,
       isPlaying,
       isReady,
       showPlayer,
       currentIndex,
       currentMusic,
+      playingLyric,
       playList,
       lyric,
       duration,
       percent,
-      songUrl,
       percentChange,
       back,
       toggle,
@@ -348,7 +354,7 @@ export default defineComponent({
           .cd {
             @include wh(100%, 100%);
             box-sizing: border-box;
-            border: 10px solid rgba(255, 255, 255, 0.1);
+            border: 35px solid #000;
             border-radius: 50%;
 
             .image {
@@ -367,18 +373,18 @@ export default defineComponent({
               animation-play-state: paused;
             }
           }
+        }
 
-          .playing-lyric-wrapper {
-            width: 80%;
-            margin: 20px auto 0 auto;
-            overflow: hidden;
-            text-align: center;
+        .playing-lyric-wrapper {
+          width: 80%;
+          margin: 20px auto 0 auto;
+          overflow: hidden;
+          text-align: center;
 
-            .playing-lyric {
-              height: 20px;
-              line-height: 20px;
-              @include sc($font_small, #fff);
-            }
+          .playing-lyric {
+            height: 20px;
+            line-height: 20px;
+            @include sc($font_small, #fff);
           }
         }
       }
@@ -416,7 +422,7 @@ export default defineComponent({
 
     .player-footer {
       position: absolute;
-      bottom: 35px;
+      bottom: 40px;
       width: 100%;
 
       .dot-wrapper {
@@ -443,7 +449,7 @@ export default defineComponent({
         display: flex;
         align-items: center;
         width: 80%;
-        margin: 0px auto;
+        margin: 10px auto;
         padding: 10px 0;
 
         .time {
@@ -476,10 +482,6 @@ export default defineComponent({
 
           .iconfont {
             @include sc($font_huge, #fff);
-
-            &.disabled {
-              color: $gray;
-            }
           }
 
         }
