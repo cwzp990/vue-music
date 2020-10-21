@@ -6,7 +6,7 @@
         <img v-if="currentMusic.al" :src="currentMusic.al.picUrl" alt />
       </div>
       <div class="player-nav">
-        <div class="back">
+        <div class="back" @click="back">
           <i class="iconfont icon-left"></i>
         </div>
         <p class="title more">{{currentMusic.name}}</p>
@@ -51,14 +51,14 @@
             <i className="iconfont icon-loop" v-else-if="mode === 1"></i>
             <i className="iconfont icon-random" v-else></i>
           </span>
-          <span className="btn-wrapper" @click="onPrev">
+          <span className="btn-wrapper" @click="prev">
             <i className="iconfont icon-back"></i>
           </span>
-          <span className="btn-wrapper" @click="onToggle">
-            <i className="iconfont icon-pause" v-if="playing"></i>
+          <span className="btn-wrapper" @click="toggle">
+            <i className="iconfont icon-pause" v-if="isPlaying"></i>
             <i className="iconfont icon-play-circle" v-else></i>
           </span>
-          <span className="btn-wrapper" @click="onNext">
+          <span className="btn-wrapper" @click="next">
             <i className="iconfont icon-next"></i>
           </span>
           <span className="btn-wrapper" @click="showList">
@@ -68,7 +68,7 @@
       </div>
     </div>
   </transition>
-  <audio ref="player" src @canplay="ready" @ended="end" @timeupdate="updateTime" @error="urlError"></audio>
+  <audio ref="player" :src="songUrl" @canplay="ready" @ended="end" @timeupdate="updateTime" @error="urlError"></audio>
 </div>
 </template>
 
@@ -77,23 +77,28 @@ import {
   defineComponent,
   ref,
   computed,
-} from 'vue'
+  watchEffect
+} from 'vue';
 import {
   useStore
 } from 'vuex'
+import api from "../../api";
 import {
-  // playMode,
+  playMode,
   formatPlayTime,
-  // lyricParser
-} from '../../utils/index'
+  lyricParser
+} from '../../utils/index';
 export default defineComponent({
   setup() {
+    const player = ref(null)
     const currentShow = ref('cd')
     const lyric = ref([])
     const currentTime = ref(0)
     const currentLine = ref(0)
     const mode = ref(0)
-    const playing = ref(false)
+    const isPlaying = ref(false)
+    const isReady = ref(false)
+    const songUrl = ref('')
     const store = useStore()
 
     const showPlayer = computed(() => store.getters.showPlayer)
@@ -109,24 +114,138 @@ export default defineComponent({
 
     const percentChange = (percent) => {
       const newTime = currentMusic.value.duration * percent.value
-      this.$refs.audio.currentTime = newTime
+      player.value.currentTime = newTime
       currentTime.value = newTime
-      if (!playing.value) {
-        store.commit('SET_PLAY_STATE', true)
+      if (!isPlaying.value) {
+        store.commit('SET_PLAYER_STATE', true)
       }
     }
+    const back = () => {
+      store.commit('SET_SHOW_PLAYER', false)
+    }
+    const toggle = () => {
+      isPlaying.value = !isPlaying.value
+      if (isPlaying.value) {
+        store.commit('SET_PLAYER_STATE', false)
+        player.value.pause()
+      } else {
+        store.commit('SET_PLAYER_STATE', true)
+        player.value.play()
+      }
+    }
+    const ready = () => {
+      isReady.value = true
+    }
+    const loop = () => {
+      currentTime.value = 0
+      isPlaying.value = true
+      player.value.play()
+      if (lyric.value.length) {
+        currentLine.value = 0
+      }
+    }
+    const prev = () => {
+      if (!isReady.value) return
+      if (playList.value.length === 1) {
+        loop()
+        return
+      } else {
+        let index = currentIndex.value - 1
+        if (index === -1) {
+          index = playList.value.length - 1
+        }
+        currentIndex.value = index
+        if (!isPlaying.value) {
+          toggle()
+        }
+      }
+    }
+    const next = () => {
+      if (!isReady.value) return
+      if (playList.value.length === 1) {
+        loop()
+        return
+      } else {
+        let index = currentIndex.value + 1
+        if (index === playList.value.length) {
+          index = 0
+        }
+        currentIndex.value = index
+        if (!isPlaying.value) {
+          toggle()
+        }
+      }
+    }
+    const end = () => {
+      if (mode.value === playMode.loop) {
+        loop()
+      } else {
+        next()
+      }
+    }
+    const changeMode = () => {
+      let newMode = (mode.value + 1) % 3
+      mode.value = newMode
+    }
+    const updateTime = e => {
+      currentTime.value = e.target.currentTime
+    }
+    const urlError = () => {
+      getSongUrl()
+    }
 
-    const ready = () => {}
-    const end = () => {}
-    const updateTime = () => {}
-    const urlError = () => {}
+    const getLyric = id => {
+      api.getLyricResource(id).then(resp => {
+        if (resp.data.code === 200) {
+          if (resp.data.nolyric) {
+            lyric.value = []
+            return
+          }
+          let lyric = resp.data.lrc.lyric
+          let lyrics = lyricParser(lyric)
+          lyric.value = lyrics
+        }
+      })
+    }
+
+    const getSongUrl = () => {
+      if (currentMusic.value && currentMusic.value.id) {
+        api.getSongUrl(currentMusic.value.id).then(resp => {
+          if (resp.status === 200) {
+            if (resp.data.code === 200) {
+              songUrl.value = resp.data.url
+              currentTime.value = 0
+              currentLine.value = 0
+              isPlaying.value = true
+              isReady.value = true
+              player.value.play()
+            }
+          }
+        })
+      }
+
+    }
+
+    watchEffect(() => {
+      if (currentMusic.value && currentMusic.value.id && isReady.value) {
+        currentTime.value = 0
+        currentLine.value = 0
+        isPlaying.value = true
+        songUrl.value = `http://music.163.com/song/media/outer/url?id=${currentMusic.value.id}.mp3`
+        getLyric(currentMusic.value.id)
+        player.value.play()
+      }
+    })
 
     return {
+      player,
       currentShow,
       currentTime,
       currentLine,
       mode,
-      playing,
+      changeMode,
+      isPlaying,
+      isReady,
       showPlayer,
       currentIndex,
       currentMusic,
@@ -134,7 +253,12 @@ export default defineComponent({
       lyric,
       duration,
       percent,
+      songUrl,
       percentChange,
+      back,
+      toggle,
+      prev,
+      next,
       ready,
       end,
       updateTime,
