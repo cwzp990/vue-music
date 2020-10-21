@@ -1,11 +1,20 @@
 <template>
 <div class="m-search">
+  <div class="m-search-input">
+    <div class="search-main">
+      <input class="search-box" v-model="key" placeholder="随便搜搜吧┑(￣Д ￣)┍" @input="onQuery" />
+      <i class="iconfont icon-search search"></i>
+    </div>
+    <div class="singer">
+      <i class="iconfont icon-person" @click="goToSinger"></i>
+    </div>
+  </div>
   <div class="m-search-list" v-if="result.length">
     <p class="title">搜索 "{{ key }}"</p>
     <ul class="result-wrapper">
       <li class="item-result" v-for="item in result" :key="item.id" @click="onPlay(item.id)">
         <i class="iconfont icon-search"></i>
-        {{ item.name }}
+        <span>{{ item.name }}</span><span v-if="item.artists"> - {{item.artists[0].name}}</span>
       </li>
     </ul>
   </div>
@@ -81,7 +90,10 @@ export default defineComponent({
     }
 
     const onQuery = () => {
-      if (!key.value) return
+      if (!key.value) {
+        result.value = []
+        return
+      }
       api.getSearchResource(key.value).then((resp) => {
         if (resp.data.code === 200) {
           result.value = resp.data.result.songs
@@ -95,6 +107,7 @@ export default defineComponent({
       hotKeys,
       history,
       onEmpty,
+      onQuery,
       onSelected,
     }
   },
@@ -105,26 +118,6 @@ export default defineComponent({
 @import '../../styles/mixin.scss';
 
 .m-search {
-  .search-box {
-    @include wh(90%, 100%);
-    @include sc;
-    padding: 0 10px 0 25px;
-    box-sizing: border-box;
-    background: $bgc;
-    border-radius: 15px;
-  }
-
-  .search {
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    margin-top: -5px;
-    @include sc;
-  }
-
-  .cancel {
-    @include sc($font_small, $gray);
-  }
 
   .history,
   .hot {
@@ -223,5 +216,43 @@ export default defineComponent({
       }
     }
   }
+}
+
+.m-search-input {
+  display: flex;
+  align-items: center;
+  @include wh(100%, 35px);
+
+  .search-main {
+    position: relative;
+    width: 92%;
+
+    .search-box {
+      display: inline-block;
+      box-sizing: border-box;
+      width: 100%;
+      padding: 0 10px;
+      line-height: 30px;
+      background: $bgc;
+      border-radius: 10px;
+    }
+
+    .iconfont {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      @include sc($font_huge, $light_gray);
+    }
+  }
+
+  .singer {
+    width: 8%;
+    text-align: center;
+
+    .iconfont {
+      @include sc($font_large, $gray);
+    }
+  }
+
 }
 </style>

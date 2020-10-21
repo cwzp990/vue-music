@@ -1,6 +1,3 @@
-//获取没有版权歌曲的url
-export const noCopyRightUrl = "http://120.92.151.48:3030";
-
 //播放模式
 export const playMode = {
   sequence: 0,

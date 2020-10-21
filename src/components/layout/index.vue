@@ -1,6 +1,6 @@
 <template>
 <div class="m-juzi-music">
-  <m-header />
+  <!-- <m-header /> -->
   <div class="m-main">
     <router-view></router-view>
   </div>
@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import MHeader from '../header/index.vue'
+// import MHeader from '../header/index.vue'
 import MFooter from '../footer/index.vue'
 import player from '../player/index.vue'
 export default {
   components: {
-    MHeader,
+    // MHeader,
     MFooter,
     player,
   },

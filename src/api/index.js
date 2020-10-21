@@ -1,5 +1,4 @@
 import axios from "./request";
-import { noCopyRightUrl } from "../utils";
 
 import {
   LoginCellphoneResource,
@@ -61,7 +60,7 @@ import {
 
 const api = {
   getSongUrl(id) {
-    return axios.get(`${noCopyRightUrl}/netease/getUrl/`, {
+    return axios.get('/netease/getUrl', {
       params: {
         id
       }

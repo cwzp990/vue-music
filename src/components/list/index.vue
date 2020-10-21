@@ -45,8 +45,8 @@ export default defineComponent({
       default: () => []
     },
     subscribed: {
-      type: Number,
-      default: undefined
+      type: String,
+      default: ''
     }
   },
   setup(props) {

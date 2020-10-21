@@ -10,7 +10,6 @@ export const selectPlay = ({ commit }, { list, index }) => {
 
 // 播放歌曲（替换歌单列表）
 export const setAllPlay = ({ commit }, { playList, currentIndex }) => {
-  console.log("播放歌曲vuex", playList, currentIndex)
   commit(types.SET_SHOW_PLAYER, true);
   commit(types.SET_PLAYER_STATE, true);
   commit(types.SET_PLAYLIST, playList);

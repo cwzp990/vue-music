@@ -1,5 +1,6 @@
 <template>
 <div class="m-square">
+  <Slide />
   <div class="square-category">
     <div class="cat-wrapper">
       <span v-for="(name, index) in hotCategory" :key="index" @click="onSelected(name)">{{
@@ -30,10 +31,12 @@ import {
   useStore
 } from 'vuex';
 import Box from "../../components/box/box.vue";
+import Slide from "../../components/slide/index.vue";
 import api from "../../api";
 
 export default defineComponent({
   components: {
+    Slide,
     Box
   },
   setup() {
