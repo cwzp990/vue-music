@@ -30,7 +30,7 @@ export default {
 
   .m-main {
     padding: 0 10px;
-    @include wh(100%, calc(100% - 120px));
+    @include wh(100%, calc(100% - 60px));
     box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;

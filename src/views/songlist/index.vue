@@ -1,6 +1,5 @@
 <template>
 <div class="m-square">
-  <Slide />
   <div class="square-category">
     <div class="cat-wrapper">
       <span v-for="(name, index) in hotCategory" :key="index" @click="onSelected(name)">{{
@@ -31,22 +30,22 @@ import {
   useStore
 } from 'vuex';
 import Box from "../../components/box/box.vue";
-import Slide from "../../components/slide/index.vue";
 import api from "../../api";
 
 export default defineComponent({
   components: {
-    Slide,
     Box
   },
   setup() {
     const store = useStore();
     const hotCategory = ref([]);
     const squareList = ref([]);
+    const banners = ref([]);
     const category = computed(() => store.getters.category)
     onMounted(() => {
       getHotCategory();
       getSongList()
+      getBanners()
     });
 
     watch(
@@ -74,6 +73,14 @@ export default defineComponent({
       });
     };
 
+    const getBanners = () => {
+      api.getBanner().then(resp => {
+        if (resp.data.code === 200) {
+          banners.value = resp.data.banners
+        }
+      })
+    }
+
     const onSelected = (name) => {
       store.commit('SET_CATEGORY', name)
     }
@@ -81,6 +88,7 @@ export default defineComponent({
     const gotoAll = () => {};
 
     return {
+      banners,
       hotCategory,
       squareList,
       onSelected,
