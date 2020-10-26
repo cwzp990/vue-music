@@ -89,6 +89,7 @@ import {
   lyricParser
 } from '../../utils/index';
 import progressBar from '../progress/index.vue';
+import toast from '../toast'
 export default defineComponent({
   components: {
     progressBar
@@ -199,6 +200,7 @@ export default defineComponent({
     }
 
     const getSongUrl = () => {
+      toast('此歌无版权或需要会员，正在切换播放源～')
       if (currentMusic.value && currentMusic.value.id) {
         api.getSongUrl(currentMusic.value.id).then(resp => {
           if (resp.status === 200) {

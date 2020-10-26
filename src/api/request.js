@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from '../components/toast'
 
 let instance = axios.create();
 
@@ -15,6 +16,7 @@ instance.interceptors.response.use(
   },
   err => {
     if (err.message === "Request failed with status code 301") {
+      toast('请先登录～')
       window.location.href = "/#/login";
     }
   }

@@ -83,6 +83,7 @@ export default defineComponent({
 
     const onSelected = (name) => {
       store.commit('SET_CATEGORY', name)
+      this.$toast('发撒范德萨')
     }
 
     const gotoAll = () => {};

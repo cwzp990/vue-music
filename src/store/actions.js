@@ -5,7 +5,7 @@ import { findIndex } from "../utils";
 export const selectPlay = ({ commit }, { list, index }) => {
   commit(types.SET_PLAYLIST, list);
   commit(types.SET_CURRENTINDEX, index);
-  commit(types.SET_PLAYING, true);
+  commit(types.SET_PLAYER_STATE, true);
 };
 
 // 播放歌曲（替换歌单列表）
@@ -25,17 +25,21 @@ export const addPlay = ({ commit, state }, { music }) => {
   // 当前播放列表有待插入的音乐时，直接改变当前播放音乐的索引值
   if (index > -1) {
     commit(types.SET_CURRENTINDEX, index);
+    commit(types.SET_CURRENTMUSIC, music)
   } else {
-    list.unshift(music);
+    index = list.push(music) - 1
     commit(types.SET_PLAYLIST, list);
-    commit(types.SET_CURRENTINDEX, 0);
+    commit(types.SET_CURRENTINDEX, index);
+    commit(types.SET_CURRENTMUSIC, list[index])
   }
-  commit(types.SET_PLAYING, true);
+  commit(types.SET_PLAYER_STATE, true);
+  commit(types.SET_SHOW_PLAYER, true);
+
 };
 
 // 清空播放列表
 export const clearPlayList = function ({ commit }) {
-  commit(types.SET_PLAYING, false);
+  commit(types.SET_PLAYER_STATE, false);
   commit(types.SET_CURRENTINDEX, -1);
   commit(types.SET_PLAYLIST, []);
 };
@@ -49,8 +53,8 @@ export const removerPlayListItem = ({ commit, state }, { list, index }) => {
   }
   commit(types.SET_PLAYLIST, list);
   if (!list.length) {
-    commit(types.SET_PLAYING, false);
+    commit(types.SET_PLAYER_STATE, false);
   } else {
-    commit(types.SET_PLAYING, true);
+    commit(types.SET_PLAYER_STATE, true);
   }
 };

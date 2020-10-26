@@ -56,6 +56,9 @@ import {
   onMounted,
   ref
 } from 'vue'
+import {
+  useStore
+} from 'vuex'
 import api from '../../api'
 export default defineComponent({
   setup() {
@@ -63,6 +66,7 @@ export default defineComponent({
     const result = ref([])
     const hotKeys = ref([])
     const history = ref([])
+    const store = useStore()
 
     onMounted(() => {
       history.value = JSON.parse(localStorage.getItem('_search_')) || []
@@ -101,6 +105,17 @@ export default defineComponent({
       })
     }
 
+    const onPlay = (id) => {
+      api.getSongDetails(id).then(resp => {
+        if (resp.data.code === 200) {
+          let music = resp.data.songs[0]
+          store.dispatch('addPlay', {
+            music
+          })
+        }
+      })
+    }
+
     return {
       key,
       result,
@@ -109,6 +124,7 @@ export default defineComponent({
       onEmpty,
       onQuery,
       onSelected,
+      onPlay
     }
   },
 })
