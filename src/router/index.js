@@ -11,14 +11,14 @@ const songlist_details = () => import(/* webpackChunkName: "songlist_details" */
 
 const routes = [
   {
-    path: "/",
-    name: "Login",
-    component: Login
-  },
-  {
     path: "/layout",
     component: Layout,
     children: [
+      {
+        path: "/",
+        name: "Login",
+        component: Login
+      },
       {
         path: "/songlist",
         name: "SongList",

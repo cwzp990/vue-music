@@ -80,7 +80,6 @@ export default defineComponent({
         if (resp.data.code === 200) {
           comments.value = resp.data.comments
           hotComments.value = resp.data.hotComments
-          console.log(111, comments)
         }
       });
     }
