@@ -11,14 +11,10 @@ instance.interceptors.request.use(config => {
 
 instance.interceptors.response.use(
   response => {
-    console.log(response.data);
     return response;
   },
   err => {
-    if (err.message === "Request failed with status code 301") {
-      toast('请先登录～')
-      window.location.href = "/#/login";
-    }
+    toast(err.message)
   }
 );
 

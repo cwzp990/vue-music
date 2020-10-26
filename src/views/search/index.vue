@@ -25,7 +25,7 @@
         <i class="iconfont icon-empty" @click="onEmpty"></i>
       </p>
       <ul class="history-wrapper">
-        <li class="item-search" v-for="item in history" :key="item">
+        <li class="item-search" v-for="item in history" :key="item" @click="onSelected(item)">
           {{ item }}
         </li>
       </ul>
@@ -57,6 +57,9 @@ import {
   ref
 } from 'vue'
 import {
+  useRouter
+} from 'vue-router'
+import {
   useStore
 } from 'vuex'
 import api from '../../api'
@@ -67,6 +70,7 @@ export default defineComponent({
     const hotKeys = ref([])
     const history = ref([])
     const store = useStore()
+    const route = useRouter()
 
     onMounted(() => {
       history.value = JSON.parse(localStorage.getItem('_search_')) || []
@@ -87,6 +91,7 @@ export default defineComponent({
 
     const onSelected = (val) => {
       key.value = val
+      onQuery()
       const isHas = history.value.indexOf(val) > -1
       if (isHas) return
       history.value.push(val)
@@ -103,6 +108,10 @@ export default defineComponent({
           result.value = resp.data.result.songs
         }
       })
+    }
+
+    const goToSinger = () => {
+      route.push('/singer')
     }
 
     const onPlay = (id) => {
@@ -124,6 +133,7 @@ export default defineComponent({
       onEmpty,
       onQuery,
       onSelected,
+      goToSinger,
       onPlay
     }
   },
@@ -134,6 +144,7 @@ export default defineComponent({
 @import '../../styles/mixin.scss';
 
 .m-search {
+  padding: 10px 0;
 
   .history,
   .hot {

@@ -5,6 +5,8 @@ const songList = () => import(/* webpackChunkName: "Songlist" */ "../views/songl
 const search = () => import(/* webpackChunkName: "search" */ "../views/search/index.vue")
 const rank = () => import(/* webpackChunkName: "rank" */ "../views/rank/index.vue")
 const mine = () => import(/* webpackChunkName: "mine" */ "../views/mine/index.vue")
+const singer = () => import(/* webpackChunkName: "singer" */ "../components/singer/index.vue")
+const comment = () => import(/* webpackChunkName: "comment" */ "../components/comment/index.vue")
 const songlist_details = () => import(/* webpackChunkName: "songlist_details" */ "../components/songlist_details/index.vue")
 
 const routes = [
@@ -44,7 +46,18 @@ const routes = [
         path: "/mine",
         name: "Mine",
         component: mine
-      }
+      },
+      {
+        path: '/singer',
+        name: "Singer",
+        component: singer
+      },
+      {
+        path: '/comment',
+        name: "Comment",
+        component: comment
+      },
+
     ]
   }
 ];

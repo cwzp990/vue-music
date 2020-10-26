@@ -12,7 +12,7 @@ const createToast = (message) => {
   setTimeout(() => {
     instance.unmount(mountNode)
     document.body.removeChild(mountNode)
-  }, 1000)
+  }, 2000)
 }
 
 export default createToast

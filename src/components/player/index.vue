@@ -22,6 +22,15 @@
           <div class="playing-lyric-wrapper">
             <div class="playing-lyric">{{playingLyric || '暂无歌词'}}</div>
           </div>
+
+          <div class="operators-wrapper">
+            <span class="btn-wrapper" @click="onLike">
+              <i class="iconfont icon-love"></i>
+            </span>
+            <span class="btn-wrapper" @click.stop="onComment">
+              <i class="iconfont icon-comments"></i>
+            </span>
+          </div>
         </div>
 
         <div v-else>
@@ -80,6 +89,9 @@ import {
   watch
 } from 'vue';
 import {
+  useRouter
+} from 'vue-router';
+import {
   useStore
 } from 'vuex'
 import api from "../../api";
@@ -105,6 +117,7 @@ export default defineComponent({
     const isPlaying = ref(false)
     const isReady = ref(false)
     const store = useStore()
+    const route = useRouter()
 
     const showPlayer = computed(() => store.getters.showPlayer)
     const currentIndex = computed(() => store.getters.currentIndex)
@@ -182,6 +195,16 @@ export default defineComponent({
     const updateTime = e => {
       currentTime.value = e.target.currentTime
     }
+    const onLike = () => {}
+    const onComment = () => {
+      store.commit('SET_SHOW_PLAYER', false)
+      route.push({
+        path: '/comment',
+        query: {
+          id: currentMusic.value.id
+        }
+      })
+    }
     const urlError = () => {
       getSongUrl()
     }
@@ -200,7 +223,7 @@ export default defineComponent({
     }
 
     const getSongUrl = () => {
-      toast('此歌无版权或需要会员，正在切换播放源～')
+      toast('此歌无版权，正在为您切换播放源～')
       if (currentMusic.value && currentMusic.value.id) {
         api.getSongUrl(currentMusic.value.id).then(resp => {
           if (resp.status === 200) {
@@ -272,6 +295,8 @@ export default defineComponent({
       updateTime,
       urlError,
       formatPlayTime,
+      onLike,
+      onComment
     }
   },
 })
@@ -308,7 +333,6 @@ export default defineComponent({
         position: absolute;
         top: 0;
         left: 6px;
-        z-index: 50;
 
         .iconfont {
           display: inline-block;
@@ -379,7 +403,7 @@ export default defineComponent({
 
         .playing-lyric-wrapper {
           width: 80%;
-          margin: 20px auto 0 auto;
+          margin: 20px auto 10% auto;
           overflow: hidden;
           text-align: center;
 
@@ -473,20 +497,20 @@ export default defineComponent({
           flex: 1;
         }
       }
+    }
 
-      .operators-wrapper {
-        display: flex;
-        align-items: center;
+    .operators-wrapper {
+      display: flex;
+      align-items: center;
 
-        .btn-wrapper {
-          flex: 1;
-          text-align: center;
+      .btn-wrapper {
+        flex: 1;
+        text-align: center;
 
-          .iconfont {
-            @include sc($font_huge, #fff);
-          }
-
+        .iconfont {
+          @include sc($font_huge, #fff);
         }
+
       }
     }
   }

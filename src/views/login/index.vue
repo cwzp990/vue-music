@@ -192,7 +192,7 @@ export default defineComponent({
     @include wh(80%, 520px);
     padding: 100px 10px;
     box-sizing: border-box;
-    z-index: 1995;
+    z-index: 100;
     background: #fff;
     border-radius: 10px;
 

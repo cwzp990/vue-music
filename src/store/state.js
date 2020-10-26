@@ -7,7 +7,7 @@ const initialState = {
   currentIndex: -1, //当前音乐索引
   currentMusic: {}, //当前音乐
   singer: {}, //当前歌手
-  userInfo: {},
+  userInfo: null,
   category: "全部" //当前歌单类型
 };
 

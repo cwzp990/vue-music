@@ -31,6 +31,7 @@ export default defineComponent({
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
+  z-index: 1995;
 }
 
 .fade-enter-active,
