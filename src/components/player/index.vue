@@ -502,14 +502,4 @@ export default defineComponent({
     @include sc($font_small, #fff);
   }
 }
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0) 100%;
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
 </style>

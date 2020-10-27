@@ -16,6 +16,11 @@ const mutations = {
     state.showList = showList;
   },
 
+  // 显示loading组件
+  [types.SET_SHOW_MODAL](state, showModal) {
+    state.showModal = showModal;
+  },
+
   // 设置播放状态
   [types.SET_PLAYER_STATE](state, playerState) {
     state.playerState = playerState;

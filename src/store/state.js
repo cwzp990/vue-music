@@ -2,6 +2,7 @@ const initialState = {
   mode: 0,
   showPlayer: false, //Player显示状态
   showList: false, // 播放列表状态
+  showModal: false, // loading状态
   playerState: false, //Player播放状态
   playList: [], //播放列表
   currentIndex: -1, //当前音乐索引

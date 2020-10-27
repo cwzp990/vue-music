@@ -98,7 +98,7 @@ export default defineComponent({
 @import '../../styles/mixin.scss';
 
 .m-comment {
-  padding: 10px 0;
+  padding: 10px;
 
   .comment-title {
     @include wh(100%, 100%);
