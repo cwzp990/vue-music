@@ -29,9 +29,7 @@ export default {
   @include wh(100%, 100%);
 
   .m-main {
-    padding: 0 10px;
     @include wh(100%, calc(100% - 60px));
-    box-sizing: border-box;
     overflow-x: hidden;
     overflow-y: auto;
   }

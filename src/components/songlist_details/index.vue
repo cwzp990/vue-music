@@ -1,5 +1,10 @@
 <template>
 <div className="m-songlist-details">
+  <mHeader isWhite>
+    <template v-slot:title>
+      <p class="normal-title">歌单详情</p>
+    </template>
+  </mHeader>
   <div className="songlist-info" @click="goToInfo">
     <div className="list-wrapper">
       <div className="cover">
@@ -44,6 +49,7 @@ import {
   useRouter
 } from "vue-router";
 import List from '../list/index.vue';
+import mHeader from "../../components/header/index.vue";
 import api from "../../api";
 import {
   convertCount
@@ -51,7 +57,8 @@ import {
 
 export default defineComponent({
   components: {
-    List
+    List,
+    mHeader
   },
 
   setup() {
@@ -96,7 +103,7 @@ export default defineComponent({
   .songlist-info {
     position: relative;
     @include wh(100%, 30%);
-    padding: 10px 0 25px 0;
+    padding: 10px 10px 25px 10px;
     box-sizing: border-box;
 
     .list-wrapper {
@@ -161,7 +168,7 @@ export default defineComponent({
     top: -10px;
     background: #fff;
     border-radius: 15px 15px 0 0;
-    padding: 15px 5px;
+    padding: 15px 10px;
   }
 }
 </style>

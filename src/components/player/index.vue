@@ -5,13 +5,15 @@
       <div class="bg-img">
         <img v-if="currentMusic.al" :src="currentMusic.al.picUrl" alt />
       </div>
-      <div class="player-nav">
-        <div class="back" @click="back">
-          <i class="iconfont icon-left"></i>
-        </div>
-        <p class="title more">{{currentMusic.name}}</p>
-        <p v-if="currentMusic.ar" class="subtitle">{{currentMusic.ar[0].name}}</p>
-      </div>
+      <mHeader isWhite>
+        <template v-slot:title>
+          <div>
+            <p class="title more">{{currentMusic.name}}</p>
+            <p v-if="currentMusic.ar" class="subtitle">{{currentMusic.ar[0].name}}</p>
+          </div>
+        </template>
+        <template v-slot:right></template>
+      </mHeader>
       <div class="player-middle" @click="toggleLyric">
         <div class="middle-l" v-if="currentShow==='cd'">
           <div class="cd-wrapper">
@@ -100,10 +102,12 @@ import {
   formatPlayTime,
   lyricParser
 } from '../../utils/index';
+import mHeader from '../../components/header/index.vue';
 import progressBar from '../progress/index.vue';
 import toast from '../toast'
 export default defineComponent({
   components: {
+    mHeader,
     progressBar
   },
   setup() {
@@ -325,37 +329,6 @@ export default defineComponent({
       filter: blur(20px);
     }
 
-    .player-nav {
-      position: relative;
-      margin-bottom: 25px;
-
-      .back {
-        position: absolute;
-        top: 0;
-        left: 6px;
-
-        .iconfont {
-          display: inline-block;
-          padding: 9px;
-          @include sc($font_large, #fff);
-        }
-      }
-
-      .title {
-        @include wh(70%, 40px);
-        margin: 0 auto;
-        line-height: 40px;
-        text-align: center;
-        @include sc($font_large, #fff);
-      }
-
-      .subtitle {
-        line-height: 20px;
-        text-align: center;
-        @include sc($font_small, #fff);
-      }
-    }
-
     .player-middle {
       position: fixed;
       width: 100%;
@@ -513,6 +486,20 @@ export default defineComponent({
 
       }
     }
+  }
+
+  .title {
+    @include wh(70%, 24px);
+    margin: 0 auto;
+    line-height: 24px;
+    text-align: center;
+    @include sc($font_large, #fff);
+  }
+
+  .subtitle {
+    line-height: 16px;
+    text-align: center;
+    @include sc($font_small, #fff);
   }
 }
 

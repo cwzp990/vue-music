@@ -1,8 +1,13 @@
 <template>
 <div class="m-square">
+  <mHeader>
+    <template v-slot:title>
+      <p class="normal-title">歌单广场</p>
+    </template>
+  </mHeader>
   <div class="square-category">
     <div class="cat-wrapper">
-      <span v-for="(name, index) in hotCategory" :key="index" @click="onSelected(name)">{{
+      <span v-for="(name, index) in hotCategory" :key="index" :class="category===name? 'current': ''" @click="onSelected(name)">{{
           name
         }}</span>
     </div>
@@ -30,11 +35,13 @@ import {
   useStore
 } from 'vuex';
 import Box from "../../components/box/box.vue";
+import mHeader from "../../components/header/index.vue";
 import api from "../../api";
 
 export default defineComponent({
   components: {
-    Box
+    Box,
+    mHeader
   },
   setup() {
     const store = useStore();
@@ -83,7 +90,6 @@ export default defineComponent({
 
     const onSelected = (name) => {
       store.commit('SET_CATEGORY', name)
-      this.$toast('发撒范德萨')
     }
 
     const gotoAll = () => {};
@@ -93,6 +99,7 @@ export default defineComponent({
       hotCategory,
       squareList,
       onSelected,
+      category,
       gotoAll
     };
   }
@@ -138,6 +145,8 @@ export default defineComponent({
   }
 
   .m-songlist {
+    padding: 0 10px;
+
     .songlist-wrapper {
       display: flex;
       flex-wrap: wrap;

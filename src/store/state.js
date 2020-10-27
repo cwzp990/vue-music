@@ -8,7 +8,7 @@ const initialState = {
   currentMusic: {}, //当前音乐
   singer: {}, //当前歌手
   userInfo: null,
-  category: "全部" //当前歌单类型
+  category: "华语" //当前歌单类型
 };
 
 export default initialState;

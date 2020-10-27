@@ -1,22 +1,33 @@
 <template>
-  <div class="m-songlist">
-    <div class="songlist-wrapper">
-      <div class="box-wrapper" v-for="list in rankList" :key="list.id">
-        <Box :info="list" />
-      </div>
+<div class="m-rank">
+  <mHeader>
+    <template v-slot:title>
+      <p class="normal-title">排行榜</p>
+    </template>
+  </mHeader>
+  <div class="rank-wrapper">
+    <div class="box-wrapper" v-for="list in rankList" :key="list.id">
+      <Box :info="list" />
     </div>
   </div>
+</div>
 </template>
 
 <script>
-import { defineComponent, ref, onMounted } from "vue";
+import {
+  defineComponent,
+  ref,
+  onMounted
+} from "vue";
 import Box from "../../components/box/box.vue";
+import mHeader from "../../components/header/index.vue";
 import api from "../../api";
 export default defineComponent({
   components: {
-    Box
+    Box,
+    mHeader
   },
-  setup () {
+  setup() {
     const rankList = ref([]);
     onMounted(() => {
       getRankList()
@@ -38,14 +49,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.m-songlist {
-  .songlist-wrapper {
+.m-rank {
+  .rank-wrapper {
     display: flex;
     flex-wrap: wrap;
+    padding: 0 10px;
+
     .box-wrapper {
       width: 32%;
       margin-right: 2%;
       margin-bottom: 8px;
+
       &:nth-child(3n) {
         margin-right: 0;
       }
