@@ -28,7 +28,7 @@ export default defineComponent({
   right: 0;
   bottom: 0;
   background: $black;
-  opacity: 0.3;
+  opacity: 0.9;
   color: #fff;
   z-index: 1996;
 

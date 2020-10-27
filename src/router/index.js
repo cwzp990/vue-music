@@ -8,6 +8,7 @@ const mine = () => import(/* webpackChunkName: "mine" */ "../views/mine/index.vu
 const singer = () => import(/* webpackChunkName: "singer" */ "../components/singer/index.vue")
 const comment = () => import(/* webpackChunkName: "comment" */ "../components/comment/index.vue")
 const songlist_details = () => import(/* webpackChunkName: "songlist_details" */ "../components/songlist_details/index.vue")
+const example = () => import(/* webpackChunkName: "example" */ "../components/example/index.vue")
 
 const routes = [
   {
@@ -57,7 +58,11 @@ const routes = [
         name: "Comment",
         component: comment
       },
-
+      {
+        path: '/example',
+        name: "Example",
+        component: example
+      }
     ]
   }
 ];

@@ -14,6 +14,7 @@
     <i class="iconfont icon-category" @Click="gotoAll"></i>
   </div>
   <div class="m-songlist">
+    <Slide :imgList="banners" />
     <div class="songlist-wrapper">
       <div class="box-wrapper" v-for="list in squareList" :key="list.id">
         <Box :info="list" />
@@ -36,12 +37,14 @@ import {
 } from 'vuex';
 import Box from "../../components/box/box.vue";
 import mHeader from "../../components/header/index.vue";
+import Slide from "../../components/slide/index.vue";
 import api from "../../api";
 
 export default defineComponent({
   components: {
     Box,
-    mHeader
+    mHeader,
+    Slide
   },
   setup() {
     const store = useStore();

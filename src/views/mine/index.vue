@@ -11,6 +11,19 @@
         <span class="tags age">{{age}}</span> <span class="tags">Lv. {{user.level}}</span>
       </p>
     </div>
+
+    <div class="mine-favorite">
+      <div class="favorite-wrapper">
+        <div class="icon">
+          <i class="iconfont icon-love"></i>
+        </div>
+        <div>
+          <p class="title">我喜欢的音乐</p>
+          <p class="subtitle">{{like.length}}首</p>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-img">
       <img :src="user.backgroundUrl" alt="" />
     </div>
@@ -24,7 +37,15 @@
 
     <div class="list-main">
       <ul>
-        <li class="list-item" v-for="(item, index) in list" :key="index"></li>
+        <li class="list-item" v-for="(item, index) in list" :key="index" @click="goToSongList(item.id)">
+          <div class="item-cover">
+            <img :src="item.coverImgUrl" alt>
+          </div>
+          <div class="item-info">
+            <p class="name">{{item.name}}</p>
+            <p class="count">{{item.trackCount}} 首</p>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -52,7 +73,7 @@ export default defineComponent({
     const like = ref([])
     const list = ref([])
     const type = ref(1)
-    const route = useRouter()
+    const router = useRouter()
     const store = useStore()
     const userInfo = computed(() => store.getters.userInfo)
     const age = computed(() => {
@@ -64,7 +85,7 @@ export default defineComponent({
     onMounted(() => {
       if (!userInfo.value) {
         toast('需要登录!')
-        route.push('/')
+        router.push('/')
       } else {
         getUserInfo()
         getUserList()
@@ -106,6 +127,15 @@ export default defineComponent({
       })
     }
 
+    const goToSongList = (id) => {
+      router.push({
+        path: "/list_detail",
+        query: {
+          id
+        }
+      });
+    };
+
     const onTab = (val) => {
       type.value = val
     }
@@ -116,6 +146,7 @@ export default defineComponent({
       list,
       type,
       age,
+      goToSongList,
       onTab
     }
   }
@@ -135,7 +166,7 @@ export default defineComponent({
 
     .info-wrapper {
       position: absolute;
-      top: 25%;
+      bottom: 80px;
       left: 10px;
 
       .avatar-wrapper {
@@ -168,6 +199,42 @@ export default defineComponent({
       }
     }
 
+    .mine-favorite {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      right: 10px;
+      width: calc(100% - 20px);
+      background: #fff;
+      border-radius: 10px;
+
+      .favorite-wrapper {
+        display: flex;
+        align-items: center;
+
+        .icon {
+          position: relative;
+          @include wh(48px, 48px);
+          border-radius: 8px;
+          margin-right: 10px;
+
+          .iconfont {
+            @include center;
+            @include sc(36px, $red);
+          }
+        }
+
+        .title {
+          @include sc($font_normal, $black);
+          margin-bottom: 6px;
+        }
+
+        .subtitle {
+          @include sc($font_small, $gray);
+        }
+      }
+    }
+
     .bg-img {
       position: absolute;
       left: 0;
@@ -196,6 +263,31 @@ export default defineComponent({
 
         &.active {
           border-bottom: 3px solid $theme;
+        }
+      }
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      margin: 10px 0;
+
+      .item-cover {
+        @include wh(48px, 48px);
+        border-radius: 8px;
+        margin-right: 10px;
+        overflow: hidden;
+      }
+
+      .item-info {
+        .name {
+          @include sc($font_normal, $black);
+          margin-bottom: 10px;
+        }
+
+        .count {
+          @include sc($font_small, $gray);
         }
       }
     }

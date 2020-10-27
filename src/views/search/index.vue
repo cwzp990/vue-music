@@ -222,6 +222,8 @@ export default defineComponent({
 }
 
 .m-search-list {
+  padding: 0 10px;
+
   .title {
     line-height: 36px;
     @include sc($font_normal, $blue);

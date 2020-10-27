@@ -22,7 +22,7 @@
             </div>
           </div>
           <div class="playing-lyric-wrapper">
-            <div class="playing-lyric">{{playingLyric || '暂无歌词'}}</div>
+            <div class="playing-lyric">{{playingLyric || 'music~'}}</div>
           </div>
 
           <div class="operators-wrapper">
