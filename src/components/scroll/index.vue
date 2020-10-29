@@ -1,6 +1,6 @@
 <template>
 <div class="pullup">
-  <div ref="scrollRef" class="pullup-wrapper">
+  <div ref="scroll" class="pullup-wrapper">
     <div class="pullup-content">
       <slot></slot>
       <div class="pullup-tips">
@@ -22,42 +22,36 @@ import Pullup from '@better-scroll/pull-up'
 
 BScroll.use(Pullup)
 
-import {
-  defineComponent,
-  watch
-} from 'vue'
-
-export default defineComponent({
+export default {
+  data() {
+    return {
+      isPullUpLoad: false,
+    }
+  },
   props: ['query'],
-
-  setup(props) {
-    const bscroll = ref(null)
-    const scrollRef = ref(null)
-    const isPullUpLoad = ref(false)
-
-    watch(scrollRef, () => {
-      initBscroll()
-    })
-
-    const initBscroll = () => {
-      bscroll.value = new BScroll(scrollRef.value, {
+  mounted() {
+    this.initBscroll()
+  },
+  methods: {
+    initBscroll() {
+      this.bscroll = new BScroll(this.$refs.scroll, {
         pullUpLoad: true
       })
 
-      bscroll.value.on('pullingUp', pullingUpHandler)
-    }
+      this.bscroll.on('pullingUp', this.pullingUpHandler)
+    },
+    pullingUpHandler() {
+      this.isPullUpLoad = true
 
-    const pullingUpHandler = () => {
-      if (!query) return
-      isPullUpLoad.value = true
-      props.query().then(resp => {
-        bscroll.value.finishPullUp()
-        bscroll.value.refresh()
-        isPullUpLoad.value = false
+      this.query().then(resp => {
+        console.log(111, resp)
+        this.bscroll.finishPullUp()
+        this.bscroll.refresh()
+        this.isPullUpLoad = false
       })
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -66,19 +60,7 @@ export default defineComponent({
 
   .pullup-wrapper {
     height: 100%;
-    padding: 0 10px;
-    border: 1px solid #ccc;
     overflow: hidden;
-  }
-
-  .pullup-list {
-    padding: 0;
-  }
-
-  .pullup-list-item {
-    padding: 10px 0;
-    list-style: none;
-    border-bottom: 1px solid #ccc;
   }
 
   .pullup-tips {
@@ -86,6 +68,5 @@ export default defineComponent({
     text-align: center;
     color: #999;
   }
-
 }
 </style>

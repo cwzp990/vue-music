@@ -5,22 +5,29 @@
       <p class="normal-title">歌单广场</p>
     </template>
   </mHeader>
-  <div class="square-category">
-    <div class="cat-wrapper">
-      <span v-for="(name, index) in hotCategory" :key="index" :class="category===name? 'current': ''" @click="onSelected(name)">{{
+  <div class="scroll-wrapper">
+    <Scroll>
+      <div>
+        <div class="square-category">
+          <div class="cat-wrapper">
+            <span v-for="(name, index) in hotCategory" :key="index" :class="category===name? 'current': ''" @click="onSelected(name)">{{
           name
         }}</span>
-    </div>
-    <i class="iconfont icon-category" @Click="gotoAll"></i>
-  </div>
-  <div class="m-songlist">
-    <Slide :imgList="banners" />
-    <div class="songlist-wrapper">
-      <div class="box-wrapper" v-for="list in squareList" :key="list.id">
-        <Box :info="list" />
+          </div>
+          <i class="iconfont icon-category" @Click="gotoAll"></i>
+        </div>
+        <div class="m-songlist">
+          <Slide :imgList="banners" />
+          <div class="songlist-wrapper">
+            <div class="box-wrapper" v-for="list in squareList" :key="list.id">
+              <Box :info="list" />
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+    </Scroll>
   </div>
+
 </div>
 </template>
 
@@ -38,13 +45,15 @@ import {
 import Box from "../../components/box/box.vue";
 import mHeader from "../../components/header/index.vue";
 import Slide from "../../components/slide/index.vue";
+import Scroll from "../../components/scroll/index.vue";
 import api from "../../api";
 
 export default defineComponent({
   components: {
     Box,
     mHeader,
-    Slide
+    Slide,
+    Scroll
   },
   setup() {
     const store = useStore();
@@ -113,57 +122,64 @@ export default defineComponent({
 @import "../../styles/mixin.scss";
 
 .m-square {
-  .square-category {
-    display: flex;
-    margin-bottom: 5px;
+  height: 100%;
 
-    .cat-wrapper {
-      display: inline-block;
-      white-space: nowrap;
-      overflow-x: scroll;
-      overflow-y: hidden;
+  .scroll-wrapper {
+    height: calc(100% - 40px);
 
-      span {
-        display: inline-block;
-        text-align: center;
-        @include wh(60px, 100%);
-        @include sc($font_normal, $gray);
-        line-height: 24px;
-
-        &.current {
-          color: $theme;
-        }
-      }
-
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    }
-
-    .iconfont {
-      display: inline-block;
-      padding: 5px;
-      @include sc($font_huge, $gray);
-    }
-  }
-
-  .m-songlist {
-    padding: 0 10px;
-
-    .songlist-wrapper {
+    .square-category {
       display: flex;
-      flex-wrap: wrap;
+      margin-bottom: 5px;
 
-      .box-wrapper {
-        width: 32%;
-        margin-right: 2%;
-        margin-bottom: 8px;
+      .cat-wrapper {
+        display: inline-block;
+        white-space: nowrap;
+        overflow-x: scroll;
+        overflow-y: hidden;
 
-        &:nth-child(3n) {
-          margin-right: 0;
+        span {
+          display: inline-block;
+          text-align: center;
+          @include wh(60px, 100%);
+          @include sc($font_normal, $gray);
+          line-height: 24px;
+
+          &.current {
+            color: $theme;
+          }
+        }
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .iconfont {
+        display: inline-block;
+        padding: 5px;
+        @include sc($font_huge, $gray);
+      }
+    }
+
+    .m-songlist {
+      padding: 0 10px;
+
+      .songlist-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+
+        .box-wrapper {
+          width: 32%;
+          margin-right: 2%;
+          margin-bottom: 8px;
+
+          &:nth-child(3n) {
+            margin-right: 0;
+          }
         }
       }
     }
   }
+
 }
 </style>
