@@ -9,7 +9,8 @@ const initialState = {
   currentMusic: {}, //当前音乐
   singer: {}, //当前歌手
   userInfo: null,
-  category: "华语" //当前歌单类型
+  category: "华语", //当前歌单类型
+  offset: 0 // 分页
 };
 
 export default initialState;

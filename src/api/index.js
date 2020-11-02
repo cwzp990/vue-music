@@ -224,7 +224,7 @@ const api = {
   },
 
   // 获取歌手专辑列表， id为歌手id
-  getArtistAlbumResource(id, limit = 50) {
+  getArtistAlbumResource(id, limit = 10) {
     return axios.get(ArtistAlbumResource, {
       params: {
         id,
@@ -297,7 +297,7 @@ const api = {
    * @param offset  偏移量 默认为0
    * @returns 返回歌单列表
    */
-  getTopPlaylistResource(cat, order = "hot", limit = 50, offset = 0) {
+  getTopPlaylistResource(cat, offset = 0, order = "hot", limit = 10) {
     return axios.get(TopPlaylistResource, {
       params: {
         order,
@@ -314,7 +314,7 @@ const api = {
    * @param offset
    * @returns 返回新碟列表
    */
-  getNewAlbumResource(limit = 50, offset = 0) {
+  getNewAlbumResource(limit = 10, offset = 0) {
     return axios.get(NewAlbumResource, {
       params: {
         limit,

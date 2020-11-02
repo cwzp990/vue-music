@@ -9,3 +9,4 @@ export const SET_SINGER = "SET_SINGER"; // 设置当前歌手
 export const SET_USERINFO = "SET_USERINFO"; // 设置登录用户信息
 export const SET_PLAYER_STATE = "SET_PLAYER_STATE"; // 设置播放状态
 export const SET_CATEGORY = "SET_CATEGORY"; // 设置歌单类型
+export const SET_OFFSET = "SET_OFFSET"; // 设置分页页数

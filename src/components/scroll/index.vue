@@ -1,14 +1,11 @@
 <template>
 <div class="pullup">
-  <div ref="scroll" class="pullup-wrapper">
+  <div ref="scrollRef" class="pullup-wrapper">
     <div class="pullup-content">
       <slot></slot>
       <div class="pullup-tips">
         <div v-if="!isPullUpLoad" class="before-trigger">
           <span class="pullup-txt">Pull up and load more</span>
-        </div>
-        <div v-else class="after-trigger">
-          <span class="pullup-txt">Loading...</span>
         </div>
       </div>
     </div>
@@ -19,39 +16,60 @@
 <script>
 import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
+import {
+  defineComponent,
+  computed,
+  onMounted,
+  ref
+} from 'vue'
+import {
+  useStore
+} from 'vuex'
 
 BScroll.use(Pullup)
 
-export default {
-  data() {
-    return {
-      isPullUpLoad: false,
-    }
-  },
-  props: ['query'],
-  mounted() {
-    this.initBscroll()
-  },
-  methods: {
-    initBscroll() {
-      this.bscroll = new BScroll(this.$refs.scroll, {
+export default defineComponent({
+  setup(props, context) {
+    const store = useStore()
+    const bscroll = ref(null)
+    const scrollRef = ref(null)
+    const isPullUpLoad = ref(false)
+    const offset = computed(() => store.getters.offset)
+
+    onMounted(() => {
+      initBscroll()
+    })
+
+    const initBscroll = () => {
+      bscroll.value = new BScroll(scrollRef.value, {
         pullUpLoad: true
       })
 
-      this.bscroll.on('pullingUp', this.pullingUpHandler)
-    },
-    pullingUpHandler() {
-      this.isPullUpLoad = true
-
-      this.query().then(resp => {
-        console.log(111, resp)
-        this.bscroll.finishPullUp()
-        this.bscroll.refresh()
-        this.isPullUpLoad = false
-      })
+      bscroll.value.on('pullingUp', pullingUpHandler)
     }
+
+    const pullingUpHandler = () => {
+      isPullUpLoad.value = true
+      context.emit('load-more', offset.value)
+    }
+
+    const isLoaded = () => {
+      isPullUpLoad.value = false
+      if (!bscroll.value) return
+      bscroll.value.finishPullUp()
+      bscroll.value.refresh()
+      bscroll.value.isLoaded()
+    }
+
+    return {
+      bscroll,
+      scrollRef,
+      isPullUpLoad,
+      isLoaded
+    }
+
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

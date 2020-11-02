@@ -9,3 +9,4 @@ export const currentMusic = state => state.currentMusic;
 export const singer = state => state.singer;
 export const userInfo = state => state.userInfo;
 export const category = state => state.category;
+export const offset = state => state.offset;

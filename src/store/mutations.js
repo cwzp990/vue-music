@@ -54,6 +54,11 @@ const mutations = {
   // 设置当前歌单类型
   [types.SET_CATEGORY](state, category) {
     state.category = category;
+  },
+
+  // 设置分页页数
+  [types.SET_OFFSET](state, offset) {
+    state.offset = offset;
   }
 };
 

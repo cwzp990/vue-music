@@ -6,7 +6,7 @@
     </template>
   </mHeader>
   <div class="scroll-wrapper">
-    <Scroll>
+    <Scroll ref="scrollRef" @load-more="loadMore">
       <div>
         <div class="square-category">
           <div class="cat-wrapper">
@@ -60,6 +60,7 @@ export default defineComponent({
     const hotCategory = ref([]);
     const squareList = ref([]);
     const banners = ref([]);
+    const scrollRef = ref(null);
     const category = computed(() => store.getters.category)
     onMounted(() => {
       getHotCategory();
@@ -84,8 +85,8 @@ export default defineComponent({
       });
     };
 
-    const getSongList = cat => {
-      api.getTopPlaylistResource(cat).then(resp => {
+    const getSongList = (cat, offset) => {
+      api.getTopPlaylistResource(cat, offset).then(resp => {
         if (resp.data.code === 200) {
           squareList.value = resp.data.playlists;
         }
@@ -104,6 +105,19 @@ export default defineComponent({
       store.commit('SET_CATEGORY', name)
     }
 
+    const loadMore = (offset) => {
+      let newOffset = offset + 1
+      api.getTopPlaylistResource(category.value, newOffset).then(resp => {
+        if (resp.data.code === 200) {
+          store.commit('SET_OFFSET', newOffset)
+          let newList = resp.data.playlists
+          squareList.value = [...squareList.value, ...newList]
+          console.log('列表', squareList.value)
+          scrollRef.value.isLoaded()
+        }
+      })
+    }
+
     const gotoAll = () => {};
 
     return {
@@ -112,6 +126,8 @@ export default defineComponent({
       squareList,
       onSelected,
       category,
+      scrollRef,
+      loadMore,
       gotoAll
     };
   }
