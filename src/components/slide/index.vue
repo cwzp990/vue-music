@@ -23,6 +23,7 @@ BScroll.use(Slide)
 
 import {
   defineComponent,
+  onUnmounted,
   ref,
   watch
 } from 'vue'
@@ -38,6 +39,10 @@ export default defineComponent({
     const slide = ref(null)
     const slideRef = ref(null)
     const currentPageIndex = ref(0)
+
+    onUnmounted(() => {
+      slide.value = null
+    })
 
     watch(slideRef, () => {
       init()
@@ -68,7 +73,6 @@ export default defineComponent({
     return {
       slideRef,
       currentPageIndex,
-      _onScrollEnd,
     }
   }
 })

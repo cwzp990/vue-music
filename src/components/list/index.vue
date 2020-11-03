@@ -6,7 +6,7 @@
       <span className="all">播放全部</span>
       <span className="count"> (共 {{ list.length }} 首)</span>
     </p>
-    <p className="collect" v-if="subscribe">+ 收藏 ({{ subscribed }})</p>
+    <p className="collect" v-if="subscribed">+ 收藏 ({{ subscribed }})</p>
   </div>
   <ul className="list-wrapper">
     <li className="item-song" v-for="(song, index) in list" :key="song.id" @click="onPlay(index)">
@@ -39,16 +39,7 @@ import {
 } from "../../utils";
 
 export default defineComponent({
-  props: {
-    list: {
-      type: Array,
-      default: () => []
-    },
-    subscribed: {
-      type: String,
-      default: ''
-    }
-  },
+  props: ['list', 'subscribed'],
   setup(props) {
     const store = useStore();
 
@@ -61,7 +52,7 @@ export default defineComponent({
 
     return {
       more,
-      onPlay
+      onPlay,
     }
   }
 })

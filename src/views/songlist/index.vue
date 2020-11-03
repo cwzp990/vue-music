@@ -112,7 +112,6 @@ export default defineComponent({
           store.commit('SET_OFFSET', newOffset)
           let newList = resp.data.playlists
           squareList.value = [...squareList.value, ...newList]
-          console.log('列表', squareList.value)
           scrollRef.value.isLoaded()
         }
       })

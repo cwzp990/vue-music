@@ -25,7 +25,7 @@
             <div class="playing-lyric">{{playingLyric || 'music~'}}</div>
           </div>
 
-          <div class="operators-wrapper">
+          <div class="operators-wrapper large-icon">
             <span class="btn-wrapper" @click="onLike">
               <i class="iconfont icon-love"></i>
             </span>
@@ -35,13 +35,13 @@
           </div>
         </div>
 
-        <div v-else>
-          <div class="lyric-wrapper">
-            <div>
+        <div class="middle-r" v-else>
+          <Scroll>
+            <div class="lyric-wrapper">
               <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
               <p ref="lyricLine" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
             </div>
-          </div>
+          </Scroll>
         </div>
       </div>
       <div class="player-footer">
@@ -103,11 +103,13 @@ import {
   lyricParser
 } from '../../utils/index';
 import mHeader from '../../components/header/index.vue';
+import Scroll from '../../components/scroll/index.vue';
 import progressBar from '../progress/index.vue';
 import toast from '../toast'
 export default defineComponent({
   components: {
     mHeader,
+    Scroll,
     progressBar
   },
   setup() {
@@ -168,6 +170,7 @@ export default defineComponent({
     }
     const prev = () => {
       if (!isReady.value) return
+      if (playList.value.length === 1) return
       let index = currentIndex.value - 1
       if (index < 0) {
         store.commit("SET_CURRENTINDEX", playList.value.length - 1)
@@ -177,6 +180,7 @@ export default defineComponent({
     }
     const next = () => {
       if (!isReady.value) return
+      if (playList.value.length === 1) return
       let index = currentIndex.value + 1
       if (index === playList.value.length) index = 0
       store.commit("SET_CURRENTINDEX", index)
@@ -384,6 +388,12 @@ export default defineComponent({
             height: 20px;
             line-height: 20px;
             @include sc($font_small, #fff);
+          }
+        }
+
+        .large-icon {
+          .iconfont {
+            font-size: 24px;
           }
         }
       }

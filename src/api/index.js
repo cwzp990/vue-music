@@ -135,7 +135,7 @@ const api = {
    * @param offset 数据偏移量
    * @returns response  数据返回值
    */
-  getSearchResource(keywords, type = 1, limit = 10, offset = 0) {
+  getSearchResource(keywords, type = 1, limit = 20, offset = 0) {
     return axios.get(SearchResource, {
       params: {
         keywords,
@@ -188,10 +188,11 @@ const api = {
   },
 
   // 获取评论， id为单曲id
-  getCommentResource(id, limit = 30) {
+  getCommentResource(id, offset = 1, limit = 20) {
     return axios.get(CommentResource, {
       params: {
         id,
+        offset: (offset - 1) * limit,
         limit
       }
     });
@@ -224,7 +225,7 @@ const api = {
   },
 
   // 获取歌手专辑列表， id为歌手id
-  getArtistAlbumResource(id, limit = 10) {
+  getArtistAlbumResource(id, limit = 20) {
     return axios.get(ArtistAlbumResource, {
       params: {
         id,
@@ -297,13 +298,13 @@ const api = {
    * @param offset  偏移量 默认为0
    * @returns 返回歌单列表
    */
-  getTopPlaylistResource(cat, offset = 0, order = "hot", limit = 10) {
+  getTopPlaylistResource(cat, offset = 1, order = "hot", limit = 20) {
     return axios.get(TopPlaylistResource, {
       params: {
         order,
         cat,
         limit,
-        offset
+        offset: (offset - 1) * limit
       }
     });
   },
@@ -314,7 +315,7 @@ const api = {
    * @param offset
    * @returns 返回新碟列表
    */
-  getNewAlbumResource(limit = 10, offset = 0) {
+  getNewAlbumResource(limit = 20, offset = 0) {
     return axios.get(NewAlbumResource, {
       params: {
         limit,

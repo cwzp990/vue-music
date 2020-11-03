@@ -9,7 +9,9 @@ let instance = axios.create();
 instance.defaults.withCredentials = true;
 
 instance.interceptors.request.use(config => {
-  store.commit('SET_SHOW_MODAL', true)
+  if (config.url !== '/search') {
+    store.commit('SET_SHOW_MODAL', true)
+  }
   return config;
 });
 

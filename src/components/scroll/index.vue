@@ -18,9 +18,10 @@ import BScroll from '@better-scroll/core'
 import Pullup from '@better-scroll/pull-up'
 import {
   defineComponent,
+  ref,
   computed,
   onMounted,
-  ref
+  onUnmounted
 } from 'vue'
 import {
   useStore
@@ -40,9 +41,14 @@ export default defineComponent({
       initBscroll()
     })
 
+    onUnmounted(() => {
+      bscroll.value = null
+    })
+
     const initBscroll = () => {
       bscroll.value = new BScroll(scrollRef.value, {
-        pullUpLoad: true
+        pullUpLoad: true,
+        click: true
       })
 
       bscroll.value.on('pullingUp', pullingUpHandler)
