@@ -17,7 +17,7 @@
           <i class="iconfont icon-category" @Click="gotoAll"></i>
         </div>
         <div class="m-songlist">
-          <Slide :imgList="banners" />
+          <Slide :list="banners" :height="240" />
           <div class="songlist-wrapper">
             <div class="box-wrapper" v-for="list in squareList" :key="list.id">
               <Box :info="list" />

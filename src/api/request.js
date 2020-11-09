@@ -4,8 +4,6 @@ import toast from '../components/toast'
 
 
 let instance = axios.create();
-
-
 instance.defaults.withCredentials = true;
 
 instance.interceptors.request.use(config => {

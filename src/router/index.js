@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/login/index.vue";
 import Layout from "../components/layout/index.vue";
 const songList = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
@@ -62,7 +62,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
 

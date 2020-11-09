@@ -1,140 +1,280 @@
 <template>
-<div class="slide-banner" v-if="imgList.length">
-  <div class="banner-wrapper">
-    <div class="slide-banner-wrapper" ref="slideRef">
-      <div class="slide-banner-content">
-        <div v-for="(item, index) in imgList" class="slide-page" :key="index">
-          <img :src="item.pic" alt />
-        </div>
-      </div>
+<div class="slider-container" ref='slider' :style="sliderStyle" @mouseover="pause()" @mouseout="play()">
+  <div class="slider-content" :class="mask ? 'mask' : ''">
+    <div class="slider" :ref="el => { if (el) imgRefs[index] = el }" v-for="(item, index) in list" :key="index" :class="setClass(index)" @click="onClick(index)" :style="setBGImg(item.pic)">
     </div>
-    <div class="dots-wrapper">
-      <span class="dot" v-for="(item, index) in imgList" :key="index" :class="{'active': currentPageIndex === index}"></span>
-    </div>
+    <i v-show="arrow" class="iconfont icon-left" @click="prev()"></i>
+    <i v-show="arrow" class="iconfont icon-right" @click="next()"></i>
+  </div>
+  <div class="dots" v-if="dots">
+    <span v-for="(item, index) in list" :key="index" :style="setActiveDot(index)" @mouseover="currentIndex = index"></span>
   </div>
 </div>
 </template>
 
 <script>
-import BScroll from '@better-scroll/core'
-import Slide from '@better-scroll/slide'
-
-BScroll.use(Slide)
-
 import {
-  defineComponent,
-  onUnmounted,
   ref,
-  watch
-} from 'vue'
+  computed,
+  defineComponent,
+  onMounted
+} from 'vue';
 
 export default defineComponent({
   props: {
-    imgList: {
+    list: {
       type: Array,
-      default: () => []
+      default () {
+        return []
+      }
+    },
+    width: {
+      type: Number
+    },
+    height: {
+      type: Number
+    },
+    imgType: {
+      type: String,
+      default: 'percentage'
+    },
+    autoPlay: {
+      type: Boolean,
+      default: true
+    },
+    mask: {
+      type: Boolean,
+      default: true
+    },
+    interval: {
+      type: Number,
+      default: 4000
+    },
+    dots: {
+      type: Boolean,
+      default: true
+    },
+    arrow: {
+      type: Boolean,
+      default: true
+    },
+    color: {
+      type: String,
+      default: '#ffaa20'
     }
+
   },
-  setup() {
-    const slide = ref(null)
-    const slideRef = ref(null)
-    const currentPageIndex = ref(0)
+  setup(props, context) {
+    const currentIndex = ref(0)
+    const slider = ref(null)
+    const imgRefs = ref([])
+    const timer = ref(null)
+    const sliderStyle = computed(() => ({
+      width: props.width ? props.width + 'px' : '100%',
+      height: props.height ? props.height + 'px' : '100%',
+      perspective: props.width + 'px',
+      backgroundSize: props.imgType == 'percentage' ? '100% 100%' : props.imgType
+    }))
 
-    onUnmounted(() => {
-      slide.value = null
+    onMounted(() => {
+      play()
     })
 
-    watch(slideRef, () => {
-      init()
-    })
-
-    const init = () => {
-      slide.value = new BScroll(slideRef.value, {
-        scrollX: true,
-        scrollY: false,
-        slide: true,
-        useTransition: true,
-        momentum: false,
-        bounce: false,
-        stopPropagation: true,
-        probeType: 2
-      })
-      slide.value.on('scrollEnd', _onScrollEnd)
-
-      slide.value.on('slideWillChange', (page) => {
-        currentPageIndex.value = page.pageX
-      })
+    const setClass = (i) => {
+      let next = currentIndex.value === (props.list.length - 1) ? 0 : currentIndex.value + 1;
+      let prev = currentIndex.value === 0 ? props.list.length - 1 : currentIndex.value - 1;
+      switch (i) {
+        case currentIndex.value:
+          return 'active';
+        case next:
+          return 'next';
+        case prev:
+          return 'prev';
+        default:
+          return '';
+      }
     }
 
-    const _onScrollEnd = () => {
-      console.log(slide.value.getCurrentPage())
+    const setBGImg = (src) => {
+      console.log(111, src)
+      return {
+        backgroundImage: `url(${src})`
+      }
+    }
+
+    const setActiveDot = (index) => {
+      return index === currentIndex.value ? {
+        backgroundColor: props.color
+      } : {
+        backgroundColor: '#ccc'
+      }
+    }
+
+    const play = () => {
+      pause();
+      if (props.autoPlay) {
+        timer.value = setInterval(() => {
+          next();
+        }, props.interval)
+      }
+    }
+
+    const pause = () => {
+      clearInterval(timer.value);
+    }
+
+    const next = () => {
+      currentIndex.value = ++currentIndex.value % props.list.length;
+    }
+
+    const prev = () => {
+      currentIndex.value = currentIndex.value === 0 ? props.list.length - 1 : currentIndex.value - 1;
+    }
+
+    const onClick = (i) => {
+      if (i === currentIndex.value) {
+        context.emit('slider-click', i)
+      } else {
+        let currentClickClassName = imgRefs.value[i].className.split(' ')[1]
+        if (currentClickClassName === 'next') {
+          next()
+        } else {
+          prev()
+        }
+      }
     }
 
     return {
-      slideRef,
-      currentPageIndex,
+      slider,
+      sliderStyle,
+      pause,
+      play,
+      setClass,
+      onClick,
+      setBGImg,
+      prev,
+      next,
+      setActiveDot,
+      currentIndex,
+      imgRefs
     }
   }
 })
 </script>
 
 <style lang="scss">
-@import '../../styles/mixin.scss';
+.slider-container {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding: 10px 0;
+  position: relative;
 
-.slide-banner {
-  margin-bottom: 10px;
-
-  .banner-wrapper {
+  .slider-content {
     position: relative;
+    width: 100%;
+    height: calc(100% - 20px);
+    left: 0%;
+    top: 0%;
+    margin: 0px;
+    padding: 0px;
+    background-size: inherit;
 
-    .slide-banner-wrapper {
-      min-height: 1px;
-      overflow: hidden;
+    .slider {
+      position: absolute;
+      margin: 0;
+      padding: 0;
+      top: 0;
+      left: 50%;
+      width: 65%;
+      height: 100%;
+      transition: 500ms all ease-in-out;
+      background-color: #fff;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: inherit;
+      transform: translate3d(-50%, 0, -80px);
+      z-index: 1;
 
-      .slide-banner-content {
-        height: 200px;
-        white-space: nowrap;
-        font-size: 0;
+      &:before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0);
+        transition-delay: 100ms !important;
+        transition: all 500ms;
+        cursor: pointer;
+      }
 
-        .slide-page {
-          display: inline-block;
-          @include wh(100%, 100%);
-        }
+      &.active {
+        transform: translate3d(-50%, 0, 0);
+        z-index: 20;
+      }
+
+      &.prev {
+        transform: translate3d(-75%, 0, -100px);
+        z-index: 19;
+      }
+
+      &.next {
+        transform: translate3d(-25%, 0, -100px);
+        z-index: 18;
       }
     }
 
-    .dots-wrapper {
+    i {
+      width: 17.5%;
+      display: none;
       position: absolute;
-      bottom: 4px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 40%;
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.5);
+      text-shadow: 0 0 24px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      z-index: 21;
 
-      .dot {
-        display: inline-block;
-        margin: 0 4px;
-        @include wh(8px, 8px);
-        border-radius: 50%;
-        background: #eee;
+      &:first-child {
+        left: 0;
+      }
 
-        &.active {
-          width: 20px;
-          border-radius: 5px;
+      &:last-child {
+        right: 0;
+      }
+    }
+
+    &:hover {
+      i {
+        color: rgba(255, 255, 255, 0.8);
+        display: block;
+      }
+    }
+
+    &.mask {
+      .slider {
+
+        &.prev,
+        &.next {
+          &:before {
+            background-color: rgba(0, 0, 0, 0.5);
+          }
         }
       }
     }
   }
 
-  .btn-wrap {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+  .dots {
+    width: 100%;
+    height: 20px;
 
-    button {
-      margin: 0 10px;
-      padding: 10px;
-      color: #fff;
-      border-radius: 4px;
-      background-color: #666;
+    span {
+      display: inline-block;
+      width: 20px;
+      height: 2px;
+      margin: 1px 3px;
+      cursor: pointer;
     }
   }
 }
