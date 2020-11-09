@@ -17,7 +17,7 @@
           <i class="iconfont icon-category" @Click="gotoAll"></i>
         </div>
         <div class="m-songlist">
-          <Slide :list="banners" :height="240" />
+          <Slide :list="banners" :height="240" @sliderClick="goToSongList" />
           <div class="songlist-wrapper">
             <div class="box-wrapper" v-for="list in squareList" :key="list.id">
               <Box :info="list" />
@@ -40,6 +40,9 @@ import {
   watch
 } from "vue";
 import {
+  useRouter
+} from "vue-router";
+import {
   useStore
 } from 'vuex';
 import Box from "../../components/box/box.vue";
@@ -57,6 +60,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const router = useRouter()
     const hotCategory = ref([]);
     const squareList = ref([]);
     const banners = ref([]);
@@ -85,8 +89,6 @@ export default defineComponent({
       });
     };
 
-    // 5306328734 5260733133
-
     const getSongList = (cat, offset) => {
       api.getTopPlaylistResource(cat, offset).then(resp => {
         if (resp.data.code === 200) {
@@ -96,11 +98,22 @@ export default defineComponent({
     };
 
     const getBanners = () => {
-      api.getBanner().then(resp => {
-        if (resp.data.code === 200) {
-          banners.value = resp.data.banners
+      banners.value = [{
+          id: 5326781559,
+          name: '开车必备',
+          pic: 'https://p1.music.126.net/viz1oYPl-6E5_4XbOGUL_g==/109951165349970832.jpg'
+        },
+        {
+          id: 5306328734,
+          name: '只要你喜欢林俊杰我们就是好朋友',
+          pic: 'https://p1.music.126.net/X0EDfXzxMQJiQ-71JFGdZw==/3238061746556733.jpg'
+        },
+        {
+          id: 5260733133,
+          name: '周杰伦',
+          pic: 'https://p1.music.126.net/1DvWuV2hXOtg3gsP9gYZvg==/109951165055895702.jpg'
         }
-      })
+      ]
     }
 
     const onSelected = (name) => {
@@ -119,6 +132,15 @@ export default defineComponent({
       })
     }
 
+    const goToSongList = (item) => {
+      router.push({
+        path: "/list_detail",
+        query: {
+          id: item.id
+        }
+      });
+    };
+
     const gotoAll = () => {};
 
     return {
@@ -129,7 +151,8 @@ export default defineComponent({
       category,
       scrollRef,
       loadMore,
-      gotoAll
+      gotoAll,
+      goToSongList
     };
   }
 });

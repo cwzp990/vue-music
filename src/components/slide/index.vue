@@ -1,7 +1,8 @@
 <template>
 <div class="slider-container" ref='slider' :style="sliderStyle" @mouseover="pause()" @mouseout="play()">
   <div class="slider-content" :class="mask ? 'mask' : ''">
-    <div class="slider" :ref="el => { if (el) imgRefs[index] = el }" v-for="(item, index) in list" :key="index" :class="setClass(index)" @click="onClick(index)" :style="setBGImg(item.pic)">
+    <div class="slider" :ref="el => { if (el) imgRefs[index] = el }" v-for="(item, index) in list" :key="index" :class="setClass(index)" @click="onClick(item, index)" :style="setBGImg(item.pic)">
+      <p class="name">{{item.name}}</p>
     </div>
     <i v-show="arrow" class="iconfont icon-left" @click="prev()"></i>
     <i v-show="arrow" class="iconfont icon-right" @click="next()"></i>
@@ -67,8 +68,8 @@ export default defineComponent({
   setup(props, context) {
     const currentIndex = ref(0)
     const slider = ref(null)
-    const imgRefs = ref([])
     const timer = ref(null)
+    const imgRefs = ref([])
     const sliderStyle = computed(() => ({
       width: props.width ? props.width + 'px' : '100%',
       height: props.height ? props.height + 'px' : '100%',
@@ -96,7 +97,6 @@ export default defineComponent({
     }
 
     const setBGImg = (src) => {
-      console.log(111, src)
       return {
         backgroundImage: `url(${src})`
       }
@@ -131,11 +131,11 @@ export default defineComponent({
       currentIndex.value = currentIndex.value === 0 ? props.list.length - 1 : currentIndex.value - 1;
     }
 
-    const onClick = (i) => {
-      if (i === currentIndex.value) {
-        context.emit('slider-click', i)
+    const onClick = (item, index) => {
+      if (index === currentIndex.value) {
+        context.emit('slider-click', item)
       } else {
-        let currentClickClassName = imgRefs.value[i].className.split(' ')[1]
+        let currentClickClassName = imgRefs.value[index].className.split(' ')[1]
         if (currentClickClassName === 'next') {
           next()
         } else {
@@ -163,17 +163,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import '../../styles/mixin.scss';
+
 .slider-container {
-  width: 100%;
-  height: 100%;
+  @include wh(100%, 100%);
   text-align: center;
   padding: 10px 0;
   position: relative;
 
   .slider-content {
     position: relative;
-    width: 100%;
-    height: calc(100% - 20px);
+    @include wh(100%, calc(100% - 20px));
     left: 0%;
     top: 0%;
     margin: 0px;
@@ -186,8 +186,10 @@ export default defineComponent({
       padding: 0;
       top: 0;
       left: 50%;
-      width: 65%;
-      height: 100%;
+      @include wh(65%, 100%);
+      border-radius: 8px;
+      box-shadow: 2px 2px 5px $gray;
+      overflow: hidden;
       transition: 500ms all ease-in-out;
       background-color: #fff;
       background-repeat: no-repeat;
@@ -196,14 +198,24 @@ export default defineComponent({
       transform: translate3d(-50%, 0, -80px);
       z-index: 1;
 
+      .name {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        @include wh(100%, 24px);
+        line-height: 24px;
+        text-align: center;
+        color: $gray;
+        background: #fff;
+      }
+
       &:before {
         position: absolute;
         content: "";
-        width: 100%;
-        height: 100%;
+        @include wh(100%, 100%);
         top: 0;
         left: 0;
-        background-color: rgba(0, 0, 0, 0);
+        border-radius: 8px;
         transition-delay: 100ms !important;
         transition: all 500ms;
         cursor: pointer;
@@ -216,11 +228,15 @@ export default defineComponent({
 
       &.prev {
         transform: translate3d(-75%, 0, -100px);
+        top: 11%;
+        height: 78%;
         z-index: 19;
       }
 
       &.next {
         transform: translate3d(-25%, 0, -100px);
+        top: 11%;
+        height: 78%;
         z-index: 18;
       }
     }
@@ -266,13 +282,11 @@ export default defineComponent({
   }
 
   .dots {
-    width: 100%;
-    height: 20px;
+    @include wh(100%, 20px);
 
     span {
       display: inline-block;
-      width: 20px;
-      height: 2px;
+      @include wh(20, 2px);
       margin: 1px 3px;
       cursor: pointer;
     }

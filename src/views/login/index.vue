@@ -6,13 +6,13 @@
   </div>
   <div :class="isShow ? 'login-form active' : 'login-form'">
     <div class="username">
-      <input v-model="phone" class="input" placeholder="请输入手机号" />
-      <span :class="isSend ? 'auth forbid' : 'auth'" @click="getAuth">
+      <input v-model="phone" class="input" @click.stop="onCancel" placeholder="请输入手机号" />
+      <span :class="isSend ? 'auth forbid' : 'auth'" @click.stop="getAuth">
         {{ isSend ? `${count} s` : ' 获取验证码' }}
       </span>
     </div>
     <div class="password">
-      <input type="password" v-model="password" class="input" placeholder="这里是密码不是验证码！" />
+      <input type="password" v-model="password" @click.stop="onCancel" @keyup.enter="submit" class="input" placeholder="这里是密码不是验证码！" />
     </div>
     <div class="submit" @click="onSubmit">
       登录
@@ -22,10 +22,10 @@
     </div>
   </div>
   <div class="login-btn">
-    <p class="btn" @click="showLogin">
+    <p class="btn" @click.stop="showLogin">
       手机账号登陆
     </p>
-    <p class="btn" @click="goHome">
+    <p class="btn" @click.stop="goHome">
       立即体验
     </p>
   </div>
@@ -35,6 +35,7 @@
 <script>
 import {
   defineComponent,
+  onMounted,
   ref
 } from 'vue'
 import {
@@ -48,14 +49,20 @@ import api from '../../api'
 
 export default defineComponent({
   setup() {
-    const phone = ref('')
-    const password = ref('')
+    const phone = ref('18655323262')
+    const password = ref('cwzp990.!')
     const isSend = ref(false)
     const isShow = ref(false)
     const count = ref(60)
 
     const router = useRouter()
     const store = useStore()
+
+    onMounted(() => {
+      document.body.addEventListener('click', () => {
+        isShow.value = false
+      }, false)
+    })
 
     const getAuth = () => {
       if (isSend.value || !phone.value) return
@@ -115,6 +122,8 @@ export default defineComponent({
       router.push('/songlist')
     }
 
+    const onCancel = () => {}
+
     return {
       phone,
       password,
@@ -125,6 +134,7 @@ export default defineComponent({
       onSubmit,
       showLogin,
       goHome,
+      onCancel
     }
   },
 })
