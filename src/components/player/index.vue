@@ -22,7 +22,8 @@
             </div>
           </div>
           <div class="playing-lyric-wrapper">
-            <div class="playing-lyric">{{playingLyric || 'music~'}}</div>
+            <div class="playing-lyric theme">{{playingLyric || 'music~'}}</div>
+            <div class="playing-lyric" v-show="nextplayingLyric">{{nextplayingLyric}}</div>
           </div>
 
           <div class="operators-wrapper large-icon">
@@ -36,10 +37,10 @@
         </div>
 
         <div class="middle-r" v-else>
-          <Scroll>
+          <Scroll ref="lyricRef">
             <div class="lyric-wrapper">
               <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
-              <p ref="lyricLine" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
+              <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
             </div>
           </Scroll>
         </div>
@@ -88,7 +89,8 @@ import {
   defineComponent,
   ref,
   computed,
-  watch
+  watch,
+  onBeforeUpdate
 } from 'vue';
 import {
   useRouter
@@ -116,12 +118,15 @@ export default defineComponent({
     const player = ref(null)
     const currentShow = ref('cd')
     const playingLyric = ref('')
+    const nextplayingLyric = ref('')
     const lyric = ref([])
     const currentTime = ref(0)
     const currentLine = ref(0)
     const mode = ref(0)
     const isPlaying = ref(false)
     const isReady = ref(false)
+    const lyricRef = ref(null)
+    const lyricLineRefs = ref([])
     const store = useStore()
     const route = useRouter()
 
@@ -135,6 +140,11 @@ export default defineComponent({
       0 :
       currentTime.value / duration.value
     )
+
+    // 确保在每次更新之前重置ref
+    onBeforeUpdate(() => {
+      lyricLineRefs.value = []
+    })
 
     const percentChange = (percent) => {
       const newTime = duration.value * percent
@@ -240,6 +250,7 @@ export default defineComponent({
               currentTime.value = 0
               currentLine.value = 0
               playingLyric.value = ''
+              nextplayingLyric.value = ''
               isPlaying.value = true
               isReady.value = true
               player.value.play()
@@ -254,6 +265,7 @@ export default defineComponent({
         currentTime.value = 0
         currentLine.value = 0
         playingLyric.value = ''
+        nextplayingLyric.value = ''
         isPlaying.value = true
         player.value.src = `http://music.163.com/song/media/outer/url?id=${currentMusic.value.id}.mp3`
         getLyric(currentMusic.value.id)
@@ -264,15 +276,29 @@ export default defineComponent({
     watch(currentTime, () => {
       if (!lyric.value.length || !isPlaying.value) return
       let lyricIndex = 0,
-        nowLyric = ''
+        nowLyric = '',
+        nextLyric = ''
       for (let i = 0; i < lyric.value.length; i++) {
         if (currentTime.value > lyric.value[i].time) {
           lyricIndex = i
           nowLyric = lyric.value[i].txt
+          nextLyric = lyric.value[i + 1].txt
         }
       }
       currentLine.value = lyricIndex
       playingLyric.value = nowLyric
+      nextplayingLyric.value = nextLyric
+    })
+
+    watch(currentLine, () => {
+      if (!lyricRef.value) return
+      let bScroll = lyricRef.value.bscroll
+      if (currentLine.value > 5) {
+        let lineDom = lyricLineRefs.value[currentLine.value - 5]
+        bScroll.scrollToElement(lineDom, 1000)
+      } else {
+        bScroll.scrollTo(0, 0, 1000)
+      }
     })
 
     return {
@@ -289,6 +315,7 @@ export default defineComponent({
       currentIndex,
       currentMusic,
       playingLyric,
+      nextplayingLyric,
       playList,
       lyric,
       duration,
@@ -304,7 +331,9 @@ export default defineComponent({
       urlError,
       formatPlayTime,
       onLike,
-      onComment
+      onComment,
+      lyricRef,
+      lyricLineRefs
     }
   },
 })

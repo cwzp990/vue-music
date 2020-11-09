@@ -62,9 +62,9 @@ import {
 import {
   useRouter
 } from "vue-router"
-import {
-  useStore
-} from "vuex"
+// import {
+//   useStore
+// } from "vuex"
 import api from '../../api'
 import toast from '../../components/toast'
 export default defineComponent({
@@ -72,10 +72,11 @@ export default defineComponent({
     const user = ref({})
     const like = ref([])
     const list = ref([])
+    const userInfo = ref("")
     const type = ref(1)
     const router = useRouter()
-    const store = useStore()
-    const userInfo = computed(() => store.getters.userInfo)
+    // const store = useStore()
+    // const userInfo = computed(() => store.getters.userInfo)
     const age = computed(() => {
       let sex = user.value.gender === 1 ? '♂' : '♀'
       let num = String(user.value.year).split('')
@@ -83,6 +84,7 @@ export default defineComponent({
     })
 
     onMounted(() => {
+      userInfo.value = JSON.parse(localStorage.getItem("music_user_info"))
       if (!userInfo.value) {
         toast('需要登录!')
         router.push('/')

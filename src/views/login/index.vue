@@ -20,7 +20,6 @@
     <div class="tips">
       提示：内部某些功能需要登录后方能使用（<em class="theme">如在不登录状态下歌单只会显示前十首歌曲</em>），密码仅用作于和网易云官方验证，不会记录在服务器中，请放心登录～
     </div>
-    <span class="no-user" @click="noUser">桔子 <i class="iconfont icon-right"></i></span>
   </div>
   <div class="login-btn">
     <p class="btn" @click="showLogin">
@@ -101,6 +100,7 @@ export default defineComponent({
           let info = {}
           key.forEach((k) => (info[k] = resp.data.profile[k]))
           store.commit('SET_USERINFO', info)
+          localStorage.setItem("music_user_info", JSON.stringify(info))
           Cookies.set('MUSIC_U', resp.data.token)
           router.push('/songlist')
         }
@@ -243,14 +243,6 @@ export default defineComponent({
       line-height: 48px;
       padding: 0 10px;
       border-radius: 5px;
-    }
-
-    .no-user {
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      @include sc($font_small, $gray);
-      line-height: 18px;
     }
 
     &.active {
