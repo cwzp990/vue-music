@@ -1,24 +1,5 @@
 # vue-music
 
-## Project setup
-```
-npm install
-```
+此项目使用vue3全家桶+better-scroll
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+因网易云大部分歌曲收费及需要会员，所以自己写了个播放器，利用网易云歌曲id去寻找免费资源并替换掉audio标签原来的src地址

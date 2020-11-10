@@ -99,19 +99,19 @@ export default defineComponent({
 
     const getBanners = () => {
       banners.value = [{
-          id: 5326781559,
-          name: '开车必备',
-          pic: 'https://p1.music.126.net/viz1oYPl-6E5_4XbOGUL_g==/109951165349970832.jpg'
-        },
-        {
           id: 5306328734,
           name: '只要你喜欢林俊杰我们就是好朋友',
           pic: 'https://p1.music.126.net/X0EDfXzxMQJiQ-71JFGdZw==/3238061746556733.jpg'
         },
         {
           id: 5260733133,
-          name: '周杰伦',
+          name: '有一种青春叫周杰伦',
           pic: 'https://p1.music.126.net/1DvWuV2hXOtg3gsP9gYZvg==/109951165055895702.jpg'
+        },
+        {
+          id: 5326781559,
+          name: '开车必备',
+          pic: 'http://p1.music.126.net/pF2pUMDacfLK85DgPhny5g==/18339853951764841.jpg'
         }
       ]
     }

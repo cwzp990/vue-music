@@ -1,6 +1,6 @@
 <template>
 <div class="m-player">
-  <transition name="normal" appear>
+  <transition name="zoom" appear>
     <div class="normal-player" v-show="showPlayer">
       <div class="bg-img">
         <img v-if="currentMusic.al" :src="currentMusic.al.picUrl" alt />
@@ -23,7 +23,7 @@
           </div>
           <div class="playing-lyric-wrapper">
             <div class="playing-lyric theme">{{playingLyric || 'music~'}}</div>
-            <div class="playing-lyric" v-show="nextplayingLyric">{{nextplayingLyric}}</div>
+            <div class="playing-lyric">{{nextplayingLyric || ''}}</div>
           </div>
 
           <div class="operators-wrapper large-icon">
@@ -73,11 +73,13 @@
           <span class="btn-wrapper" @click="next">
             <i class="iconfont icon-next"></i>
           </span>
-          <span class="btn-wrapper" @click="showList">
+          <span class="btn-wrapper" @click="showList=true;">
             <i class="iconfont icon-menu"></i>
           </span>
         </div>
       </div>
+
+      <playerList :visible="showList" @close="showList=false;" />
     </div>
   </transition>
   <audio ref="player" @canplay="ready" @ended="end" @timeupdate="updateTime" @error="urlError"></audio>
@@ -106,13 +108,15 @@ import {
 } from '../../utils/index';
 import mHeader from '../../components/header/index.vue';
 import Scroll from '../../components/scroll/index.vue';
+import playerList from '../../components/playerlist/index.vue';
 import progressBar from '../progress/index.vue';
 import toast from '../toast'
 export default defineComponent({
   components: {
     mHeader,
     Scroll,
-    progressBar
+    progressBar,
+    playerList
   },
   setup() {
     const player = ref(null)
@@ -125,6 +129,7 @@ export default defineComponent({
     const mode = ref(0)
     const isPlaying = ref(false)
     const isReady = ref(false)
+    const showList = ref(false)
     const lyricRef = ref(null)
     const lyricLineRefs = ref([])
     const store = useStore()
@@ -208,6 +213,7 @@ export default defineComponent({
       mode.value = newMode
     }
     const toggleLyric = () => {
+      showList.value = false
       currentShow.value = currentShow.value === 'cd' ? 'lyric' : 'cd'
     }
     const updateTime = e => {
@@ -311,6 +317,7 @@ export default defineComponent({
       toggleLyric,
       isPlaying,
       isReady,
+      showList,
       showPlayer,
       currentIndex,
       currentMusic,
@@ -416,7 +423,7 @@ export default defineComponent({
           .playing-lyric {
             height: 20px;
             line-height: 20px;
-            @include sc($font_small, #fff);
+            @include sc($font_normal, #fff);
           }
         }
 
@@ -442,7 +449,7 @@ export default defineComponent({
 
           .text {
             line-height: 32px;
-            @include sc($font_small, #fff);
+            @include sc($font_normal, #fff);
 
             &.current {
               color: $theme;
@@ -539,6 +546,17 @@ export default defineComponent({
     line-height: 16px;
     text-align: center;
     @include sc($font_small, #fff);
+  }
+}
+
+// 播放器切换
+@keyframes zoom {
+  0% {
+    clip-path: circle(0 at 100% 0%);
+  }
+
+  100% {
+    clip-path: circle(200px at 100% 0%);
   }
 }
 </style>

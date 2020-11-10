@@ -1,5 +1,5 @@
 import * as types from "./types";
-import { findIndex } from "../utils";
+import { findIndex, addHistory } from "../utils";
 
 // 播放歌曲（会更新整个播放列表）
 export const selectPlay = ({ commit }, { list, index }) => {
@@ -15,6 +15,7 @@ export const setAllPlay = ({ commit }, { playList, currentIndex }) => {
   commit(types.SET_PLAYLIST, playList);
   commit(types.SET_CURRENTINDEX, currentIndex);
   commit(types.SET_CURRENTMUSIC, playList[currentIndex]);
+  addHistory(playList[currentIndex])
 };
 
 // 播放歌曲（插入一条到播放列表）
@@ -34,7 +35,7 @@ export const addPlay = ({ commit, state }, { music }) => {
   }
   commit(types.SET_PLAYER_STATE, true);
   commit(types.SET_SHOW_PLAYER, true);
-
+  addHistory(music)
 };
 
 // 清空播放列表

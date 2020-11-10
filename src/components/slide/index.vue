@@ -286,7 +286,7 @@ export default defineComponent({
 
     span {
       display: inline-block;
-      @include wh(20, 2px);
+      @include wh(20px, 2px);
       margin: 1px 3px;
       cursor: pointer;
     }

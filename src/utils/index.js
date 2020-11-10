@@ -68,6 +68,15 @@ export function getSinger(ar) {
   if (ar.length === 2) return `${ar[0].name} / ${ar[1].name}`;
 }
 
+export function addHistory (music) {
+  let history = JSON.parse(localStorage.getItem("history")) || []
+  let hasMusic = history.find(i => i.id === music.id)
+  if (!hasMusic) {
+    history.push(music)
+    localStorage.setItem("history", JSON.stringify(history))
+  }
+}
+
 const tagRegMap = {
   title: "ti",
   artist: "ar",

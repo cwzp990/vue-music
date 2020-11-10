@@ -12,7 +12,7 @@
       </p>
     </div>
 
-    <div class="mine-favorite">
+    <div class="mine-favorite" @click="goToSongList(like.id)">
       <div class="favorite-wrapper">
         <div class="icon">
           <i class="iconfont icon-love"></i>
@@ -87,7 +87,6 @@ export default defineComponent({
 
     onMounted(() => {
       userInfo.value = JSON.parse(localStorage.getItem("music_user_info"))
-      console.log(333, userInfo.value)
       if (!userInfo.value) {
         toast('需要登录!')
         router.push('/')
@@ -112,14 +111,15 @@ export default defineComponent({
       let userId = userInfo.value.userId
       api.getUserPlaylistResource(userId).then(resp => {
         if (resp.data.code === 200) {
-          like.value = resp.data.playlist[0]
-          create = resp.data.playlist.filter(i => i.userId === userId).map(i => ({
+          let songlist = resp.data.playlist
+          like.value = songlist.shift()
+          create = songlist.filter(i => i.userId === userId).map(i => ({
             id: i.id,
             name: i.name,
             coverImgUrl: i.coverImgUrl,
             trackCount: i.trackCount,
           }))
-          collect = resp.data.playlist.filter(i => i.userId !== userId).map(i => ({
+          collect = songlist.filter(i => i.userId !== userId).map(i => ({
             id: i.id,
             name: i.name,
             coverImgUrl: i.coverImgUrl,
