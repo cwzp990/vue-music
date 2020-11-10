@@ -4,7 +4,7 @@
     <i className="iconfont icon-songlist"></i>
     <span>歌单</span>
   </router-link>
-  <router-link to="/search">
+  <router-link to="/query">
     <i className="iconfont icon-search"></i>
     <span>搜索</span>
   </router-link>

@@ -19,7 +19,7 @@
         </div>
         <div>
           <p class="title">我喜欢的音乐</p>
-          <p class="subtitle">{{like.length}}首</p>
+          <p class="subtitle">{{like.trackCount}}首</p>
         </div>
       </div>
     </div>
@@ -70,10 +70,12 @@ import toast from '../../components/toast'
 export default defineComponent({
   setup() {
     const user = ref({})
-    const like = ref([])
+    const like = ref({})
     const list = ref([])
     const userInfo = ref("")
     const type = ref(1)
+    let create = [],
+      collect = []
     const router = useRouter()
     // const store = useStore()
     // const userInfo = computed(() => store.getters.userInfo)
@@ -85,6 +87,7 @@ export default defineComponent({
 
     onMounted(() => {
       userInfo.value = JSON.parse(localStorage.getItem("music_user_info"))
+      console.log(333, userInfo.value)
       if (!userInfo.value) {
         toast('需要登录!')
         router.push('/')
@@ -107,8 +110,6 @@ export default defineComponent({
 
     const getUserList = () => {
       let userId = userInfo.value.userId
-      let create = [],
-        collect = []
       api.getUserPlaylistResource(userId).then(resp => {
         if (resp.data.code === 200) {
           like.value = resp.data.playlist[0]
@@ -140,6 +141,7 @@ export default defineComponent({
 
     const onTab = (val) => {
       type.value = val
+      list.value = val === 1 ? create : collect
     }
 
     return {

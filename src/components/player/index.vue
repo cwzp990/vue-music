@@ -217,7 +217,7 @@ export default defineComponent({
     const onComment = () => {
       store.commit('SET_SHOW_PLAYER', false)
       route.push({
-        path: '/comment',
+        path: '/comments',
         query: {
           id: currentMusic.value.id
         }

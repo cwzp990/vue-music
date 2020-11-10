@@ -49,8 +49,8 @@ import api from '../../api'
 
 export default defineComponent({
   setup() {
-    const phone = ref('18655323262')
-    const password = ref('cwzp990.!')
+    const phone = ref('')
+    const password = ref('')
     const isSend = ref(false)
     const isShow = ref(false)
     const count = ref(60)

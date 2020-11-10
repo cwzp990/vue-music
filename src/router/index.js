@@ -2,11 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/login/index.vue";
 import Layout from "../components/layout/index.vue";
 const songList = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
-const search = () => import(/* webpackChunkName: "search" */ "../views/search/index.vue")
+const query = () => import(/* webpackChunkName: "query" */ "../views/search/index.vue")
 const rank = () => import(/* webpackChunkName: "rank" */ "../views/rank/index.vue")
 const mine = () => import(/* webpackChunkName: "mine" */ "../views/mine/index.vue")
 const singer = () => import(/* webpackChunkName: "singer" */ "../components/singer/index.vue")
-const comment = () => import(/* webpackChunkName: "comment" */ "../components/comment/index.vue")
+const comments = () => import(/* webpackChunkName: "comments" */ "../components/comment/index.vue")
 const songlist_details = () => import(/* webpackChunkName: "songlist_details" */ "../components/songlist_details/index.vue")
 
 const routes = [
@@ -33,9 +33,9 @@ const routes = [
         component: songlist_details
       },
       {
-        path: "/search",
-        name: "Search",
-        component: search
+        path: "/query",
+        name: "Query",
+        component: query
       },
       {
         path: "/rank",
@@ -53,9 +53,9 @@ const routes = [
         component: singer
       },
       {
-        path: '/comment',
-        name: "Comment",
-        component: comment
+        path: '/comments',
+        name: "Comments",
+        component: comments
       }
     ]
   }
