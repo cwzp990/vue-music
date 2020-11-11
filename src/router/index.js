@@ -1,13 +1,13 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Login from "../views/login/index.vue";
 import Layout from "../components/layout/index.vue";
-const songList = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
-const query = () => import(/* webpackChunkName: "query" */ "../views/search/index.vue")
-const rank = () => import(/* webpackChunkName: "rank" */ "../views/rank/index.vue")
-const mine = () => import(/* webpackChunkName: "mine" */ "../views/mine/index.vue")
-const singer = () => import(/* webpackChunkName: "singer" */ "../components/singer/index.vue")
-const comments = () => import(/* webpackChunkName: "comments" */ "../components/comment/index.vue")
-const songlist_details = () => import(/* webpackChunkName: "songlist_details" */ "../components/songlist_details/index.vue")
+const songlist = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
+const query = () => import(/* webpackChunkName: "Query" */ "../views/search/index.vue")
+const rank = () => import(/* webpackChunkName: "Rank" */ "../views/rank/index.vue")
+const mine = () => import(/* webpackChunkName: "Mine" */ "../views/mine/index.vue")
+const singer = () => import(/* webpackChunkName: "Singer" */ "../components/singer/index.vue")
+const comments = () => import(/* webpackChunkName: "Comments" */ "../components/comment/index.vue")
+const songlist_details = () => import(/* webpackChunkName: "Songlist_details" */ "../components/songlist_details/index.vue")
 
 const routes = [
   {
@@ -21,15 +21,15 @@ const routes = [
       },
       {
         path: "/songlist",
-        name: "SongList",
+        name: "Songlist",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: songList
+        component: songlist
       },
       {
         path: "/list_detail",
-        name: "List_detail",
+        name: "Songlist_details",
         component: songlist_details
       },
       {

@@ -6,7 +6,7 @@
 
 网易云的项目在前端圈应该是烂大街了，这个只是为了解决收听一些付费或无版权歌曲，谁让咱穷呢，害。
 
-服务器带宽只有1M，故线上预览地址人多了可能会卡顿，可以clone到本地，另外怎么能少了它呢[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)。
+服务器带宽只有1M，故[线上预览地址](http://www.cwzp990.top)人多了可能会卡顿，可以clone到本地，另外怎么能少了它呢[NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)。
 
 自己喜欢的一些付费歌曲需要登录自己的账号了，或者用搜索功能。
 

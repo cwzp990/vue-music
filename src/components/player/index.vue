@@ -1,89 +1,87 @@
 <template>
 <div class="m-player">
-  <transition name="zoom">
-    <div class="normal-player" v-show="showPlayer">
-      <div class="bg-img">
-        <img v-if="currentMusic.al" :src="currentMusic.al.picUrl" alt />
-      </div>
-      <mHeader isWhite>
-        <template v-slot:title>
-          <div>
-            <p class="title more">{{currentMusic.name}}</p>
-            <p v-if="currentMusic.ar" class="subtitle">{{currentMusic.ar[0].name}}</p>
-          </div>
-        </template>
-        <template v-slot:right></template>
-      </mHeader>
-      <div class="player-middle" @click="toggleLyric">
-        <keep-alive>
-          <div class="middle-l" v-if="currentShow==='cd'">
-            <div class="cd-wrapper">
-              <div class="cd play" :class="isPlaying ? '' : 'pause'">
-                <img v-if="currentMusic.al" class="image" :src="currentMusic.al.picUrl" alt />
-              </div>
-            </div>
-            <div class="playing-lyric-wrapper">
-              <div class="playing-lyric theme">{{playingLyric || 'music~'}}</div>
-              <div class="playing-lyric">{{nextplayingLyric || ''}}</div>
-            </div>
-
-            <div class="operators-wrapper large-icon">
-              <span class="btn-wrapper" @click="onLike">
-                <i class="iconfont icon-love"></i>
-              </span>
-              <span class="btn-wrapper" @click.stop="onComment">
-                <i class="iconfont icon-comments"></i>
-              </span>
-            </div>
-          </div>
-
-          <div class="middle-r" v-else>
-            <Scroll ref="lyricRef">
-              <div class="lyric-wrapper">
-                <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
-                <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
-              </div>
-            </Scroll>
-          </div>
-        </keep-alive>
-      </div>
-      <div class="player-footer">
-        <div class="dot-wrapper">
-          <span class="dot" :class="{ 'active': currentShow === 'cd' }"></span>
-          <span class="dot" :class="{ 'active': currentShow === 'lyric' }"></span>
-        </div>
-        <div class="progress-wrapper">
-          <span class="time time-l">{{ formatPlayTime(currentTime) }}</span>
-          <div class="progress-bar-wrapper">
-            <progress-bar :percent="percent" :percentChange="percentChange"></progress-bar>
-          </div>
-          <span class="time time-r">{{ formatPlayTime(duration) }}</span>
-        </div>
-        <div class="operators-wrapper">
-          <span class="btn-wrapper" @click="changeMode">
-            <i class="iconfont icon-order" v-if="mode === 0"></i>
-            <i class="iconfont icon-loop" v-else-if="mode === 1"></i>
-            <i class="iconfont icon-random" v-else></i>
-          </span>
-          <span class="btn-wrapper" @click="prev">
-            <i class="iconfont icon-back"></i>
-          </span>
-          <span class="btn-wrapper" @click="toggle">
-            <i class="iconfont icon-pause" v-if="isPlaying"></i>
-            <i class="iconfont icon-play-circle" v-else></i>
-          </span>
-          <span class="btn-wrapper" @click="next">
-            <i class="iconfont icon-next"></i>
-          </span>
-          <span class="btn-wrapper" @click="showList=true;">
-            <i class="iconfont icon-menu"></i>
-          </span>
-        </div>
-      </div>
-
-      <playerList :visible="showList" @close="showList=false;" />
+  <div class="normal-player" v-show="showPlayer">
+    <div class="bg-img">
+      <img v-if="currentMusic.al" :src="currentMusic.al.picUrl" alt />
     </div>
-  </transition>
+    <mHeader isWhite>
+      <template v-slot:title>
+        <div>
+          <p class="title more">{{currentMusic.name}}</p>
+          <p v-if="currentMusic.ar" class="subtitle">{{currentMusic.ar[0].name}}</p>
+        </div>
+      </template>
+      <template v-slot:right></template>
+    </mHeader>
+    <div class="player-middle" @click="toggleLyric">
+      <keep-alive>
+        <div class="middle-l" v-if="currentShow==='cd'">
+          <div class="cd-wrapper">
+            <div class="cd play" :class="isPlaying ? '' : 'pause'">
+              <img v-if="currentMusic.al" class="image" :src="currentMusic.al.picUrl" alt />
+            </div>
+          </div>
+          <div class="playing-lyric-wrapper">
+            <div class="playing-lyric theme">{{playingLyric || 'music~'}}</div>
+            <div class="playing-lyric">{{nextplayingLyric || ''}}</div>
+          </div>
+
+          <div class="operators-wrapper large-icon">
+            <span class="btn-wrapper" @click="onLike">
+              <i class="iconfont icon-love"></i>
+            </span>
+            <span class="btn-wrapper" @click.stop="onComment">
+              <i class="iconfont icon-comments"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="middle-r" v-else>
+          <Scroll ref="lyricRef">
+            <div class="lyric-wrapper">
+              <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
+              <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
+            </div>
+          </Scroll>
+        </div>
+      </keep-alive>
+    </div>
+    <div class="player-footer">
+      <div class="dot-wrapper">
+        <span class="dot" :class="{ 'active': currentShow === 'cd' }"></span>
+        <span class="dot" :class="{ 'active': currentShow === 'lyric' }"></span>
+      </div>
+      <div class="progress-wrapper">
+        <span class="time time-l">{{ formatPlayTime(currentTime) }}</span>
+        <div class="progress-bar-wrapper">
+          <progress-bar :percent="percent" :percentChange="percentChange"></progress-bar>
+        </div>
+        <span class="time time-r">{{ formatPlayTime(duration) }}</span>
+      </div>
+      <div class="operators-wrapper">
+        <span class="btn-wrapper" @click="changeMode">
+          <i class="iconfont icon-order" v-if="mode === 0"></i>
+          <i class="iconfont icon-loop" v-else-if="mode === 1"></i>
+          <i class="iconfont icon-random" v-else></i>
+        </span>
+        <span class="btn-wrapper" @click="prev">
+          <i class="iconfont icon-back"></i>
+        </span>
+        <span class="btn-wrapper" @click="toggle">
+          <i class="iconfont icon-pause" v-if="isPlaying"></i>
+          <i class="iconfont icon-play-circle" v-else></i>
+        </span>
+        <span class="btn-wrapper" @click="next">
+          <i class="iconfont icon-next"></i>
+        </span>
+        <span class="btn-wrapper" @click="showList=true;">
+          <i class="iconfont icon-menu"></i>
+        </span>
+      </div>
+    </div>
+
+    <playerList :visible="showList" @close="showList=false;" />
+  </div>
   <audio ref="player" @canplay="ready" @ended="end" @timeupdate="updateTime" @error="urlError"></audio>
 </div>
 </template>
