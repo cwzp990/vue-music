@@ -211,8 +211,10 @@ export default defineComponent({
       }
     }
     const changeMode = () => {
-      let newMode = (mode.value + 1) % 3
+      const newMode = (mode.value + 1) % 3
       mode.value = newMode
+      const modeTxt = newMode === 1 ? '单曲循环' : newMode === 2 ? "随机播放" : "列表循环"
+      toast(modeTxt)
     }
     const toggleLyric = () => {
       showList.value = false
