@@ -1,6 +1,6 @@
 <template>
 <div class="m-player">
-  <transition name="zoom" appear>
+  <transition name="zoom">
     <div class="normal-player" v-show="showPlayer">
       <div class="bg-img">
         <img v-if="currentMusic.al" :src="currentMusic.al.picUrl" alt />
@@ -15,35 +15,37 @@
         <template v-slot:right></template>
       </mHeader>
       <div class="player-middle" @click="toggleLyric">
-        <div class="middle-l" v-if="currentShow==='cd'">
-          <div class="cd-wrapper">
-            <div class="cd play" :class="isPlaying ? '' : 'pause'">
-              <img v-if="currentMusic.al" class="image" :src="currentMusic.al.picUrl" alt />
+        <keep-alive>
+          <div class="middle-l" v-if="currentShow==='cd'">
+            <div class="cd-wrapper">
+              <div class="cd play" :class="isPlaying ? '' : 'pause'">
+                <img v-if="currentMusic.al" class="image" :src="currentMusic.al.picUrl" alt />
+              </div>
+            </div>
+            <div class="playing-lyric-wrapper">
+              <div class="playing-lyric theme">{{playingLyric || 'music~'}}</div>
+              <div class="playing-lyric">{{nextplayingLyric || ''}}</div>
+            </div>
+
+            <div class="operators-wrapper large-icon">
+              <span class="btn-wrapper" @click="onLike">
+                <i class="iconfont icon-love"></i>
+              </span>
+              <span class="btn-wrapper" @click.stop="onComment">
+                <i class="iconfont icon-comments"></i>
+              </span>
             </div>
           </div>
-          <div class="playing-lyric-wrapper">
-            <div class="playing-lyric theme">{{playingLyric || 'music~'}}</div>
-            <div class="playing-lyric">{{nextplayingLyric || ''}}</div>
-          </div>
 
-          <div class="operators-wrapper large-icon">
-            <span class="btn-wrapper" @click="onLike">
-              <i class="iconfont icon-love"></i>
-            </span>
-            <span class="btn-wrapper" @click.stop="onComment">
-              <i class="iconfont icon-comments"></i>
-            </span>
+          <div class="middle-r" v-else>
+            <Scroll ref="lyricRef">
+              <div class="lyric-wrapper">
+                <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
+                <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
+              </div>
+            </Scroll>
           </div>
-        </div>
-
-        <div class="middle-r" v-else>
-          <Scroll ref="lyricRef">
-            <div class="lyric-wrapper">
-              <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
-              <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
-            </div>
-          </Scroll>
-        </div>
+        </keep-alive>
       </div>
       <div class="player-footer">
         <div class="dot-wrapper">
@@ -133,7 +135,7 @@ export default defineComponent({
     const lyricRef = ref(null)
     const lyricLineRefs = ref([])
     const store = useStore()
-    const route = useRouter()
+    const router = useRouter()
 
     const showPlayer = computed(() => store.getters.showPlayer)
     const currentIndex = computed(() => store.getters.currentIndex)
@@ -222,7 +224,7 @@ export default defineComponent({
     const onLike = () => {}
     const onComment = () => {
       store.commit('SET_SHOW_PLAYER', false)
-      route.push({
+      router.push({
         path: '/comments',
         query: {
           id: currentMusic.value.id

@@ -1,7 +1,5 @@
 <template>
-<keep-alive>
-  <router-view />
-</keep-alive>
+<router-view />
 <Modal :visible="showModal" />
 </template>
 
@@ -30,23 +28,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style lang="scss">
-.slide-enter-active {
-  transition: all .5s linear;
-}
-
-.slide-leave-active {
-  transition: all .1s linear;
-}
-
-.slide-enter {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-leave-to {
-  transform: translateX(110%);
-  opacity: 0;
-}
-</style>

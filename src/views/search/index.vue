@@ -56,21 +56,25 @@ import {
   onMounted,
   ref
 } from 'vue'
-import {
-  useRouter
-} from 'vue-router'
+// import {
+//   useRouter
+// } from 'vue-router'
 import {
   useStore
 } from 'vuex'
 import api from '../../api'
+import toast from '../../components/toast'
 export default defineComponent({
+  conponents: {
+    toast
+  },
   setup() {
     const key = ref('')
     const result = ref([])
     const hotKeys = ref([])
     const history = ref([])
     const store = useStore()
-    const route = useRouter()
+    // const router = useRouter()
 
     onMounted(() => {
       history.value = JSON.parse(localStorage.getItem('_search_')) || []
@@ -111,7 +115,8 @@ export default defineComponent({
     }
 
     const goToSinger = () => {
-      route.push('/singer')
+      toast('歌手页正在开发中～')
+      // router.push('/singer')
     }
 
     const onPlay = (id) => {

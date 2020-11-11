@@ -1,9 +1,7 @@
 <template>
-<transition name="fade">
-  <div class="m-toast">
-    {{message}}
-  </div>
-</transition>
+<div class="m-toast">
+  {{message}}
+</div>
 </template>
 
 <script>
@@ -32,15 +30,5 @@ export default defineComponent({
   padding: 5px 10px;
   border-radius: 5px;
   z-index: 1996;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity .4s;
-}
-
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 </style>

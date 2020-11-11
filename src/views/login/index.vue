@@ -1,7 +1,7 @@
 <template>
 <div class="m-login">
   <div class="m-logo">
-    <i class="iconfont icon-logo"></i>
+    <i class="iconfont icon-orange"></i>
     <i class="pulse"></i>
   </div>
   <div :class="isShow ? 'login-form active' : 'login-form'">
