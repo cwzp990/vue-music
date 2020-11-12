@@ -14,7 +14,7 @@
     <div class="password">
       <input type="password" v-model="password" @click.stop="onCancel" @keyup.enter="submit" class="input" placeholder="这里是密码不是验证码！" />
     </div>
-    <div class="submit" @click="onSubmit">
+    <div class="submit" @click.stop="onSubmit">
       登录
     </div>
     <div class="tips">
@@ -44,6 +44,7 @@ import {
 import {
   useStore
 } from 'vuex'
+import toast from '../../components/toast'
 import Cookies from 'js-cookie'
 import api from '../../api'
 
@@ -109,7 +110,10 @@ export default defineComponent({
           store.commit('SET_USERINFO', info)
           localStorage.setItem("music_user_info", JSON.stringify(info))
           Cookies.set('MUSIC_U', resp.data.token)
+          isShow.value = false
           router.push('/songlist')
+        } else {
+          toast(resp.data.msg)
         }
       })
     }
