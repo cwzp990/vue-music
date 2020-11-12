@@ -12,7 +12,7 @@
       </span>
     </div>
     <div class="password">
-      <input type="password" v-model="password" @click.stop="onCancel" @keyup.enter="submit" class="input" placeholder="这里是密码不是验证码！" />
+      <input type="password" v-model="password" @click.stop="onCancel" @keyup.enter="onSubmit" class="input" placeholder="这里是密码不是验证码！" />
     </div>
     <div class="submit" @click.stop="onSubmit">
       登录
