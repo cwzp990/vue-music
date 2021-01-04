@@ -87,10 +87,12 @@ const tagRegMap = {
 
 const timeExp = /\[(\d{2,}):(\d{2})(?:\.(\d{2,3}))?]/g;
 
-export function lyricParser(lyric) {
+export function lyricParser(data) {
+  const lyric = data.lrc.lyric // 中文、英文歌词
+  const tlyric = data.tlyric.lyric // 翻译歌词
+  const tags = {}; // 保存歌曲的专辑信息
+
   if (!lyric) return [];
-  let newLyric = [];
-  let tags = {}; // 保存歌曲的专辑信息
 
   for (let tag in tagRegMap) {
     const matches = lyric.match(
@@ -99,13 +101,27 @@ export function lyricParser(lyric) {
     tags[tag] = (matches && matches[1]) || "";
   }
 
-  const arr = lyric.split("\n");
-  arr.forEach(line => {
+  let newLyric = [], tlyrics = [];
+  let lyrics = lyric.split("\n");
+
+  if (tlyric) {
+    tlyrics = tlyric.split("\n");
+  }
+
+  lyrics.forEach(line => {
     let time = line.match(timeExp);
-    const txt = line.replace(timeExp, "").trim();
+    const txt1 = line.replace(timeExp, "").trim(); // 中文、英文歌词
+    let txt2 = ''
+    tlyrics.forEach(row => {
+      if (Array.isArray(time) && row.indexOf(time[0]) > -1) { // 匹配翻译
+        txt2 = row
+      }
+    }); // 翻译歌词
     if (time) {
       time.forEach(t => {
-        newLyric.push(`${t} ${txt}`);
+        console.log(666, `${t} ${txt1}`)
+        newLyric.push(`${t} ${txt1}`);
+        if (txt2) newLyric.push(`${t} ${txt2}`); // 如果有翻译歌词就
       });
     }
   });

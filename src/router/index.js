@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import Login from "../views/login/index.vue";
 import Layout from "../components/layout/index.vue";
 const songlist = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
@@ -22,9 +22,6 @@ const routes = [
       {
         path: "/songlist",
         name: "Songlist",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
         component: songlist
       },
       {
@@ -62,8 +59,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  // history: createWebHistory(),
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes
 });
 

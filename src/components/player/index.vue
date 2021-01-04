@@ -40,7 +40,7 @@
           <Scroll ref="lyricRef">
             <div class="lyric-wrapper">
               <p class="no-lrc" v-if="!lyric.length">暂无歌词</p>
-              <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
+              <p :ref="el => { if (el) lyricLineRefs[index] = el }" class="text" :class="{ 'current': currentLine === index - 1 }" v-for="(line, index) in lyric" :key="index">{{ line.txt }}</p>
             </div>
           </Scroll>
         </div>
@@ -130,6 +130,7 @@ export default defineComponent({
     const isPlaying = ref(false)
     const isReady = ref(false)
     const showList = ref(false)
+    const hasTLyric = ref(false) // 是否是英文歌曲及是否含有翻译
     const lyricRef = ref(null)
     const lyricLineRefs = ref([])
     const store = useStore()
@@ -242,7 +243,7 @@ export default defineComponent({
             lyric.value = []
             return
           }
-          let lyrics = lyricParser(resp.data.lrc.lyric)
+          let lyrics = lyricParser(resp.data)
           lyric.value = lyrics
         }
       })
@@ -321,6 +322,7 @@ export default defineComponent({
       isReady,
       showList,
       showPlayer,
+      hasTLyric,
       currentIndex,
       currentMusic,
       playingLyric,
