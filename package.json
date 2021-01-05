@@ -10,7 +10,7 @@
 	"dependencies": {
 		"@better-scroll/core": "^2.0.5",
 		"@better-scroll/pull-up": "^2.0.5",
-		"axios": "^0.19.2",
+		"axios": "^0.21.1",
 		"core-js": "^3.6.5",
 		"fastclick": "^1.0.6",
 		"js-cookie": "^2.2.1",
