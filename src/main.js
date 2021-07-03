@@ -1,28 +1,12 @@
-import 'babel-polyfill'
-import Vue from 'vue'
-import VueVideoPlayer from 'vue-video-player'
-import { ToastPlugin } from 'vux'
-import axios from 'axios'
-import App from './App'
-import router from './router'
-import store from './store'
-import './style/reset.scss'
-import 'video.js/dist/video-js.css'
-import './utils/rem'
-import './icons'
+import { createApp } from "vue";
+import FastClick from 'fastclick'
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import "./styles/index.scss";
 
-axios.defaults.withCredentials = true
-
-Vue.use(ToastPlugin)
-Vue.use(VueVideoPlayer)
-
-const FastClick = require('fastclick')
+const app = createApp(App);
+app.use(router);
+app.use(store);
+app.mount("#app");
 FastClick.attach(document.body)
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})

@@ -1,20 +1,30 @@
 <template>
-  <div id="app">
-    <router-view></router-view>
-    <player></player>
-  </div>
+<router-view />
+<Modal :visible="showModal" />
 </template>
 
 <script>
-import player from 'components/player/player'
-export default {
-  name: 'App',
-  components: {
-    player
-  }
-}
-</script>
+import {
+  computed,
+  defineComponent
+} from 'vue'
+import {
+  useStore
+} from 'vuex'
+import Modal from './components/modal/index.vue'
 
-<style lang="less">
-@import '~vux/src/styles/1px.less';
-</style>
+export default defineComponent({
+  components: {
+    Modal
+  },
+
+  setup() {
+    const store = useStore()
+    const showModal = computed(() => store.getters.showModal)
+
+    return {
+      showModal
+    }
+  }
+})
+</script>

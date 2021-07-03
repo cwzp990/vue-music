@@ -1,85 +1,66 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
+import Login from "../views/login/index.vue";
+import Layout from "../components/layout/index.vue";
+const songlist = () => import(/* webpackChunkName: "Songlist" */ "../views/songlist/index.vue")
+const query = () => import(/* webpackChunkName: "Query" */ "../views/search/index.vue")
+const rank = () => import(/* webpackChunkName: "Rank" */ "../views/rank/index.vue")
+const mine = () => import(/* webpackChunkName: "Mine" */ "../views/mine/index.vue")
+const singer = () => import(/* webpackChunkName: "Singer" */ "../components/singer/index.vue")
+const comments = () => import(/* webpackChunkName: "Comments" */ "../components/comment/index.vue")
+const songlist_details = () => import(/* webpackChunkName: "Songlist_details" */ "../components/songlist_details/index.vue")
 
-const login = () => import('pages/login/login')
-const layout = () => import('pages/layout/layout')
-const home = () => import('pages/home/home')
-const homeMusic = () => import('pages/home/children/music')
-const daily = () => import('pages/home/children/children/daily')
-const list = () => import('pages/home/children/children/list')
-const category = () => import('pages/home/children/children/children/category')
-const radioCategory = () => import('pages/home/children/children/radio-category')
-const rank = () => import('pages/home/children/children/rank')
-const homeRadio = () => import('pages/home/children/radio')
-const account = () => import('pages/account/account')
-const video = () => import('pages/video/video')
-const mine = () => import('pages/mine/mine')
-const social = () => import('pages/social/social')
-const search = () => import('components/search/search')
-const singer = () => import('components/singer/singer')
-const singerDetails = () => import('components/singer/children/singer-details')
-const songList = () => import('components/song-list/song-list')
-const songListDetails = () => import('components/song-list/children/songlist-details')
-const comment = () => import('components/comment/comment')
-const userinfo = () => import('components/userinfo/userinfo')
-const fansList = () => import('components/fans-list/fans-list')
+const routes = [
+  {
+    path: "/layout",
+    component: Layout,
+    children: [
+      {
+        path: "/",
+        name: "Login",
+        component: Login
+      },
+      {
+        path: "/songlist",
+        name: "Songlist",
+        component: songlist
+      },
+      {
+        path: "/list_detail",
+        name: "Songlist_details",
+        component: songlist_details
+      },
+      {
+        path: "/query",
+        name: "Query",
+        component: query
+      },
+      {
+        path: "/rank",
+        name: "Rank",
+        component: rank
+      },
+      {
+        path: "/mine",
+        name: "Mine",
+        component: mine
+      },
+      {
+        path: '/singer',
+        name: "Singer",
+        component: singer
+      },
+      {
+        path: '/comments',
+        name: "Comments",
+        component: comments
+      }
+    ]
+  }
+];
 
-Vue.use(Router)
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
 
-export default new Router({
-  routes: [
-    {path: '/', redirect: '/login'},
-    {path: '/login', component: login},
-    {
-      path: '/layout',
-      component: layout,
-      children: [
-        {path: '/', redirect: '/home'},
-        {
-          path: '/home',
-          component: home,
-          children: [
-            {path: '/home', redirect: '/home/music'},
-            {path: '/home/music', component: homeMusic},
-            {path: '/home/radio', component: homeRadio},
-            {path: '/home/daily', component: daily},
-            {
-              path: '/home/list',
-              component: list
-            },
-            {path: '/home/list/category', component: category},
-            {path: '/home/rank', component: rank},
-            {path: '/home/radioCategory', component: radioCategory}
-          ]
-        },
-        {path: '/video', component: video},
-        {path: '/account', component: account},
-        {path: '/mine', component: mine},
-        {path: '/social', component: social},
-        {
-          path: '/singer',
-          component: singer,
-          children: [
-            {
-              path: '/singer/:id/details',
-              component: singerDetails
-            }
-          ]
-        },
-        {path: '/userinfo', component: userinfo}
-      ]
-    },
-    {path: '/search', component: search},
-    {
-      path: '/songList',
-      component: songList,
-      children: [
-        {path: '/songList/:id/details', component: songListDetails}
-      ]
-    },
-    {path: '/comment/song', component: comment},
-    {path: '/comment/list', component: comment},
-    {path: '/follows', component: fansList},
-    {path: '/fans', component: fansList}
-  ]
-})
+export default router;

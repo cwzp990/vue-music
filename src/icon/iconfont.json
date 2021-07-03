@@ -1,0 +1,289 @@
+{
+  "id": "1996438",
+  "name": "music",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "5123786",
+      "name": "Orange",
+      "font_class": "logo",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "7205980",
+      "name": "Music disc",
+      "font_class": "disc",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "13244917",
+      "name": "orange",
+      "font_class": "orange",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "1704630",
+      "name": "download",
+      "font_class": "download",
+      "unicode": "e6f3",
+      "unicode_decimal": 59123
+    },
+    {
+      "icon_id": "8804714",
+      "name": "new",
+      "font_class": "new",
+      "unicode": "e8ed",
+      "unicode_decimal": 59629
+    },
+    {
+      "icon_id": "12004320",
+      "name": "star",
+      "font_class": "star",
+      "unicode": "ea93",
+      "unicode_decimal": 60051
+    },
+    {
+      "icon_id": "5127473",
+      "name": "radio",
+      "font_class": "radio",
+      "unicode": "e7f8",
+      "unicode_decimal": 59384
+    },
+    {
+      "icon_id": "13745135",
+      "name": "Pause",
+      "font_class": "pause",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
+    },
+    {
+      "icon_id": "611331",
+      "name": "play",
+      "font_class": "play-circle",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "16553462",
+      "name": "category1",
+      "font_class": "category",
+      "unicode": "e855",
+      "unicode_decimal": 59477
+    },
+    {
+      "icon_id": "9009443",
+      "name": "NEW",
+      "font_class": "NEW",
+      "unicode": "e889",
+      "unicode_decimal": 59529
+    },
+    {
+      "icon_id": "14772793",
+      "name": "HOT",
+      "font_class": "HOT",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "90853",
+      "name": "rank_fill",
+      "font_class": "rank",
+      "unicode": "e721",
+      "unicode_decimal": 59169
+    },
+    {
+      "icon_id": "6924607",
+      "name": "play",
+      "font_class": "play-hollow",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "11982669",
+      "name": "Month, date, calendar",
+      "font_class": "calendar",
+      "unicode": "e9cf",
+      "unicode_decimal": 59855
+    },
+    {
+      "icon_id": "12575463",
+      "name": "SongList 歌单",
+      "font_class": "songlist",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "2738749",
+      "name": "Loading",
+      "font_class": "loading",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "183300",
+      "name": "like",
+      "font_class": "like",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "1410413",
+      "name": "loop",
+      "font_class": "loop",
+      "unicode": "e690",
+      "unicode_decimal": 59024
+    },
+    {
+      "icon_id": "5978743",
+      "name": "random-forest",
+      "font_class": "random",
+      "unicode": "e60e",
+      "unicode_decimal": 58894
+    },
+    {
+      "icon_id": "14629214",
+      "name": "order",
+      "font_class": "order",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "443508",
+      "name": "left",
+      "font_class": "left",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "722020",
+      "name": "video",
+      "font_class": "video",
+      "unicode": "e742",
+      "unicode_decimal": 59202
+    },
+    {
+      "icon_id": "929688",
+      "name": "play",
+      "font_class": "play",
+      "unicode": "e7c3",
+      "unicode_decimal": 59331
+    },
+    {
+      "icon_id": "1075341",
+      "name": "love",
+      "font_class": "love",
+      "unicode": "e66b",
+      "unicode_decimal": 58987
+    },
+    {
+      "icon_id": "1111266",
+      "name": "comment",
+      "font_class": "comments",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "1196761",
+      "name": "back",
+      "font_class": "back",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "1196961",
+      "name": "next",
+      "font_class": "next",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "1555757",
+      "name": "right",
+      "font_class": "right",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "4544622",
+      "name": "discover",
+      "font_class": "discover",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "5394613",
+      "name": "person",
+      "font_class": "person",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "5810220",
+      "name": "menu",
+      "font_class": "menu",
+      "unicode": "e7f2",
+      "unicode_decimal": 59378
+    },
+    {
+      "icon_id": "6050679",
+      "name": "email",
+      "font_class": "email",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "7447916",
+      "name": "more",
+      "font_class": "more",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "9358668",
+      "name": "friends-o",
+      "font_class": "friends",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "10147105",
+      "name": "empty",
+      "font_class": "empty",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "11903701",
+      "name": "hot",
+      "font_class": "hot",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "11982020",
+      "name": "search",
+      "font_class": "search",
+      "unicode": "e996",
+      "unicode_decimal": 59798
+    },
+    {
+      "icon_id": "15167596",
+      "name": "up",
+      "font_class": "up",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "15617051",
+      "name": "music",
+      "font_class": "music",
+      "unicode": "e892",
+      "unicode_decimal": 59538
+    }
+  ]
+}

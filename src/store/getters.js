@@ -1,33 +1,12 @@
-export const userid = state => state.userid
-
-export const tag = state => state.tag
-
-export const singer = state => state.singer
-
-export const playing = state => state.playing
-
-export const fullScreen = state => state.fullScreen
-
-export const playlist = state => state.playlist
-
-export const sequenceList = state => state.sequenceList
-
-export const mode = state => state.mode
-
-export const currentIndex = state => state.currentIndex
-
-export const currentSong = (state) => {
-  return state.playlist[state.currentIndex] || {}
-}
-
-export const disc = state => state.disc
-
-export const topList = state => state.topList
-
-export const searchHistory = state => state.searchHistory
-
-export const playHistory = state => state.playHistory
-
-export const favoriteList = state => state.favoriteList
-
-export const songUrl = state => state.songUrl
+export const mode = state => state.mode;
+export const showPlayer = state => state.showPlayer;
+export const showList = state => state.showList;
+export const showModal = state => state.showModal;
+export const playerState = state => state.playerState;
+export const playList = state => state.playList;
+export const currentIndex = state => state.currentIndex;
+export const currentMusic = state => state.currentMusic;
+export const singer = state => state.singer;
+export const userInfo = state => state.userInfo;
+export const category = state => state.category;
+export const offset = state => state.offset;

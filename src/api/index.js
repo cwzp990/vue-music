@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from "./request";
 
 import {
   LoginCellphoneResource,
@@ -18,6 +18,7 @@ import {
   CommentLiked,
   AlbumResource,
   ArtistsResource,
+  SingerHotSongResource,
   ArtistAlbumResource,
   ArtistDescResource,
   RecommendResource,
@@ -27,6 +28,7 @@ import {
   LikeMusicResource,
   FmTrashResource,
   CategoryPlaylist,
+  CategoryHotPlaylist,
   TopPlaylistResource,
   NewAlbumResource,
   TopArtistsResource,
@@ -40,6 +42,7 @@ import {
   DjRecommend,
   DjClassify,
   MvResource,
+  VideoList,
   playMV,
   SimiMvResource,
   MvCommentResource,
@@ -48,79 +51,80 @@ import {
   ArtistMvResource,
   MVRank,
   UserFollows,
-  UserFans
-} from './resource'
+  UserFans,
+  AuthCode,
+  verifyAuth,
+  userHistory,
+  hotwallList
+} from "./resource";
 
-export const api = {
+const api = {
+  getSongUrl(id) {
+    return axios.get('/netease/getUrl', {
+      params: {
+        id
+      }
+    });
+  },
   // 获取个人信息，注入cookies
-  getLoginCellphoneResource (mobile, password) {
+  getLoginCellphoneResource(phone, password) {
     return axios.get(LoginCellphoneResource, {
       params: {
-        phone: mobile || '',
-        password: password || ''
+        phone,
+        password
       }
-    })
+    });
   },
 
-  getUserDetails (id) {
+  getUserDetails(uid) {
     return axios.get(UserDetails, {
-      params: {
-        uid: id
-      }
-    })
+      params: { uid }
+    });
   },
 
   // 获取歌曲详情
-  getSongDetails (id) {
+  getSongDetails(ids) {
     return axios.get(SongDetails, {
-      params: {
-        ids: id
-      }
-    })
+      params: { ids }
+    });
   },
 
   // 获取用户信息，歌单、收藏、mv、dj数量
-  getUserInfos () {
-    return axios.get(UserInfos)
+  getUserInfos() {
+    return axios.get(UserInfos);
   },
 
-  getUserEvent (id) {
+  getUserEvent(uid) {
     return axios.get(UserEvent, {
-      params: {
-        uid: id
-      }
-    })
+      params: { uid }
+    });
   },
 
-  getBanner () {
-    return axios.get(Banner)
+  getBanner(type = 2) {
+    return axios.get(Banner, {
+      params: { type }
+    });
   },
 
   // 获取用户歌单, uid为用户id，登陆接口处获取
-  getUserPlaylistResource (id) {
+  getUserPlaylistResource(uid) {
     return axios.get(UserPlaylistResource, {
-      params: {
-        uid: id
-      }
-    })
+      params: { uid }
+    });
   },
 
   // 获取歌单详情, id 为歌单id
-  getPlaylistDetailResource (id) {
+  getPlaylistDetailResource(id) {
     return axios.get(PlaylistDetailResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   // 获取音乐url， id为单曲id
-  getMusicUrlResource (id) {
+  getMusicUrlResource(id) {
     return axios.get(MusicUrlResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   /**
@@ -131,28 +135,26 @@ export const api = {
    * @param offset 数据偏移量
    * @returns response  数据返回值
    */
-  getSearchResource (keywords, type, limit, offset) {
+  getSearchResource(keywords, type = 1, limit = 20, offset = 0) {
     return axios.get(SearchResource, {
       params: {
-        keywords: keywords,
-        type: type || 1,
-        offset: offset || 0,
-        limit: limit || 10
+        keywords,
+        type,
+        offset,
+        limit
       }
-    })
+    });
   },
 
-  getHotKeys () {
-    return axios.get(HotKeys)
+  getHotKeys() {
+    return axios.get(HotKeys);
   },
 
   // 获取歌词， id为单曲id
-  getLyricResource (id) {
+  getLyricResource(id) {
     return axios.get(LyricResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   /**
@@ -163,135 +165,130 @@ export const api = {
    * @param content 发送时为文字，删除时为id
    * @returns response  数据返回值
    */
-  sendOrDelComment (action, type, id, content) {
+  sendOrDelComment(action, type, id, content) {
     if (action === 1) {
       return axios.get(sendComment, {
         params: {
-          action: action,
-          type: type,
-          id: id,
-          content: content
+          action,
+          type,
+          id,
+          content
         }
-      })
+      });
     } else if (action === 2) {
       return axios.get(sendComment, {
         params: {
-          action: action,
-          type: type,
-          id: id,
-          commentId: content
+          action,
+          type,
+          id,
+          content
         }
-      })
+      });
     }
   },
 
   // 获取评论， id为单曲id
-  getCommentResource (id, limit) {
+  getCommentResource(id, offset = 1, limit = 20) {
     return axios.get(CommentResource, {
       params: {
-        id: id,
-        limit: limit || 30
+        id,
+        offset: (offset - 1) * limit,
+        limit
       }
-    })
+    });
   },
 
   // 评论点赞
-  getCommentLiked (songid, cid, liked, type) {
+  getCommentLiked(songid, cid, liked, type) {
     return axios.get(CommentLiked, {
       params: {
         id: songid,
-        cid: cid,
+        cid,
         t: liked,
-        type: type
+        type
       }
-    })
+    });
   },
 
   // 获取专辑内容， id为专辑id
-  getAlbumResource (id) {
+  getAlbumResource(id) {
     return axios.get(AlbumResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   // 获取歌手单曲列表， id为歌手id
-  getArtistsResource (id) {
+  getArtistsResource(id) {
     return axios.get(ArtistsResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   // 获取歌手专辑列表， id为歌手id
-  getArtistAlbumResource (id, size) {
+  getArtistAlbumResource(id, limit = 20) {
     return axios.get(ArtistAlbumResource, {
       params: {
-        id: id,
-        limit: 50 || size
+        id,
+        limit
       }
-    })
+    });
   },
 
   // 获取歌手信息， id为歌手id
-  getArtistDescResource (id) {
+  getArtistDescResource(id) {
     return axios.get(ArtistDescResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   // 获取每日推荐歌曲
-  getRecommendResource () {
-    return axios.get(RecommendResource)
+  getRecommendResource() {
+    return axios.get(RecommendResource);
   },
 
   // 获取每日推荐歌单
-  getRecommendSongsResource () {
-    return axios.get(RecommendSongsResource)
+  getRecommendSongsResource() {
+    return axios.get(RecommendSongsResource);
   },
 
   // 获取私人FM， id为歌曲id
-  getPersonalFmResource () {
-    return axios.get(PersonalFmResource)
+  getPersonalFmResource() {
+    return axios.get(PersonalFmResource);
   },
 
   /**
    * @method 签到
    * @param type 0为安卓签到，1为web/pc签到， 默认为安卓
    */
-  getDailySigninResource (type) {
+  getDailySigninResource(type) {
     return axios.get(DailySigninResource, {
       params: {
-        type: type
+        type
       }
-    })
+    });
   },
 
   // 添加喜欢歌曲， id为单曲id
-  getLikeMusicResource (id) {
+  getLikeMusicResource(id) {
     return axios.get(LikeMusicResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   // 将单曲从私人FM中移除至垃圾桶， id为单曲id
-  getFmTrashResource (id) {
+  getFmTrashResource(id) {
     return axios.get(FmTrashResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
 
   // 歌单分类
-  getCategoryPlayList () {
-    return axios.get(CategoryPlaylist)
+  getCategoryPlayList() {
+    return axios.get(CategoryPlaylist);
+  },
+
+  getCategoryHotPlaylist() {
+    return axios.get(CategoryHotPlaylist);
   },
 
   /**
@@ -301,15 +298,15 @@ export const api = {
    * @param offset  偏移量 默认为0
    * @returns 返回歌单列表
    */
-  getTopPlaylistResource (tag, order, limit, offset) {
+  getTopPlaylistResource(cat, offset = 1, order = "hot", limit = 20) {
     return axios.get(TopPlaylistResource, {
       params: {
-        order: order || 'hot',
-        cat: tag,
-        limit: limit || 50,
-        offset: offset || 0
+        order,
+        cat,
+        limit,
+        offset: (offset - 1) * limit
       }
-    })
+    });
   },
 
   /**
@@ -318,13 +315,13 @@ export const api = {
    * @param offset
    * @returns 返回新碟列表
    */
-  getNewAlbumResource (limit, offset) {
+  getNewAlbumResource(limit = 20, offset = 0) {
     return axios.get(NewAlbumResource, {
       params: {
-        limit: limit || 50,
-        offset: offset || 0
+        limit,
+        offset
       }
-    })
+    });
   },
 
   /**
@@ -333,13 +330,30 @@ export const api = {
    * @param offset
    * @returns 返回热门歌手列表
    */
-  getTopArtistsResource (limit, offset) {
+  getTopArtistsResource(limit = 30, offset = 0) {
     return axios.get(TopArtistsResource, {
       params: {
-        limit: limit || 100,
-        offset: offset || 0
+        limit,
+        offset
       }
-    })
+    });
+  },
+
+  // 获取歌手分类列表
+  getArtList(area = -1, type = -1) {
+    return axios.get(ArtistsResource, {
+      params: {
+        area,
+        type
+      }
+    });
+  },
+
+  // 获取歌手热门单曲
+  getSingerHotSong(id) {
+    return axios.get(SingerHotSongResource, {
+      params: { id }
+    });
   },
 
   /**
@@ -352,131 +366,130 @@ export const api = {
    * 17.华语金曲榜 18.中国嘻哈榜  19.法国NRJ  EuroHot 30周榜  20.台湾Hito排行榜
    * 21.Beatport全球电子舞曲榜
    */
-  getTopListResource (idx) {
-    return axios.get(TopListResource, {
-      params: {
-        idx: idx
-      }
-    })
+  getTopListResource() {
+    return axios.get(TopListResource);
   },
 
   // 获取推荐歌单
-  getPersonalized () {
-    return axios.get(PersonalizedResource)
+  getPersonalized() {
+    return axios.get(PersonalizedResource);
   },
 
   // 获取精品歌单
-  getHighQuality (limit) {
+  getHighQuality(limit = 30) {
     return axios.get(HighQuality, {
-      params: {
-        limit: limit || 30
-      }
-    })
+      params: { limit }
+    });
   },
 
   // 获取独家放送
-  getPrivatecontent () {
-    return axios.get(PrivatecontentResource)
+  getPrivatecontent() {
+    return axios.get(PrivatecontentResource);
   },
 
   // 获取推荐MV
-  getPersonalizedMv () {
-    return axios.get(PersonalizedMvResource)
+  getPersonalizedMv() {
+    return axios.get(PersonalizedMvResource);
+  },
+
+  // 获取视频列表
+  getVideoList() {
+    return axios.get(VideoList);
   },
 
   // 获取最新音乐
-  getNewSong () {
-    return axios.get(NewSongResource)
+  getNewSong() {
+    return axios.get(NewSongResource);
   },
 
   // 获取推荐DJ
-  getDjProgram () {
-    return axios.get(DjProgramResource)
+  getDjProgram() {
+    return axios.get(DjProgramResource);
   },
   // 获取推荐DJ-页面
-  getDjRecommend () {
-    return axios.get(DjRecommend)
+  getDjRecommend() {
+    return axios.get(DjRecommend);
   },
-  getDjClassify () {
-    return axios.get(DjClassify)
+  getDjClassify() {
+    return axios.get(DjClassify);
   },
   // 获取mv数据
-  getMvResource (id) {
+  getMvResource(area, limit = 30, offset = 0) {
     return axios.get(MvResource, {
-      params: {
-        mvid: id
-      }
-    })
+      params: { area, limit, offset }
+    });
   },
   // 获取MV播放地址
-  getMVPlay (url) {
+  getMVPlay(id) {
     return axios.get(playMV, {
-      params: {
-        url: url
-      }
-    })
+      params: { id }
+    });
   },
-  getMVRank (limit) {
+  getMVRank(limit = 30) {
     return axios.get(MVRank, {
-      params: {
-        limit: limit || 30
-      }
-    })
+      params: { limit }
+    });
   },
 
   // 获取相似mv数据
-  getSimiMvResource (id) {
+  getSimiMvResource(mvid) {
     return axios.get(SimiMvResource, {
-      params: {
-        mvid: id
-      }
-    })
+      params: { mvid }
+    });
   },
   // 获取mv评论
-  getMvCommentResource (id) {
+  getMvCommentResource(id) {
     return axios.get(MvCommentResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
   // 获取歌单评论
-  getPlaylistCommentResource (id) {
+  getPlaylistCommentResource(id) {
     return axios.get(PlaylistCommentResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
   // 获取专辑评论
-  getAlbumCommentResource (id) {
+  getAlbumCommentResource(id) {
     return axios.get(AlbumCommentResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
   // 获取歌手MV
-  getArtistMvResource (id) {
+  getArtistMvResource(id) {
     return axios.get(ArtistMvResource, {
-      params: {
-        id: id
-      }
-    })
+      params: { id }
+    });
   },
   // 获取用户关注列表
-  getUserFollows (id) {
+  getUserFollows(uid) {
     return axios.get(UserFollows, {
-      params: {
-        uid: id
-      }
-    })
+      params: { uid }
+    });
   },
-  getUserFans (id) {
+  getUserFans(uid) {
     return axios.get(UserFans, {
-      params: {
-        uid: id
-      }
-    })
+      params: { uid }
+    });
+  },
+  getAuthCode(phone) {
+    return axios.get(AuthCode, {
+      params: { phone }
+    });
+  },
+  verifyAuthCode(phone, captcha) {
+    return axios.get(verifyAuth, {
+      params: { phone, captcha }
+    });
+  },
+  getUserHistory(uid, type = 1) {
+    return axios.get(userHistory, {
+      params: { uid, type }
+    });
+  },
+  getHotwallList() {
+    return axios.get(hotwallList);
   }
-}
+};
+
+export default api;

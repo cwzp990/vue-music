@@ -1,0 +1,102 @@
+$light_gray: #bfbfbf;
+$gray: #707070;
+$black: #3c3c3c;
+$red: #d81e06;
+$blue: #1296db;
+$green: #1afa29;
+$bgc: #f6f6f6;
+$theme: #ffaa20;
+$logo: #ff9900;
+$font_small: 12px;
+$font_normal: 14px;
+$font_large: 16px;
+$font_huge: 18px;
+
+@mixin wh($w, $h) {
+	width: $w;
+	height: $h;
+}
+
+@mixin sc($s: $font_small, $c: $light_gray) {
+	font-size: $s;
+	color: $c;
+}
+
+@mixin more($row: 2) {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $row;
+	word-break: break-all;
+	overflow: hidden;
+}
+
+@mixin avatar($w, $h, $bg: $theme) {
+	display: inline-block;
+	vertical-align: middle;
+	width: $w;
+	height: $h;
+	line-height: $h;
+	background: $bg;
+	text-align: center;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+@mixin center {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.red {
+	color: $red !important;
+}
+
+.blue {
+	color: $blue !important;
+}
+
+.green {
+	color: $green !important;
+}
+
+.theme {
+	color: $theme !important;
+}
+
+.container {
+	padding: 0 8px;
+}
+
+.more {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.bg-img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	@include wh(100%, 100%);
+	z-index: -1;
+	filter: blur(30px);
+	transform: scale(1.2);
+}
+
+html,
+body,
+#app {
+	@include wh(100%, 100%);
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0) 100%;
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

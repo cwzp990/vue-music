@@ -1,21 +1,16 @@
-import { playMode } from 'utils/config'
-import { loadSearch, loadPlay, loadFavorite } from 'utils/cache'
+const initialState = {
+  mode: 0,
+  showPlayer: false, //Player显示状态
+  showList: false, // 播放列表状态
+  showModal: false, // loading状态
+  playerState: false, //Player播放状态
+  playList: [], //播放列表
+  currentIndex: -1, //当前音乐索引
+  currentMusic: {}, //当前音乐
+  singer: {}, //当前歌手
+  userInfo: null,
+  category: "华语", //当前歌单类型
+  offset: 1 // 分页
+};
 
-const state = {
-  userid: '',
-  tag: '',
-  singer: {},
-  playing: false,
-  fullScreen: false,
-  playlist: [],
-  sequenceList: [],
-  mode: playMode.sequence,
-  currentIndex: -1,
-  disc: {},
-  topList: {},
-  searchHistory: loadSearch(),
-  playHistory: loadPlay(),
-  favoriteList: loadFavorite(),
-  songUrl: ''
-}
-export default state
+export default initialState;

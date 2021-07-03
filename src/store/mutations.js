@@ -1,51 +1,65 @@
-import * as types from './mutation-types'
+import * as types from "./types";
 
-const matutaions = {
-  [types.SET_USER_ID] (state, id) {
-    state.userid = id
+const mutations = {
+  // 设置播放模式
+  [types.SET_PLAYMODE](state, mode) {
+    state.mode = mode;
   },
-  [types.SET_TAG] (state, tag) {
-    state.tag = tag
+
+  // 显示player组件
+  [types.SET_SHOW_PLAYER](state, showPlayer) {
+    state.showPlayer = showPlayer;
   },
-  [types.SET_SINGER] (state, singer) {
-    state.singer = singer
+
+  // 显示播放列表组件
+  [types.SET_SHOW_PLAYER_LIST](state, showList) {
+    state.showList = showList;
   },
-  [types.SET_PLAYING_STATE] (state, flag) {
-    state.playing = flag
+
+  // 显示loading组件
+  [types.SET_SHOW_MODAL](state, showModal) {
+    state.showModal = showModal;
   },
-  [types.SET_FULL_SCREEN] (state, flag) {
-    state.fullScreen = flag
+
+  // 设置播放状态
+  [types.SET_PLAYER_STATE](state, playerState) {
+    state.playerState = playerState;
   },
-  [types.SET_PLAYLIST] (state, list) {
-    state.playlist = list
+
+  // 设置当前音乐
+  [types.SET_CURRENTMUSIC](state, currentMusic) {
+    state.currentMusic = currentMusic;
   },
-  [types.SET_SEQUENCE_LIST] (state, list) {
-    state.sequenceList = list
+
+  // 设置当前音乐索引
+  [types.SET_CURRENTINDEX](state, currentIndex) {
+    state.currentIndex = currentIndex;
   },
-  [types.SET_PLAY_MODE] (state, mode) {
-    state.mode = mode
+
+  // 设置当前播放列表
+  [types.SET_PLAYLIST](state, playList) {
+    state.playList = playList;
   },
-  [types.SET_CURRENT_INDEX] (state, index) {
-    state.currentIndex = index
+
+  // 设置当前歌手
+  [types.SET_SINGER](state, singer) {
+    state.singer = singer;
   },
-  [types.SET_DISC] (state, disc) {
-    state.disc = disc
+
+  // 设置当前用户信息
+  [types.SET_USERINFO](state, userInfo) {
+    state.userInfo = userInfo;
   },
-  [types.SET_TOP_LIST] (state, topList) {
-    state.topList = topList
+
+  // 设置当前歌单类型
+  [types.SET_CATEGORY](state, category) {
+    state.category = category;
   },
-  [types.SET_SEARCH_HISTORY] (state, history) {
-    state.searchHistory = history
-  },
-  [types.SET_PLAY_HISTORY] (state, history) {
-    state.playHistory = history
-  },
-  [types.SET_FAVORITE_LIST] (state, list) {
-    state.favoriteList = list
-  },
-  [types.SET_SONG_URL] (state, url) {
-    state.songUrl = url
+
+  // 设置分页页数
+  [types.SET_OFFSET](state, offset) {
+    state.offset = offset;
   }
-}
+};
 
-export default matutaions
+export default mutations;
